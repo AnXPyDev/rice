@@ -1,0 +1,10 @@
+clear
+ls
+clear
+clear
+git clone https://notabug.org/anxpydev/langTest
+cd langTest/
+ls
+make
+./main.out 
+./main.out -d dictionaries/projektDeutsh/L1 -l SK DE -n 10 -t
