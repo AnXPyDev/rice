@@ -1,5 +1,7 @@
 (general-define-key
- "C-s" 'swiper)
+ "C-s" 'swiper
+ "C-x C-b" 'ibuffer
+ "M-q" 'god-local-mode)
 
 (general-define-key
  :keymaps 'company-active-map
