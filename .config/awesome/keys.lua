@@ -12,7 +12,8 @@ keys.global = gears.table.join(
   awful.key({keys.mod, "Shift"}, "n", function() awful.client.swap.global_bydirection("down") end),
   awful.key({keys.mod, "Shift"}, "p", function() awful.client.swap.global_bydirection("up") end),
   awful.key({keys.mod, "Shift"}, "b", function() awful.client.swap.global_bydirection("left") end),
-  awful.key({keys.mod, "Shift"}, "f", function() awful.client.swap.global_bydirection("right") end)
+  awful.key({keys.mod, "Shift"}, "f", function() awful.client.swap.global_bydirection("right") end),
+  awful.key({keys.mod}, "g", toggleGaps)
 )
 
 keys.client = gears.table.join(
@@ -20,6 +21,9 @@ keys.client = gears.table.join(
   awful.key({keys.mod}, "s", function(c)
     c.floating = not c.floating
     c.ontop = c.floating
+  end),
+  awful.key({keys.mod}, "w", function(c)
+    c.fullscreen = not c.fullscreen
   end)
 )
 
