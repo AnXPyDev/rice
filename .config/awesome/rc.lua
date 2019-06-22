@@ -3,6 +3,9 @@ gears = require("gears")
 wibox = require("wibox")
 beautiful = require("beautiful")
 naughty = require("naughty")
+xresources = require("beautiful.xresources")
+dpi = xresources.apply_dpi
+
 require("awful.autofocus")
 
 PATH = {
@@ -20,6 +23,7 @@ dofile(PATH.config .. "screen.lua")
 dofile(PATH.config .. "layout.lua")
 dofile(PATH.config .. "tags.lua")
 dofile(PATH.config .. "gaps.lua")
+dofile(PATH.config .. "tagindicator.lua")
 dofile(PATH.config .. "keys.lua")
 dofile(PATH.config .. "buttons.lua")
 dofile(PATH.config .. "client.lua")

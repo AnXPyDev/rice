@@ -14,6 +14,14 @@
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 
+(defadvice text-scale-increase (after text-scale-after activate)
+  (set-window-margins (selected-window) 1 1))
+(defadvice text-scale-decrease (after text-scale-after activate)
+  (set-window-margins (selected-window) 1 1))
+(defadvice text-scale-set (after text-scale-after activate)
+  (set-window-margins (selected-window) 1 1))
+
+
 (package-use 'general :require t)
 
 (package-use 'which-key :require t)

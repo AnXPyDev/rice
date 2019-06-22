@@ -1,7 +1,22 @@
+(defhydra hydra-edit ()
+  ("n" next-line)
+  ("p" previous-line)
+  ("f" forward-char)
+  ("b" backward-char)
+  ("N" (lambda() (interactive) (next-line 10)))
+  ("P" (lambda() (interactive) (previous-line 10)))
+  ("d" delete-char)
+  ("D" kill-whole-line)
+  ("a" beginning-of-line)
+  ("e" end-of-line)
+  ("C-a" beginning-of-line-text)
+  ("C-e" end-of-line))
+
 (general-define-key
  "C-s" 'swiper
  "C-x C-b" 'ibuffer
- "M-q" 'god-local-mode)
+ "C-TAB" 'hydra-edit/body
+ "C-<tab>" 'hydra-edit/body)
 
 (general-define-key
  :keymaps 'company-active-map
