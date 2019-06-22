@@ -16,6 +16,9 @@ PATH = {
 }
 
 local themeName = "default"
+
+dofile(PATH.modules .. "editdistance.lua")
+
 dofile(PATH.theme .. themeName .. ".lua")
 
 dofile(PATH.config .. "wallpaper.lua")
