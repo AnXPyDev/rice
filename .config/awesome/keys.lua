@@ -15,7 +15,7 @@ keys.global = gears.table.join(
   awful.key({keys.mod, "Shift"}, "f", function() awful.client.swap.global_bydirection("right") end),
   awful.key({keys.mod}, "g", toggleGaps),
   awful.key({keys.mod}, "u", function()
-    testMenu:toggle()
+    testMenu:show()
   end)
 )
 

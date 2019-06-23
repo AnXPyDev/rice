@@ -15,6 +15,10 @@ PATH = {
   modules = os.getenv("HOME") .. "/.config/awesome/modules/"
 }
 
+function log(object)
+  naughty.notify({text = tostring(object)})
+end
+
 local themeName = "default"
 
 dofile(PATH.modules .. "editdistance.lua")

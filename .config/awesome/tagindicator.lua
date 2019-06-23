@@ -5,21 +5,20 @@ function tagIndicator.shape(cr, w, h)
 end
 
 function tagIndicator:initWidgets()
-  self.surfaces.focused = gears.surface.load_from_shape(self.widgetSize[1], self.widgetSize[2], gears.shape.rectangle, beautiful.tagIndicator_focused or beautiful.fg_focused)
-  self.surfaces.occupied = gears.surface.load_from_shape(self.widgetSize[2], self.widgetSize[2], gears.shape.rectangle, beautiful.tagIndicator_occupied or beautiful.bg_focused)
-  self.surfaces.normal = gears.surface.load_from_shape(self.widgetSize[1], self.widgetSize[2], gears.shape.rectangle, beautiful.tagIndicator_normal or beautiful.bg_normal)
+  self.colors.focused = beautiful.tagIndicator_focused or beautiful.fg_focused
+  self.colors.occupied = beautiful.tagIndicator_occupied or beautiful.bg_focused
+  self.colors.normal = beautiful.tagIndicator_normal or beautiful.bg_normal
   
   local function widgetShape(cr, w, h)
-    return gears.shape.transform(gears.shape.circle) : translate((self.widgetSize[1] * (1 - self.widgetMult)) / 2, (self.widgetSize[2] * (1 - self.widgetMult)) / 2) (cr, self.widgetSize[1] * self.widgetMult, self.widgetSize[2] * self.widgetMult)
+    return gears.shape.transform(gears.shape.rounded_rect) : translate((self.widgetSize[1] * (1 - self.widgetMult)) / 2, (self.widgetSize[2] * (1 - self.widgetMult)) / 2) (cr, self.widgetSize[1] * self.widgetMult, self.widgetSize[2] * self.widgetMult, beautiful.corner_radius)
   end
   
   for i = 1, #tags.list do
-    local widget = wibox.widget.imagebox(
-      self.surfaces.focused,
-      false,
+    local widget = wibox.container.background(
+      wibox.widget.textbox(),
+      "#000000",
       widgetShape
     )
-    
     self.widgets = gears.table.join(self.widgets, {widget})
   end
 
@@ -27,13 +26,21 @@ function tagIndicator:initWidgets()
   
 end
 
-function tagIndicator:update() if not self.widgets or not #tags.list
-  == #self.widgets then self:setup() end for i = 1, #tags.list do
-  local surface = nil if tags.list[i].selected then surface =
-  self.surfaces.focused elseif #tags.list[i]:clients() > 0 then
-  surface = self.surfaces.occupied else surface = self.surfaces.normal
-  end self.widgets[i].image = surface
-  self.widgets[i]:emit_signal("widget::redraw_needed") end end
+function tagIndicator:update()
+  if not self.widgets or not #tags.list == #self.widgets then
+    self:setup()
+  end
+  for i = 1, #tags.list do
+    local color = self.colors.normal
+    if tags.list[i].selected then
+      color = self.colors.focused
+    elseif #tags.list[i]:clients() > 0 then
+      color = self.colors.occupied
+    end
+    self.widgets[i].bg = color
+    self.widgets[i]:emit_signal("widget::redraw_needed")
+  end
+end
 
 function tagIndicator:setup()
   self.screen = screens.primary
@@ -42,7 +49,7 @@ function tagIndicator:setup()
   self.size = {self.widgetSize[1] * #tags.list, self.widgetSize[2]}
   self.offset = 30
   self.pos = {self.screen.geometry.x + (self.screen.geometry.width - self.size[1]) / 2, self.screen.geometry.y + dpi(self.offset)}
-  self.surfaces = {}
+  self.colors = {}
   self.widgets = {}
   self.widget = nil
   self.aliveTimer = gears.timer {
