@@ -27,23 +27,13 @@ function tagIndicator:initWidgets()
   
 end
 
-function tagIndicator:update()
-  if not self.widgets or not #tags.list == #self.widgets then
-    self:setup()
-  end
-  for i = 1, #tags.list do
-    local surface = nil
-    if tags.list[i].selected then
-      surface = self.surfaces.focused
-    elseif #tags.list[i]:clients() > 0 then
-      surface = self.surfaces.occupied
-    else
-      surface = self.surfaces.normal
-    end
-    self.widgets[i].image = surface
-    self.widgets[i]:emit_signal("widget::redraw_needed")
-  end
-end
+function tagIndicator:update() if not self.widgets or not #tags.list
+  == #self.widgets then self:setup() end for i = 1, #tags.list do
+  local surface = nil if tags.list[i].selected then surface =
+  self.surfaces.focused elseif #tags.list[i]:clients() > 0 then
+  surface = self.surfaces.occupied else surface = self.surfaces.normal
+  end self.widgets[i].image = surface
+  self.widgets[i]:emit_signal("widget::redraw_needed") end end
 
 function tagIndicator:setup()
   self.screen = screens.primary

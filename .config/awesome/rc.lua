@@ -18,6 +18,7 @@ PATH = {
 local themeName = "default"
 
 dofile(PATH.modules .. "editdistance.lua")
+dofile(PATH.modules .. "sort.lua")
 
 dofile(PATH.theme .. themeName .. ".lua")
 
@@ -27,6 +28,7 @@ dofile(PATH.config .. "layout.lua")
 dofile(PATH.config .. "tags.lua")
 dofile(PATH.config .. "gaps.lua")
 dofile(PATH.config .. "tagindicator.lua")
+dofile(PATH.config .. "searchengine.lua")
 dofile(PATH.config .. "keys.lua")
 dofile(PATH.config .. "buttons.lua")
 dofile(PATH.config .. "client.lua")
