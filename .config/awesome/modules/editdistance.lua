@@ -53,6 +53,23 @@ function editDistance(a, b)
   return matrix[matrixSize + 1][matrixSize + 1]
 end
 
-function compareStrings(a, b)
-  return (math.max(a:len(), b:len()) - editDistance(a, b)) / math.max(a:len(), b:len())
+
+function compareStrings(a, b, isMin)
+  local dist = 0
+  a = a:lower()
+  b = b:lower()
+  if stringdistance then
+    dist = stringdistance.dam(a, b)
+  else
+    dist = editDistance(a, b)
+  end
+  
+  if isMin then
+    return (math.max(a:len(), b:len()) - dist) / math.min(a:len(), b:len())
+  else
+    return (math.max(a:len(), b:len()) - dist) / math.max(a:len(), b:len())
+  end
+  if mnum == 0 then
+    return 1
+  end
 end

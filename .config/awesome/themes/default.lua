@@ -16,7 +16,8 @@ local theme = {
   searchMenu_bg = "#303030",
   searchMenu_fg = "#FFFFFF",
   searchMenu_promptBg = "#404040",
-  searchMenu_highlight = "#505050"
+  searchMenu_elementHighlight = "#FFFFFF",
+  searchMenu_elementHighlightFg = "#000000"
 }
 
 theme.font = theme.font_name .. " " .. tostring(theme.font_size)
