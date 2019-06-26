@@ -1,10 +1,15 @@
-launcher = SearchMenu:new():setup({
+launcher = SearchMenu:new()
+  :setup({
   screen = screens.primary,
-  size = {dpi(600), dpi(400)},
-  offset = dpi(50),
-  padding = dpi(10),
+  wibox = {
+    size = {dpi(500), dpi(300)},
+    offset = 20
+  },
+  prompt = {},
   elements = {
-    {name = "Emacs", callback = function() awful.spawn("emacs") end},
-    {name = "Firefox", callback = function() awful.spawn("firefox") end}
+    list = {
+      {name = "Emacs", callback = function() awful.spawn("emacs") end},
+      {name = "Firefox", callback = function() awful.spawn("firefox") end}
+    }
   }
-				  })
+	})

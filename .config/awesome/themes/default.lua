@@ -20,6 +20,59 @@ local theme = {
   searchMenu_elementHighlightFg = "#000000"
 }
 
+theme.searchMenu = {}
+
+theme.searchMenu.prompt = {
+  bg = "#000000",
+  fg = "#FFFFFF",
+  halign = "left",
+  valign = "center",
+  text = "Search: ",
+  font = "Hack 14",
+  margins = {
+    left = dpi(5),
+    right = dpi(5),
+    top = dpi(5),
+    bottom = dpi(5)
+  },
+  outsideMargins = {
+    left = dpi(5),
+    right = dpi(5),
+    top = dpi(5),
+    bottom = dpi(5)
+  }
+}
+
+theme.searchMenu.elements = {
+  bg = "#000000",
+  fg = "#FFFFFF",
+  bgHl = "#FFFFFF",
+  fgHl = "#000000",
+  halign = "left",
+  valign = "center",
+  font = "Hack 9",
+  margins = {
+    left = dpi(5),
+    right = dpi(5),
+    top = dpi(5),
+    bottom = dpi(5)
+  },
+  outsideMargins = {
+    left = dpi(5),
+    right = dpi(5),
+    top = dpi(5),
+    bottom = dpi(5)
+  }
+}
+
+theme.searchMenu.wibox = {
+  bg = "#000000",
+  fg = "#FFFFFF",
+  size = {dpi(800), dpi(600)},
+  shape = gears.shape.rectangle
+}
+
+
 theme.font = theme.font_name .. " " .. tostring(theme.font_size)
 theme.titlebar_bg_normal = theme.bg_normal
 theme.titlebar_fg_normal = theme.fg_normal
