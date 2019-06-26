@@ -29,11 +29,12 @@ function SearchMenu:runPrompt()
       elseif mod["Control"] and key == "p" then
 	self.cursor.mod = -1
       elseif key == "Return" then
-	self.elements.keys[self.results[self.cursor.pos]].callback()
+	if self.elements.keys[self.results[self.cursor.pos]] then
+	  self.elements.keys[self.results[self.cursor.pos]].callback()
+	end
       end
     end
   })
-  self.prompt.widget.bare.font = self.prompt.config.fonts
 end
 
 function SearchMenu:initPrompt()
@@ -93,7 +94,6 @@ function SearchMenu:refreshTheme()
   self.prompt.widget.outsideMargin.right = self.prompt.config.outsideMargins.right
   self.prompt.widget.outsideMargin.top = self.prompt.config.outsideMargins.top
   self.prompt.widget.outsideMargin.bottom = self.prompt.config.outsideMargins.bottom
-  self.prompt.widget.bare.font = self.prompt.config.font
   self.prompt.widget.final.forced_width = self.prompt.config.size[1]
   self.prompt.widget.final.forced_height = self.prompt.config.size[2]
 
@@ -113,11 +113,11 @@ function SearchMenu:refreshTheme()
     widget.bare.font = self.elements.config.font
     widget.final.forced_width = self.elements.config.size[1]
     widget.final.forced_height = self.elements.config.size[2]
-
   end
 end
 
 function SearchMenu:update(text)
+  self.prompt.widget.bare.font = self.prompt.config.font
   text = text:sub(1,-2)
   local results = self.elements.names
   if text:len() > 0 then

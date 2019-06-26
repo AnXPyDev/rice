@@ -23,12 +23,12 @@ local theme = {
 theme.searchMenu = {}
 
 theme.searchMenu.prompt = {
-  bg = "#000000",
+  bg = "#202020",
   fg = "#FFFFFF",
-  halign = "left",
+  halign = "center",
   valign = "center",
-  text = "Search: ",
-  font = "Hack 14",
+  text = "",
+  font = "Hack 12",
   margins = {
     left = dpi(5),
     right = dpi(5),
@@ -36,21 +36,21 @@ theme.searchMenu.prompt = {
     bottom = dpi(5)
   },
   outsideMargins = {
-    left = dpi(5),
-    right = dpi(5),
-    top = dpi(5),
+    left = dpi(10),
+    right = dpi(10),
+    top = dpi(10),
     bottom = dpi(5)
   }
 }
 
 theme.searchMenu.elements = {
-  bg = "#000000",
+  bg = "#202020",
   fg = "#FFFFFF",
   bgHl = "#FFFFFF",
   fgHl = "#000000",
   halign = "left",
   valign = "center",
-  font = "Hack 9",
+  font = "Hack 10",
   margins = {
     left = dpi(5),
     right = dpi(5),
@@ -58,18 +58,20 @@ theme.searchMenu.elements = {
     bottom = dpi(5)
   },
   outsideMargins = {
-    left = dpi(5),
-    right = dpi(5),
+    left = dpi(10),
+    right = dpi(10),
     top = dpi(5),
     bottom = dpi(5)
   }
 }
 
 theme.searchMenu.wibox = {
-  bg = "#000000",
+  bg = "#202020",
   fg = "#FFFFFF",
   size = {dpi(800), dpi(600)},
-  shape = gears.shape.rectangle
+  shape = function(cr, w, h)
+    return gears.shape.partially_rounded_rect(cr, w, h, false, true, true, false, theme.corner_radius)
+  end
 }
 
 

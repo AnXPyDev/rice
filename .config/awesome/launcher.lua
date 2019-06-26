@@ -2,8 +2,8 @@ launcher = SearchMenu:new()
   :setup({
   screen = screens.primary,
   wibox = {
-    size = {dpi(500), dpi(300)},
-    offset = 20
+    size = {dpi(500), screens.primary.geometry.height},
+    pos = {0, 0}
   },
   prompt = {},
   elements = {
