@@ -58,12 +58,34 @@ function SearchMenu:initElements()
     local widget = {}
     widget.text = wibox.widget.textbox()
     widget.icon = wibox.widget.imagebox()
-    widget.bare = wibox.widget {
-      layout = wibox.layout.align.horizontal,
-      align = "left",
-      widget.icon,
-      widget.text
-    }
+    widget.iconMargin = wibox.container.margin(widget.icon)
+    widget.textPlace = wibox.container.place(widget.text)
+    widget.bare = nil
+    if self.elements.config.iconPosition == "top" then
+      widget.bare = wibox.widget {
+	layout = wibox.layout.fixed.vertical,
+	widget.iconMargin,
+	widget.textPlace
+      }
+    elseif self.elements.config.iconPosition == "bottom" then
+      widget.bare = wibox.widget {
+	layout = wibox.layout.fixed.vertical,
+	widget.textPlace,
+	widget.iconMargin
+      }
+    elseif self.elements.config.iconPosition == "right" then
+      widget.bare = wibox.widget {
+	layout = wibox.layout.fixed.horizontal,
+	widget.textPlace,
+	widget.iconMargin
+      }
+    else
+      widget.bare = wibox.widget {
+	layout = wibox.layout.fixed.horizontal,
+	widget.iconMargin,
+	widget.textPlace
+      }
+    end
     widget.place = wibox.container.place(widget.bare)
     widget.margin = wibox.container.margin(widget.place)
     widget.background = wibox.container.background(widget.margin)
@@ -131,7 +153,9 @@ function SearchMenu:refreshTheme()
 
   for key, widget in pairs(self.elements.widgets) do
     widget.place.halign = self.elements.config.halign
+    widget.textPlace.halign = self.elements.config.halign
     widget.place.valign = self.elements.config.valign
+    widget.textPlace.valign = self.elements.config.valign
     widget.margin.left = self.elements.config.margins.left
     widget.margin.right = self.elements.config.margins.right
     widget.margin.top = self.elements.config.margins.top
@@ -151,7 +175,7 @@ function SearchMenu:refreshTheme()
   self.elements.boundedWidget.left = self.elements.config.boundMargins.left
   self.elements.boundedWidget.right = self.elements.config.boundMargins.right
   self.elements.boundedWidget.top = self.elements.config.boundMargins.top
-  self.elements.boundedWidget.bottom = self.elements.config.boundMargins.bottom  
+  self.elements.boundedWidget.bottom = self.elements.config.boundMargins.bottom
 end
 
 function SearchMenu:update(text)
@@ -170,13 +194,19 @@ function SearchMenu:update(text)
 end
 
 function SearchMenu:redraw()
+  local placeInvert = {left = "right", right = "left", top = "bottom", bottom = "top"}
   for i = 1, #self.elements.widgets do
     self.elements.widgets[i].background.bg = self.elements.config.bg
     self.elements.widgets[i].background.fg = self.elements.config.fg
     self.elements.widgets[i].background.visible = false
     self.elements.widgets[i].icon.image = nil
+    self.elements.widgets[i].iconMargin.margins = 0
     if i + self.cursor.page * #self.elements.widgets <= #self.results then
       self.elements.widgets[i].icon.image = self.elements.keys[self.results[i + self.cursor.page * #self.elements.widgets]].icon or nil
+      --      if self.elements.widgets[i].icon.image then
+      self.elements.widgets[i].iconMargin[placeInvert[self.elements.config.iconPosition]] = self.elements.config.margins[self.elements.config.iconPosition]
+      print("dsads")
+      --    end
       self.elements.widgets[i].text.text = self.results[i + self.cursor.page * #self.elements.widgets]
       self.elements.widgets[i].background.visible = true
     else
@@ -247,7 +277,7 @@ function SearchMenu:setup(args)
   self.elements.config.size = {}
   self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]
   self.elements.config.size[2] = args.elements and args.elements.size and args.elements.size[2] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[2] or self.elements.config.fontSize * 1.5 + self.elements.config.margins.top + self.elements.config.margins.bottom + self.elements.config.outsideMargins.top + self.elements.config.outsideMargins.bottom
-  
+
   self.elements.config.count = {math.floor(self.wibox.config.size[1] / self.elements.config.size[1]), math.floor((self.wibox.config.size[2] - self.prompt.config.size[2]) / self.elements.config.size[2])}
   self.elements.config.boundMargins = {
     left = (self.wibox.config.size[1] - self.elements.config.size[1] * self.elements.config.count[1]) / 2,

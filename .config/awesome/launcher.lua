@@ -5,19 +5,20 @@ launcher = SearchMenu:new()
     size = {dpi(300), screens.primary.geometry.height},
     pos = {0, 0}
   },
-  prompt = {},
+  prompt = {
+  },
   elements = {
     size = {
-      nil, nil
+      nil, dpi(40)
     },
-    halign = "center",
-    valign = "bottom",
+    halign = "left",
+    valign = "center",
+    iconPosition = "left",
     list = {
       {name = "Emacs", callback = function() awful.spawn("emacs") end, icon = gears.surface.load(PATH.home .. "icons/emacs.png")},
-      {name = "Firefox", callback = function() awful.spawn("firefox") end},
-      {name = "Gimp", callback = function() awful.spawn("gimp") end},
-      {name = "Terminal", callback = function() awful.spawn("xst") end},
-      {name = "Suspend", callback = function() awful.spawn.with_shell("systemctl suspend") end}
+      {name = "Firefox", callback = function() awful.spawn("firefox") end, icon = gears.surface.load(PATH.home .. "icons/firefox.png")},
+      {name = "Gimp", callback = function() awful.spawn("gimp") end, icon = gears.surface.load(PATH.home .. "icons/gimp.png")},
+      {name = "Terminal", callback = function() awful.spawn("xst") end, icon = gears.surface.load(PATH.home .. "icons/terminal.png")}
     }
   }
 	})
