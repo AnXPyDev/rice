@@ -90,6 +90,7 @@ function SearchMenu:refreshTheme()
   self.prompt.widget.margin.bottom = self.prompt.config.margins.bottom
   self.prompt.widget.background.bg = self.prompt.config.bg
   self.prompt.widget.background.fg = self.prompt.config.fg
+  self.prompt.widget.background.shape = self.prompt.config.shape
   self.prompt.widget.outsideMargin.left = self.prompt.config.outsideMargins.left
   self.prompt.widget.outsideMargin.right = self.prompt.config.outsideMargins.right
   self.prompt.widget.outsideMargin.top = self.prompt.config.outsideMargins.top
@@ -106,6 +107,7 @@ function SearchMenu:refreshTheme()
     widget.margin.bottom = self.elements.config.margins.bottom
     widget.background.bg = self.elements.config.bg
     widget.background.fg = self.elements.config.fg
+    widget.background.shape = self.elements.config.shape
     widget.outsideMargin.left = self.elements.config.outsideMargins.left
     widget.outsideMargin.right = self.elements.config.outsideMargins.right
     widget.outsideMargin.top = self.elements.config.outsideMargins.top
@@ -131,10 +133,12 @@ function SearchMenu:update(text)
   for i = 1, #self.elements.widgets do
     self.elements.widgets[i].background.bg = self.elements.config.bg
     self.elements.widgets[i].background.fg = self.elements.config.fg
+    self.elements.widgets[i].background.visible = false
     if i + page * #self.elements.widgets <= #results then
       self.elements.widgets[i].bare.text = results[i + page * #self.elements.widgets]
+      self.elements.widgets[i].background.visible = true
     else
-      self.elements.widgets[i].bare.text = ""
+      self.elements.widgets[i].background.visible = false
     end
   end
   if #results > 0 then
@@ -172,6 +176,7 @@ function SearchMenu:setup(args)
   self.prompt.config.valign = args.prompt and args.prompt.valign or beautiful.searchMenu.prompt.valign
   self.prompt.config.font = args.prompt and args.prompt.font or beautiful.searchMenu.prompt.font
   self.prompt.config.text = args.prompt and args.prompt.text or beautiful.searchMenu.prompt.text
+  self.prompt.config.shape = args.prompt and args.prompt.shape or beautiful.searchMenu.prompt.shape
   self.prompt.config.fontSize = tonumber(gears.string.split(self.prompt.config.font, " ")[2])
   self.prompt.config.size = {
     self.wibox.config.size[1],
@@ -194,6 +199,7 @@ function SearchMenu:setup(args)
   self.elements.config.halign = args.elements and args.elements.halign or beautiful.searchMenu.elements.halign
   self.elements.config.valign = args.elements and args.elements.valign or beautiful.searchMenu.elements.valign
   self.elements.config.font = args.elements and args.elements.font or beautiful.searchMenu.elements.font
+  self.elements.config.shape = args.prompt and args.elements.shape or beautiful.searchMenu.elements.shape
   self.elements.config.fontSize = tonumber(gears.string.split(self.elements.config.font, " ")[2])
   self.elements.config.size = {
     self.wibox.config.size[1],

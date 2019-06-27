@@ -29,6 +29,9 @@ theme.searchMenu.prompt = {
   valign = "center",
   text = "",
   font = "Hack 12",
+  shape = function(cr, w, h)
+    return gears.shape.rounded_rect(cr, w, h, theme.corner_radius)
+  end,
   margins = {
     left = dpi(5),
     right = dpi(5),
@@ -44,13 +47,16 @@ theme.searchMenu.prompt = {
 }
 
 theme.searchMenu.elements = {
-  bg = "#202020",
+  bg = "#404040",
   fg = "#FFFFFF",
   bgHl = "#FFFFFF",
   fgHl = "#000000",
   halign = "left",
   valign = "center",
   font = "Hack 10",
+  shape = function(cr, w, h)
+    return gears.shape.rounded_rect(cr, w, h, theme.corner_radius)
+  end,
   margins = {
     left = dpi(5),
     right = dpi(5),
