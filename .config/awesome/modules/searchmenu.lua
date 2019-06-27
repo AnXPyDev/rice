@@ -60,32 +60,26 @@ function SearchMenu:initElements()
     widget.icon = wibox.widget.imagebox()
     widget.iconMargin = wibox.container.margin(widget.icon)
     widget.textPlace = wibox.container.place(widget.text)
-    widget.bare = nil
-    if self.elements.config.iconPosition == "top" then
-      widget.bare = wibox.widget {
-	layout = wibox.layout.fixed.vertical,
-	widget.iconMargin,
-	widget.textPlace
-      }
-    elseif self.elements.config.iconPosition == "bottom" then
-      widget.bare = wibox.widget {
-	layout = wibox.layout.fixed.vertical,
-	widget.textPlace,
-	widget.iconMargin
-      }
-    elseif self.elements.config.iconPosition == "right" then
-      widget.bare = wibox.widget {
-	layout = wibox.layout.fixed.horizontal,
-	widget.textPlace,
-	widget.iconMargin
-      }
-    else
-      widget.bare = wibox.widget {
-	layout = wibox.layout.fixed.horizontal,
-	widget.iconMargin,
-	widget.textPlace
-      }
+    local widgets = {
+      layout = wibox.layout.fixed.horizontal,
+      widget.iconMargin,
+      widget.textPlace
+    }
+    if self.elements.config.iconPosition == "bottom" or self.elements.config.iconPosition == "top" then
+      widgets.layout = wibox.layout.fixed.vertical
     end
+    if self.elements.config.iconPosition == "bottom" or self.elements.config.iconPosition == "right" then
+      widgets[1] = widget.textPlace
+      widgets[2] = widget.iconMargin
+      if self.elements.config.hideText then
+	widgets[1] = nil
+      end
+    else
+      if self.elements.config.hideText then
+	widgets[2] = nil
+      end
+    end
+    widget.bare = wibox.widget(widgets)
     widget.place = wibox.container.place(widget.bare)
     widget.margin = wibox.container.margin(widget.place)
     widget.background = wibox.container.background(widget.margin)
@@ -118,11 +112,18 @@ function SearchMenu:initElements()
 end
 
 function SearchMenu:initWidget()
-  self.widget = wibox.widget {
-    layout = wibox.layout.fixed.vertical,
-    self.prompt.widget.final,
-    self.elements.boundedWidget
-  }
+  if not self.prompt.config.hide then
+    self.widget = wibox.widget {
+      layout = wibox.layout.fixed.vertical,
+      self.prompt.widget.final,
+      self.elements.boundedWidget
+    }
+  else
+    self.widget = wibox.widget {
+      layout = wibox.layout.fixed.vertical,
+      self.elements.boundedWidget
+    }
+  end
 end
 
 function SearchMenu:generateElements(tbl)
@@ -203,10 +204,9 @@ function SearchMenu:redraw()
     self.elements.widgets[i].iconMargin.margins = 0
     if i + self.cursor.page * #self.elements.widgets <= #self.results then
       self.elements.widgets[i].icon.image = self.elements.keys[self.results[i + self.cursor.page * #self.elements.widgets]].icon or nil
-      --      if self.elements.widgets[i].icon.image then
-      self.elements.widgets[i].iconMargin[placeInvert[self.elements.config.iconPosition]] = self.elements.config.margins[self.elements.config.iconPosition]
-      print("dsads")
-      --    end
+      if not self.elements.config.hideText then
+	self.elements.widgets[i].iconMargin[placeInvert[self.elements.config.iconPosition]] = self.elements.config.margins[self.elements.config.iconPosition]
+      end
       self.elements.widgets[i].text.text = self.results[i + self.cursor.page * #self.elements.widgets]
       self.elements.widgets[i].background.visible = true
     else
@@ -240,6 +240,7 @@ function SearchMenu:setup(args)
     config = {}
   }
 
+  self.prompt.config.hide = args.prompt and args.prompt.hide or beautiful.searchMenu.prompt.hide or false
   self.prompt.config.bg = args.prompt and args.prompt.bg or beautiful.searchMenu.prompt.bg
   self.prompt.config.fg = args.prompt and args.prompt.fg or beautiful.searchMenu.prompt.fg
   self.prompt.config.margins = args.prompt and args.prompt.margins or beautiful.searchMenu.prompt.margins
@@ -266,6 +267,7 @@ function SearchMenu:setup(args)
   self.elements.config.bgHl = args.elements and args.elements.bgHl or beautiful.searchMenu.elements.bgHl
   self.elements.config.fgHl = args.elements and args.elements.fgHl or beautiful.searchMenu.elements.fgHl
   self.elements.config.fg = args.elements and args.elements.fg or beautiful.searchMenu.elements.fg
+  self.elements.config.hideText = args.elements and args.elements.hideText or beautiful.searchMenu.elements.hideText or false
   self.elements.config.margins = args.elements and args.elements.margins or beautiful.searchMenu.elements.margins
   self.elements.config.outsideMargins = args.elements and args.elements.outsideMargins or beautiful.searchMenu.elements.outsideMargins
   self.elements.config.halign = args.elements and args.elements.halign or beautiful.searchMenu.elements.halign
@@ -277,8 +279,8 @@ function SearchMenu:setup(args)
   self.elements.config.size = {}
   self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]
   self.elements.config.size[2] = args.elements and args.elements.size and args.elements.size[2] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[2] or self.elements.config.fontSize * 1.5 + self.elements.config.margins.top + self.elements.config.margins.bottom + self.elements.config.outsideMargins.top + self.elements.config.outsideMargins.bottom
-
   self.elements.config.count = {math.floor(self.wibox.config.size[1] / self.elements.config.size[1]), math.floor((self.wibox.config.size[2] - self.prompt.config.size[2]) / self.elements.config.size[2])}
+  self.elements.config.count[2] = math.floor(self.wibox.config.size[2] / self.elements.config.size[2])
   self.elements.config.boundMargins = {
     left = (self.wibox.config.size[1] - self.elements.config.size[1] * self.elements.config.count[1]) / 2,
     right = (self.wibox.config.size[1] - self.elements.config.size[1] * self.elements.config.count[1]) / 2,

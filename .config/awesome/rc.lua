@@ -42,13 +42,14 @@ dofile(PATH.config .. "tags.lua")
 dofile(PATH.config .. "gaps.lua")
 dofile(PATH.config .. "tagindicator.lua")
 dofile(PATH.config .. "launcher.lua")
+dofile(PATH.config .. "powermenu.lua")
 dofile(PATH.config .. "keys.lua")
 dofile(PATH.config .. "buttons.lua")
 dofile(PATH.config .. "client.lua")
 dofile(PATH.config .. "rules.lua")
 
 -- Kill compton and restart it
---awful.spawn.with_shell("killall compton; compton --config ~/.config/compton.conf")
+awful.spawn.with_shell("killall compton; compton --config ~/.config/compton.conf")
 
 
 if awesome.startup_errors then

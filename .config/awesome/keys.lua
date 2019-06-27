@@ -4,6 +4,7 @@ keys.mod = "Mod4"
 
 keys.global = gears.table.join(
   awful.key({keys.mod}, "d", function() launcher:show() end),
+  awful.key({keys.mod}, "q", function() powermenu:show() end),
   awful.key({keys.mod, "Shift"}, "r", awesome.restart),
   awful.key({keys.mod}, "n", function() awful.client.focus.global_bydirection("down") end),
   awful.key({keys.mod}, "p", function() awful.client.focus.global_bydirection("up") end),

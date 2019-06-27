@@ -37,7 +37,7 @@ theme.searchMenu.prompt = {
     left = dpi(10),
     right = dpi(10),
     top = dpi(10),
-    bottom = dpi(5)
+    bottom = dpi(10)
   }
 }
 
