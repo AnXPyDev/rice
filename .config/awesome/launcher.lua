@@ -8,15 +8,16 @@ launcher = SearchMenu:new()
   prompt = {},
   elements = {
     size = {
-      dpi(100), nil
+      nil, nil
     },
     halign = "center",
     valign = "bottom",
     list = {
-      {name = "Emacs", callback = function() awful.spawn("emacs") end},
+      {name = "Emacs", callback = function() awful.spawn("emacs") end, icon = gears.surface.load(PATH.home .. "icons/emacs.png")},
       {name = "Firefox", callback = function() awful.spawn("firefox") end},
       {name = "Gimp", callback = function() awful.spawn("gimp") end},
-      {name = "Terminal", callback = function() awful.spawn("xst") end}
+      {name = "Terminal", callback = function() awful.spawn("xst") end},
+      {name = "Suspend", callback = function() awful.spawn.with_shell("systemctl suspend") end}
     }
   }
 	})

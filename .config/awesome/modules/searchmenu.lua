@@ -51,21 +51,24 @@ function SearchMenu:initPrompt()
   self.prompt.widget.background = wibox.container.background(self.prompt.widget.margin)
   self.prompt.widget.outsideMargin = wibox.container.margin(self.prompt.widget.background)
   self.prompt.widget.final = self.prompt.widget.outsideMargin
-  self.prompt.widget.final.forced_width = self.prompt.config.size[1]
-  self.prompt.widget.final.forced_height = self.prompt.config.size[2]
 end
 
 function SearchMenu:initElements()
   for i = 1, self.elements.config.count[1] * self.elements.config.count[2] do
     local widget = {}
-    widget.bare = wibox.widget.textbox()
+    widget.text = wibox.widget.textbox()
+    widget.icon = wibox.widget.imagebox()
+    widget.bare = wibox.widget {
+      layout = wibox.layout.align.horizontal,
+      align = "left",
+      widget.icon,
+      widget.text
+    }
     widget.place = wibox.container.place(widget.bare)
     widget.margin = wibox.container.margin(widget.place)
     widget.background = wibox.container.background(widget.margin)
     widget.outsideMargin = wibox.container.margin(widget.background)
     widget.final = widget.outsideMargin
-    widget.final.forced_width = self.elements.config.size[1]
-    widget.final.forced_height = self.elements.config.size[2]
     widget.final:connect_signal("mouse::enter", function()
       if i + self.cursor.page * self.elements.config.count[1] * self.elements.config.count[2] > #self.results then
 	return
@@ -140,7 +143,7 @@ function SearchMenu:refreshTheme()
     widget.outsideMargin.right = self.elements.config.outsideMargins.right
     widget.outsideMargin.top = self.elements.config.outsideMargins.top
     widget.outsideMargin.bottom = self.elements.config.outsideMargins.bottom
-    widget.bare.font = self.elements.config.font
+    widget.text.font = self.elements.config.font
     widget.final.forced_width = self.elements.config.size[1]
     widget.final.forced_height = self.elements.config.size[2]
   end
@@ -171,8 +174,10 @@ function SearchMenu:redraw()
     self.elements.widgets[i].background.bg = self.elements.config.bg
     self.elements.widgets[i].background.fg = self.elements.config.fg
     self.elements.widgets[i].background.visible = false
+    self.elements.widgets[i].icon.image = nil
     if i + self.cursor.page * #self.elements.widgets <= #self.results then
-      self.elements.widgets[i].bare.text = self.results[i + self.cursor.page * #self.elements.widgets]
+      self.elements.widgets[i].icon.image = self.elements.keys[self.results[i + self.cursor.page * #self.elements.widgets]].icon or nil
+      self.elements.widgets[i].text.text = self.results[i + self.cursor.page * #self.elements.widgets]
       self.elements.widgets[i].background.visible = true
     else
       self.elements.widgets[i].background.visible = false
@@ -236,7 +241,8 @@ function SearchMenu:setup(args)
   self.elements.config.halign = args.elements and args.elements.halign or beautiful.searchMenu.elements.halign
   self.elements.config.valign = args.elements and args.elements.valign or beautiful.searchMenu.elements.valign
   self.elements.config.font = args.elements and args.elements.font or beautiful.searchMenu.elements.font
-  self.elements.config.shape = args.prompt and args.elements.shape or beautiful.searchMenu.elements.shape
+  self.elements.config.shape = args.elements and args.elements.shape or beautiful.searchMenu.elements.shape
+  self.elements.config.iconPosition = args.elements and args.elements.iconPosition or "left"
   self.elements.config.fontSize = tonumber(gears.string.split(self.elements.config.font, " ")[2])
   self.elements.config.size = {}
   self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]
