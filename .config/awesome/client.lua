@@ -1,5 +1,10 @@
 client.connect_signal("manage", function(c)
-  c.shape = gears.shape.rectangle
+  c.shape = function(cr, w, h)
+    if (c.first_tag.gap == 0 or c.fullscreen) and not c.floating then
+      return gears.shape.rectangle(cr, w, h)
+    end
+    return gears.shape.partially_rounded_rect(cr, w, h, false, true, true, false, beautiful.corner_radius)
+  end
 end)
 
 client.connect_signal("mouse::enter", function(c)
@@ -7,15 +12,9 @@ client.connect_signal("mouse::enter", function(c)
 end)
 
 client.connect_signal("request::titlebars" , function(c)
-  awful.titlebar(c, {size = beautiful.titlebar_size}) : setup({
+  awful.titlebar(c, {size = beautiful.titlebar_size, position = "left"}) : setup({
     nil,
-    {
-      {
-	align = "center",
-	widget = awful.titlebar.widget.titlewidget(c)
-      },
-      layout = wibox.layout.flex.horizontal
-    },
+    nil,
     nil,
     layout = wibox.layout.align.horizontal
 										    })

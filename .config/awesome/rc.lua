@@ -18,7 +18,7 @@ PATH = {
 
 function log(...)
   local arg = {...}
-  local result = ""
+ local result = ""
   for i = 1, #arg do
     result = result .. " " .. tostring(arg[i])
   end
@@ -31,6 +31,7 @@ local themeName = "default"
 dofile(PATH.modules .. "editdistance.lua")
 dofile(PATH.modules .. "sort.lua")
 dofile(PATH.modules .. "math.lua")
+dofile(PATH.modules .. "searchmenu.lua")
 
 dofile(PATH.theme .. themeName .. ".lua")
 
@@ -40,12 +41,15 @@ dofile(PATH.config .. "layout.lua")
 dofile(PATH.config .. "tags.lua")
 dofile(PATH.config .. "gaps.lua")
 dofile(PATH.config .. "tagindicator.lua")
-dofile(PATH.config .. "searchengine.lua")
 dofile(PATH.config .. "launcher.lua")
 dofile(PATH.config .. "keys.lua")
 dofile(PATH.config .. "buttons.lua")
 dofile(PATH.config .. "client.lua")
 dofile(PATH.config .. "rules.lua")
+
+-- Kill compton and restart it
+awful.spawn.with_shell("killall compton; compton --config ~/.config/compton.conf")
+
 
 if awesome.startup_errors then
   naughty.notify({

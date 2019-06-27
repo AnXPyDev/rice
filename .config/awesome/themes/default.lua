@@ -2,22 +2,17 @@ local theme = {
   useless_gap = dpi(8),
   gaps = {dpi(8), dpi(24), dpi(40), 0},
   corner_radius = dpi(5),
-  bg_normal = "#FFFFFF",
-  bg_focus = "#FFFFFF",
+  bg_normal = "#202020",
+  bg_focus = "#f54242",
   fg_normal = "#909090",
-  fg_focus = "#000000",
+  fg_focus = "#FFFFFF",
   titlebar_size = dpi(25),
   font_name = "Hack",
   font_size = dpi(8),
-  tagIndicator_bg = "#303030",
-  tagIndicator_focused = "#FFFFFF",
-  tagIndicator_occupied = "#CCCCCC",
-  tagIndicator_normal = "#808080",
-  searchMenu_bg = "#303030",
-  searchMenu_fg = "#FFFFFF",
-  searchMenu_promptBg = "#404040",
-  searchMenu_elementHighlight = "#FFFFFF",
-  searchMenu_elementHighlightFg = "#000000"
+  tagIndicator_bg = "#101010",
+  tagIndicator_focused = "#f54242",
+  tagIndicator_occupied = "#AAAAAA",
+  tagIndicator_normal = "#404040",
 }
 
 theme.searchMenu = {}
@@ -47,9 +42,9 @@ theme.searchMenu.prompt = {
 }
 
 theme.searchMenu.elements = {
-  bg = "#404040",
+  bg = "#101010",
   fg = "#FFFFFF",
-  bgHl = "#FFFFFF",
+  bgHl = "#f54242",
   fgHl = "#000000",
   halign = "left",
   valign = "center",
@@ -72,7 +67,7 @@ theme.searchMenu.elements = {
 }
 
 theme.searchMenu.wibox = {
-  bg = "#202020",
+  bg = "#101010",
   fg = "#FFFFFF",
   size = {dpi(800), dpi(600)},
   shape = function(cr, w, h)

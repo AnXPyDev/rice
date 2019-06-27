@@ -1,7 +1,7 @@
 tagIndicator = {}
 
 function tagIndicator.shape(cr, w, h)
-  return gears.shape.rounded_rect(cr, w, h, beautiful.corner_radius)
+  return gears.shape.partially_rounded_rect(cr, w, h, false, false, true, true, beautiful.corner_radius)
 end
 
 function tagIndicator:initWidgets()
@@ -19,7 +19,7 @@ function tagIndicator:initWidgets()
       "#000000",
       widgetShape
     )
-    self.widgets = gears.table.join(self.widgets, {widget})
+    self.widgets[i] = widget
   end
 
   self.widget = wibox.widget(gears.table.join({layout = wibox.layout.flex.horizontal}, self.widgets))
@@ -47,7 +47,7 @@ function tagIndicator:setup()
   self.widgetSize = {dpi(40), dpi(40)}
   self.widgetMult = 0.5
   self.size = {self.widgetSize[1] * #tags.list, self.widgetSize[2]}
-  self.offset = 30
+  self.offset = 0
   self.pos = {self.screen.geometry.x + (self.screen.geometry.width - self.size[1]) / 2, self.screen.geometry.y + dpi(self.offset)}
   self.colors = {}
   self.widgets = {}

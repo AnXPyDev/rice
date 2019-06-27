@@ -7,8 +7,6 @@ awful.screen.connect_for_each_screen(
   end
 )
 
-for i = 1, #screens.list do
-  set_wallpaper(screens.list[i])
-end
+setWallpaper()
 
 screens.primary = screens.list[1]

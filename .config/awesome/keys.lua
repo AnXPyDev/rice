@@ -13,7 +13,8 @@ keys.global = gears.table.join(
   awful.key({keys.mod, "Shift"}, "p", function() awful.client.swap.global_bydirection("up") end),
   awful.key({keys.mod, "Shift"}, "b", function() awful.client.swap.global_bydirection("left") end),
   awful.key({keys.mod, "Shift"}, "f", function() awful.client.swap.global_bydirection("right") end),
-  awful.key({keys.mod}, "g", toggleGaps)
+  awful.key({keys.mod}, "g", toggleGaps),
+  awful.key({keys.mod}, "i", setWallpaper)
 )
 
 keys.client = gears.table.join(
