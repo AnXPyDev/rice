@@ -3,7 +3,7 @@ launcher = SearchMenu:new()
   screen = screens.primary,
   wibox = {
     size = {dpi(300), screens.primary.geometry.height},
-    pos = {0, 0}
+    pos = {screens.primary.geometry.x + 0, screens.primary.geometry.y + 0}
   },
   prompt = {
   },

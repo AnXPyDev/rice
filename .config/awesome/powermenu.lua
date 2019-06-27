@@ -4,8 +4,8 @@ powermenu = SearchMenu:new()
     wibox = {
       size = {dpi(100), dpi(300)},
       pos = {
-	screens.primary.geometry.width - dpi(100),
-	(screens.primary.geometry.height - dpi(300)) / 2
+	screens.primary.geometry.x + (screens.primary.geometry.width - dpi(100)),
+	screens.primary.geometry.y + ((screens.primary.geometry.height - dpi(300)) / 2)
       },
       shape = function(cr, w, h)
 	return gears.shape.partially_rounded_rect(cr, w, h, true, false, false, true, beautiful.corner_radius)
