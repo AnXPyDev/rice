@@ -6,10 +6,10 @@ local theme = {
   bg_focus = "#f54242",
   fg_normal = "#909090",
   fg_focus = "#FFFFFF",
-  titlebar_size = dpi(25),
+  titlebar_size = dpi(30),
   font_name = "Hack",
   font_size = dpi(10),
-  wibar_height = dpi(25),
+  wibar_height = dpi(30),
   wibar_bg = "#101010"
 }
 

@@ -1,5 +1,7 @@
 local wibarWidgets = {}
-wibarWidgets.clock = wibox.widget.textclock("%H:%M:%S")
+wibarWidgets.clock = wibox.widget.textclock("%H:%M:%S", 1)
+wibarWidgets.calendar = wibox.widget.textclock("%d %h")
+wibarWidgets.margin = 8
 
 local wibar = awful.wibar({
   screen = screens.primary,
@@ -12,16 +14,17 @@ local wibar = awful.wibar({
   fg = beautiful.fg_focus,
 }):setup {
   layout = wibox.layout.align.horizontal,
-  {
-    layout = wibox.layout.fixed.horizontal
-  },
-  {
-    layout = wibox.layout.fixed.horizontal
-  },
-  {
-    layout = wibox.layout.fixed.horizontal,
-    wibox.container.margin(wibox.widget.imagebox(PATH.home .. "icons/clock.png"), dpi(10), dpi(6), dpi(6), dpi(6)),
-    wibarWidgets.clock,
-    wibox.container.margin(nil, dpi(10))
-  }
+  nil,
+  wibox.container.place
+  (
+    wibox.widget {
+      layout = wibox.layout.fixed.horizontal,
+      wibox.container.margin(wibox.widget.imagebox(PATH.home .. "icons/calendar.png"), dpi(wibarWidgets.margin), dpi(wibarWidgets.margin), dpi(wibarWidgets.margin), dpi(wibarWidgets.margin)),
+      wibarWidgets.calendar,
+      wibox.container.margin(wibox.widget.imagebox(PATH.home .. "icons/clock.png"), dpi(wibarWidgets.margin), dpi(wibarWidgets.margin), dpi(wibarWidgets.margin), dpi(wibarWidgets.margin)),
+      wibarWidgets.clock,
+    },
+    "center"
+  ),
+  nil
 	 }

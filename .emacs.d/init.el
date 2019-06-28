@@ -6,7 +6,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (popup-kill-ring kill-ring-search browse-kill-ring automargin highlight-parentheses aggressive-indent company-c-headers company-lua lua-mode god-mode hydra eww-lnum beacon exwm magit speed-type multiple-cursors doom-themes company-irony-c-headers company-irony comapny-irony irony projectile centered-cursor-mode company swiper which-key general))))
+    (undo-tree solaire-mode all-the-icons-dired-mode all-the-icons-dired doom-modeline popup-kill-ring kill-ring-search browse-kill-ring automargin highlight-parentheses aggressive-indent company-c-headers company-lua lua-mode god-mode hydra eww-lnum beacon exwm magit speed-type multiple-cursors doom-themes company-irony-c-headers company-irony comapny-irony irony projectile centered-cursor-mode company swiper which-key general))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

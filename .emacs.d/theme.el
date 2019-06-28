@@ -19,7 +19,12 @@
   (set-face-attribute 'hl-line nil
 		      :background "#202020")
   (set-face-attribute 'cursor nil
-		      :background "#CCCCCC"))
+		      :background "#CCCCCC"
+		      :foreground "#151515")
+  (set-face-attribute 'default nil
+		      :family "Hack"
+		      :height 112))
+
 (defun theme/general())
 
 (theme/general)

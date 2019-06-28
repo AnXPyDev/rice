@@ -1,5 +1,6 @@
 (load-file (concat user-emacs-directory "modules/package-use.el"))
 (load-file (concat user-emacs-directory "modules/make-normal-sparse-keymap.el"))
+(load-file (concat user-emacs-directory "modules/surround.el"))
 
 (setq tab-width 2)
 (setq make-backup-files nil)
@@ -8,7 +9,9 @@
 (global-linum-mode)
 (setq linum-format " %d ")
 
-(setq initial-buffer-choice "*scratch*")
+(defun reload-config()
+  (interactive)
+  (load-file (concat user-emacs-directory "config.el")))
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -68,6 +71,23 @@
 (package-use 'multiple-cursors :require t)
 
 (package-use 'hydra :require t)
+
+(package-use 'all-the-icons :require t)
+(package-use 'all-the-icons-dired :require t)
+
+(add-hook 'dired-mode-hook (lambda() (auto-revert-mode)))
+
+(package-use 'doom-modeline :require t)
+;;(setq doom-modeline-icon nil)
+(setq doom-modeline-height 32)
+(doom-modeline-mode 1)
+
+(package-use 'dashboard :require t)
+(dashboard-setup-startup-hook)
+(setq dashboard-startup-banner (concat user-emacs-directory "banner.png"))
+(setq dashboard-items '((recents . 5)
+			(projects . 5)))
+(setq dashboard-banner-logo-title "Welcome to Emacs.")
 
 (load-file (concat user-emacs-directory "eshell.el"))
 (load-file (concat user-emacs-directory "theme.el"))

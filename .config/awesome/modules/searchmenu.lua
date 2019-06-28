@@ -109,7 +109,7 @@ function SearchMenu:initElements()
       self.cursor.pos = self.cursor.page * self.elements.config.count[1] * self.elements.config.count[2] + i
       self:redraw()
     end)
-    widget.final:connect_signal("button::release", function()
+    widget.final:connect_signal("button::release", function(args)
       if i + self.cursor.page * self.elements.config.count[1] * self.elements.config.count[2] > #self.results then
 	return
       end

@@ -1,4 +1,4 @@
-(defhydra hydra-edit ()
+(defhydra hydra-edit (:hint nil)
   ("n" next-line)
   ("p" previous-line)
   ("f" forward-char)
@@ -14,11 +14,30 @@
   ("a" beginning-of-line)
   ("e" end-of-line)
   ("SPC" set-mark-command)
+  ("/" undo)
+  ("C-g" keyboard-quit)
   ("C-SPC" (lambda() (interactive) (beginning-of-line) (set-mark (point)) (end-of-line) (next-line)))
   ("s (" (lambda() (interactive) (surround-region "(" ")")))
-  ("s {" (lambda() (interactive) (surround-region "{" "}")))  
+  ("s {" (lambda() (interactive) (surround-region "{" "}")))
+  ("s \"" (lambda() (interactive) (surround-region "\"" "\"")))
+  ("s '" (lambda() (interactive) (surround-region "' "'"")))
+  ("s [" (lambda() (interactive) (surround-region "[" "]")))
+  ("s <" (lambda() (interactive) (surround-region "<" ">")))
   ("C-a" beginning-of-line-text)
-  ("C-e" end-of-line))
+  ("C-e" end-of-line)
+  ("m" hydra-multiple-cursors/body :exit t)
+  ("q" nil))
+
+(defhydra hydra-multiple-cursors (:hint nil)
+  ("l" mc/edit-lines :exit t)
+  ("a" mc/mark-all-like-this :exit t)
+  ("n" mc/mark-next-like-this)
+  ("C-n" mc/mark-next-word-like-this)
+  ("<mouse-1>" mc/add-cursor-on-click)
+  ;; Help with click recognition in this hydra
+  ("<down-mouse-1>" ignore)
+  ("<drag-mouse-1>" ignore)
+  ("q" nil))
 
 (general-define-key
  "C-s" 'swiper
