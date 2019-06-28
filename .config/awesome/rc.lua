@@ -50,7 +50,7 @@ dofile(PATH.config .. "rules.lua")
 
 -- Kill compton and restart it
 awful.spawn.with_shell("killall compton; compton --config ~/.config/compton.conf")
-
+awful.spawn.with_shell("xrdb ~/.Xresources")
 
 if awesome.startup_errors then
   naughty.notify({

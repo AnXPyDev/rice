@@ -6,6 +6,7 @@ launcher = SearchMenu:new()
     pos = {0, 0}
   },
   prompt = {
+    halign = "center"
   },
   elements = {
     size = {

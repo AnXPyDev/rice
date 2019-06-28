@@ -1,0 +1,3 @@
+st.foreground: #FFFFFF
+st.background: #101010
+st.font: Hack:pixelsize=12:antialias=true
