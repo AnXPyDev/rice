@@ -8,7 +8,9 @@ local theme = {
   fg_focus = "#FFFFFF",
   titlebar_size = dpi(25),
   font_name = "Hack",
-  font_size = dpi(8),
+  font_size = dpi(10),
+  wibar_height = dpi(25),
+  wibar_bg = "#101010"
 }
 
 theme.searchMenu = {}
@@ -67,7 +69,7 @@ theme.searchMenu.wibox = {
   fg = "#FFFFFF",
   size = {dpi(800), dpi(600)},
   shape = function(cr, w, h)
-    return gears.shape.partially_rounded_rect(cr, w, h, false, true, true, false, theme.corner_radius)
+    return gears.shape.partially_rounded_rect(cr, w, h, false, false, false, false, theme.corner_radius)
   end
 }
 

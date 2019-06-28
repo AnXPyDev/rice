@@ -197,17 +197,18 @@ end
 function SearchMenu:redraw()
   local placeInvert = {left = "right", right = "left", top = "bottom", bottom = "top"}
   for i = 1, #self.elements.widgets do
+    local element = self.elements.keys[self.results[i + self.cursor.page * #self.elements.widgets]]
     self.elements.widgets[i].background.bg = self.elements.config.bg
     self.elements.widgets[i].background.fg = self.elements.config.fg
     self.elements.widgets[i].background.visible = false
     self.elements.widgets[i].icon.image = nil
     self.elements.widgets[i].iconMargin.margins = 0
     if i + self.cursor.page * #self.elements.widgets <= #self.results then
-      self.elements.widgets[i].icon.image = self.elements.keys[self.results[i + self.cursor.page * #self.elements.widgets]].icon or nil
+      self.elements.widgets[i].icon.image = element.icon or nil
       if not self.elements.config.hideText then
 	self.elements.widgets[i].iconMargin[placeInvert[self.elements.config.iconPosition]] = self.elements.config.margins[self.elements.config.iconPosition]
       end
-      self.elements.widgets[i].text.text = self.results[i + self.cursor.page * #self.elements.widgets]
+      self.elements.widgets[i].text.text = element.name
       self.elements.widgets[i].background.visible = true
     else
       self.elements.widgets[i].background.visible = false

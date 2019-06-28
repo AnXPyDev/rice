@@ -2,11 +2,20 @@ launcher = SearchMenu:new()
   :setup({
   screen = screens.primary,
   wibox = {
-    size = {dpi(300), screens.primary.geometry.height},
-    pos = {screens.primary.geometry.x + 0, screens.primary.geometry.y + 0}
+    size = {dpi(300), dpi(500) --[[screens.primary.geometry.height - beautiful.wibar_height]]},
+    pos = {screens.primary.geometry.x + dpi(10), screens.primary.geometry.y + beautiful.wibar_height + dpi(10)},
+    shape = function(cr, w, h)
+      return gears.shape.infobubble(cr, w, h, beautiful.corner_radius, dpi(10), beautiful.corner_radius + dpi(4))
+    end
   },
   prompt = {
-    halign = "center"
+    halign = "center",
+    outsideMargins = {
+      top = dpi(20),
+      left = dpi(10),
+      bottom = dpi(5),
+      right = dpi(10)
+    }
   },
   elements = {
     size = {

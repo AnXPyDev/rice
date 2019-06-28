@@ -47,6 +47,7 @@ dofile(PATH.config .. "keys.lua")
 dofile(PATH.config .. "buttons.lua")
 dofile(PATH.config .. "client.lua")
 dofile(PATH.config .. "rules.lua")
+dofile(PATH.config .. "wibar.lua")
 
 -- Kill compton and restart it
 awful.spawn.with_shell("killall compton; compton --config ~/.config/compton.conf")
