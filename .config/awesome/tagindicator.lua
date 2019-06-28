@@ -1,83 +1,108 @@
-tagIndicator = {}
+tagindicator = {}
 
-function tagIndicator.shape(cr, w, h)
-  return gears.shape.partially_rounded_rect(cr, w, h, false, false, true, true, beautiful.corner_radius)
-end
-
-function tagIndicator:initWidgets()
-  self.colors.focused = beautiful.tagIndicator_focused or beautiful.fg_focused
-  self.colors.occupied = beautiful.tagIndicator_occupied or beautiful.bg_focused
-  self.colors.normal = beautiful.tagIndicator_normal or beautiful.bg_normal
-  
-  local function widgetShape(cr, w, h)
-    return gears.shape.transform(gears.shape.rounded_rect) : translate((self.widgetSize[1] * (1 - self.widgetMult)) / 2, (self.widgetSize[2] * (1 - self.widgetMult)) / 2) (cr, self.widgetSize[1] * self.widgetMult, self.widgetSize[2] * self.widgetMult, beautiful.corner_radius)
-  end
-  
+function tagindicator:initWidgets()
   for i = 1, #tags.list do
-    local widget = wibox.container.background(
+    self.tags.widgets[i] = {}
+    self.tags.widgets[i].background = wibox.container.background(
       wibox.widget.textbox(),
-      "#000000",
-      widgetShape
+      self.tags.config.colors.normal,
+      self.tags.config.shape
     )
-    self.widgets[i] = widget
+    self.tags.widgets[i].margin = wibox.container.margin(self.tags.widgets[i].background)
+    self.tags.widgets[i].final = self.tags.widgets[i].margin
   end
-
-  self.widget = wibox.widget(gears.table.join({layout = wibox.layout.flex.horizontal}, self.widgets))
-  
+  self.tags.contained = wibox.widget(
+    gears.table.join(
+      {layout = wibox.layout.flex.horizontal},
+      gears.table.map(function(widget) return widget.final end, self.tags.widgets)
+    )
+  )
+  self.tags.margin = wibox.container.margin(self.tags.contained)
+  self.widget = self.tags.contained
 end
 
-function tagIndicator:update()
-  if not self.widgets or not #tags.list == #self.widgets then
+function tagindicator:refreshTheme()
+  self.tags.margin.left = self.wibox.config.margins.left
+  self.tags.margin.right = self.wibox.config.margins.right
+  self.tags.margin.top = self.wibox.config.margins.top
+  self.tags.margin.bottom = self.wibox.config.margins.bottom
+  for k, widget in pairs(self.tags.widgets) do
+    widget.margin.left = self.tags.config.margins.left
+    widget.margin.right = self.tags.config.margins.right
+    widget.margin.top = self.tags.config.margins.top
+    widget.margin.bottom = self.tags.config.margins.bottom
+  end
+end
+
+function tagindicator:update()
+  if not #tags.list == #self.tags.widgets then
     self:setup()
   end
   for i = 1, #tags.list do
-    local color = self.colors.normal
+    local color = self.tags.config.colors.normal
     if tags.list[i].selected then
-      color = self.colors.focused
+      color = self.tags.config.colors.focused
     elseif #tags.list[i]:clients() > 0 then
-      color = self.colors.occupied
+      color = self.tags.config.colors.occupied
     end
-    self.widgets[i].bg = color
-    self.widgets[i]:emit_signal("widget::redraw_needed")
+    self.tags.widgets[i].background.bg = color
   end
 end
 
-function tagIndicator:setup()
-  self.screen = screens.primary
-  self.widgetSize = {dpi(40), dpi(40)}
-  self.widgetMult = 0.5
-  self.size = {self.widgetSize[1] * #tags.list, self.widgetSize[2]}
-  self.offset = 0
-  self.pos = {self.screen.geometry.x + (self.screen.geometry.width - self.size[1]) / 2, self.screen.geometry.y + dpi(self.offset)}
-  self.colors = {}
-  self.widgets = {}
-  self.widget = nil
-  self.aliveTimer = gears.timer {
-    timeout = 1,
-    autostart = false,
-    call_now = false,
-    callback = function()
-      self.wibox.visible = false
-    end
-  }
-  self:initWidgets()
-  self.wibox = wibox({
-    ontop = true,
-    x = self.pos[1],
-    y = self.pos[2],
-    width = self.size[1],
-    height = self.size[2],
-    bg = beautiful.tagIndicator_bg or beautiful.bg_normal,
-    fg = beautiful.tagIndicator_fg or beautiful.fg_normal,
-    shape = self.shape,
-    widget = self.widget
-  })
-end
-
-function tagIndicator:show()
+function tagindicator:show()
   self:update()
-  self.wibox.visible = true
+  self.wibox.widget.visible = true
   self.aliveTimer:again()
 end
 
-tagIndicator:update()
+function tagindicator:setup()
+  self.screen = screens.primary
+  self.widget = nil
+  self.wibox = {
+    config = {},
+    widget = nil
+  }
+  self.tags = {
+    config = {},
+    widgets = {}
+  }
+  self.tags.config.size = beautiful.tagIndicator.tags.size
+  self.tags.config.shape = beautiful.tagIndicator.tags.shape or gears.shape.rectangle
+  self.tags.config.margins = beautiful.tagIndicator.tags.margins or {left = 0, right = 0, top = 0, bottom = 0}
+  self.tags.config.colors = beautiful.tagIndicator.tags.colors or {occupied = "#757575", focused = "#FFFFFF", normal = "#000000"}
+
+  self.wibox.config.margins = beautiful.tagIndicator.wibox.margins or {left = 0, right = 0, top = 0, bottom = 0}
+  self.wibox.config.size = {}
+  self.wibox.config.size[1] = beautiful.tagIndicator.wibox.size[1] or #tags.list * self.tags.config.size[1]
+  self.wibox.config.size[2] = beautiful.tagIndicator.wibox.size[2] or self.tags.config.size[2]
+  self.wibox.config.pos = {}
+  self.wibox.config.pos[1] = beautiful.tagIndicator.wibox.pos[1] or self.screen.geometry.x + (self.screen.geometry.width - self.wibox.config.size[1]) / 2
+  self.wibox.config.pos[2] = beautiful.tagIndicator.wibox.pos[2] or self.screen.geometry.y
+  self.wibox.config.bg = beautiful.tagIndicator.wibox.bg or "#000000"
+  self.wibox.config.ontop = true
+  self.wibox.config.shape = beautiful.tagIndicator.wibox.shape or gears.shape.rectangle
+
+  self.aliveTimer = gears.timer {
+    autostart = false,
+    call_now = false,
+    single_shot = true,
+    timeout = 2,
+    callback = function()
+      self.wibox.widget.visible = false
+    end
+  }
+  self:initWidgets()
+  self:refreshTheme()
+  self.wibox.widget = wibox {
+    x = self.wibox.config.pos[1],
+    y = self.wibox.config.pos[2],
+    width = self.wibox.config.size[1],
+    height = self.wibox.config.size[2],
+    bg = self.wibox.config.bg,
+    ontop = self.wibox.config.ontop,
+    shape = self.wibox.config.shape,
+    widget = self.widget
+  }
+end
+
+tagindicator:setup()
