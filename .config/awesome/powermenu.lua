@@ -1,5 +1,6 @@
 powermenu = SearchMenu:new()
   :setup({
+    searchDisabled = true,
     screen = screens.primary,
     wibox = {
       size = {dpi(100), dpi(300)},
@@ -33,9 +34,9 @@ powermenu = SearchMenu:new()
 	bottom = dpi(10)
       },
       list = {
-	{name = "Power Off", callback = function() awful.spawn.with_shell("poweroff") end, icon = gears.surface.load(PATH.home .. "icons/poweroff.png")},
-	{name = "Reboot", callback = function() awful.spawn.with_shell("reboot") end, icon = gears.surface.load(PATH.home .. "icons/reboot.png")},
-	{name = "Suspend", callback = function() awful.spawn.with_shell("systemctl suspend") end, icon = gears.surface.load(PATH.home .. "icons/suspend.png")}
+	{name = "Power Off", callback = function() awful.spawn.with_shell("poweroff") end, showcase =  wibox.widget.imagebox(PATH.home .. "icons/poweroff.png")},
+	{name = "Reboot", callback = function() awful.spawn.with_shell("reboot") end, showcase =  wibox.widget.imagebox(PATH.home .. "icons/reboot.png")},
+	{name = "Suspend", callback = function() awful.spawn.with_shell("systemctl suspend") end, showcase =  wibox.widget.imagebox(PATH.home .. "icons/suspend.png")}
       }
     }
 	})

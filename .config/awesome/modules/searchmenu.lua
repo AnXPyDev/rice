@@ -39,6 +39,22 @@ function SearchMenu:runPrompt()
 	  self.elements.keys[self.results[self.cursor.pos]].callback()
 	end
       end
+      if self.selectedElement and self.selectedElement.keys then
+	for k, keybind in pairs(self.selectedElement.keys) do
+	  local match = true
+	  if key == keybind[2] then
+	    for i, modifier in  pairs(keybind[1]) do
+	      if not mod[modifier] then
+		match = false
+		break
+	      end
+	    end
+	    if match then
+	      keybind[3]()
+	    end
+	  end
+	end
+      end
     end
   })
 end
@@ -57,20 +73,21 @@ function SearchMenu:initElements()
   for i = 1, self.elements.config.count[1] * self.elements.config.count[2] do
     local widget = {}
     widget.text = wibox.widget.textbox()
-    widget.icon = wibox.widget.imagebox()
-    widget.iconMargin = wibox.container.margin(widget.icon)
+    widget.showcaseMargin = wibox.container.margin()
+    widget.showcaseFinal = widget.showcaseMargin
     widget.textPlace = wibox.container.place(widget.text)
+    widget.textFinal = widget.textPlace
     local widgets = {
       layout = wibox.layout.fixed.horizontal,
-      widget.iconMargin,
-      widget.textPlace
+      widget.showcaseFinal,
+      widget.textFinal
     }
-    if self.elements.config.iconPosition == "bottom" or self.elements.config.iconPosition == "top" then
+    if self.elements.config.showcasePosition == "bottom" or self.elements.config.showcasePosition == "top" then
       widgets.layout = wibox.layout.fixed.vertical
     end
-    if self.elements.config.iconPosition == "bottom" or self.elements.config.iconPosition == "right" then
-      widgets[1] = widget.textPlace
-      widgets[2] = widget.iconMargin
+    if self.elements.config.showcasePosition == "bottom" or self.elements.config.showcasePosition == "right" then
+      widgets[1] = widget.textFinal
+      widgets[2] = widget.showcaseFinal
       if self.elements.config.hideText then
 	widgets[1] = nil
       end
@@ -183,7 +200,7 @@ function SearchMenu:update(text)
   self.prompt.widget.bare.font = self.prompt.config.font
   text = text:sub(1,-2)
   local results = self.elements.names
-  if text:len() > 0 then
+  if text:len() > 0 and not self.searchDisabled then
     results = sortByComparison(text, self.elements.names, 0.5)
   end
   self.results = results
@@ -191,6 +208,7 @@ function SearchMenu:update(text)
   self.cursor.mod = 0
   local page = clamp(math.ceil(self.cursor.pos / #self.elements.widgets) - 1, 0, false)
   self.cursor.page = page
+  self.selectedElement = nil
   self:redraw()
 end
 
@@ -198,32 +216,36 @@ function SearchMenu:redraw()
   local placeInvert = {left = "right", right = "left", top = "bottom", bottom = "top"}
   for i = 1, #self.elements.widgets do
     local element = self.elements.keys[self.results[i + self.cursor.page * #self.elements.widgets]]
-    self.elements.widgets[i].background.bg = self.elements.config.bg
-    self.elements.widgets[i].background.fg = self.elements.config.fg
-    self.elements.widgets[i].background.visible = false
-    self.elements.widgets[i].icon.image = nil
-    self.elements.widgets[i].iconMargin.margins = 0
-    if i + self.cursor.page * #self.elements.widgets <= #self.results then
-      self.elements.widgets[i].icon.image = element.icon or nil
-      if not self.elements.config.hideText then
-	self.elements.widgets[i].iconMargin[placeInvert[self.elements.config.iconPosition]] = self.elements.config.margins[self.elements.config.iconPosition]
-      end
-      self.elements.widgets[i].text.text = element.name
-      self.elements.widgets[i].background.visible = true
-    else
-      self.elements.widgets[i].background.visible = false
+    local widget = self.elements.widgets[i]
+    local isSelected = (self.cursor.pos - self.cursor.page * #self.elements.widgets == i)
+    if isSelected then
+      self.selectedElement = element
     end
-  end
-  if #self.results > 0 then
-    self.elements.widgets[self.cursor.pos - self.cursor.page * #self.elements.widgets].background.bg = self.elements.config.bgHl
-    self.elements.widgets[self.cursor.pos - self.cursor.page * #self.elements.widgets].background.fg = self.elements.config.fgHl
+    widget.background.visible = false
+    widget.showcaseMargin.widget = nil
+    widget.showcaseMargin.margins = 0
+    if i + self.cursor.page * #self.elements.widgets <= #self.results then
+      if element.update then
+	element.update(i, isSelected)
+      end
+      widget.showcaseMargin.widget = element.showcase or nil
+      widget.background.bg = element.bgFunc and element.bgFunc(i, isSelected) or isSelected and self.elements.config.bgHl or self.elements.config.bg
+      widget.background.fg = element.fgFunc and element.fgFunc(i, isSelected) or isSelected and self.elements.config.fgHl or self.elements.config.fg
+      if not element.hideText and not self.elements.config.hideText then
+	widget.showcaseMargin[placeInvert[self.elements.config.showcasePosition]] = self.elements.config.margins[self.elements.config.showcasePosition]
+	widget.text.text = element.text or element.name
+      else
+	widget.text.text = ""
+      end
+      self.elements.widgets[i].background.visible = true
+    end
   end
 end
 
 function SearchMenu:setup(args)
   self.screen = args.screen
   self.widget = nil
-
+  self.searchDisabled = args.searchDisabled or false
   --Wibox config
   self.wibox = {
     config = {}
@@ -275,7 +297,7 @@ function SearchMenu:setup(args)
   self.elements.config.valign = args.elements and args.elements.valign or beautiful.searchMenu.elements.valign
   self.elements.config.font = args.elements and args.elements.font or beautiful.searchMenu.elements.font
   self.elements.config.shape = args.elements and args.elements.shape or beautiful.searchMenu.elements.shape
-  self.elements.config.iconPosition = args.elements and args.elements.iconPosition or "left"
+  self.elements.config.showcasePosition = args.elements and args.elements.showcasePosition or "left"
   self.elements.config.fontSize = tonumber(gears.string.split(self.elements.config.font, " ")[2])
   self.elements.config.size = {}
   self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]
@@ -295,7 +317,8 @@ function SearchMenu:setup(args)
     page = 0
   }
 
-  self.lastResults = {}
+  self.results = {}
+  self.selectedElement = nil
 
   self:initPrompt()
   self:generateElements(args.elements.list)  self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]

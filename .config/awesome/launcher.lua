@@ -25,10 +25,10 @@ launcher = SearchMenu:new()
     valign = "center",
     iconPosition = "left",
     list = {
-      {name = "Emacs", callback = function() awful.spawn("emacs") end, icon = gears.surface.load(PATH.home .. "icons/emacs.png")},
-      {name = "Firefox", callback = function() awful.spawn("firefox") end, icon = gears.surface.load(PATH.home .. "icons/firefox.png")},
-      {name = "Gimp", callback = function() awful.spawn("gimp") end, icon = gears.surface.load(PATH.home .. "icons/gimp.png")},
-      {name = "Terminal", callback = function() awful.spawn("xst") end, icon = gears.surface.load(PATH.home .. "icons/terminal.png")}
+      {name = "Emacs", callback = function() awful.spawn("emacs") end, showcase = wibox.widget.imagebox(PATH.home .. "icons/emacs.png")},
+      {name = "Firefox", callback = function() awful.spawn("firefox") end, showcase = wibox.widget.imagebox(PATH.home .. "icons/firefox.png")},
+      {name = "Gimp", callback = function() awful.spawn("gimp") end, showcase = wibox.widget.imagebox(PATH.home .. "icons/gimp.png")},
+      {name = "Terminal", callback = function() awful.spawn("xst") end, showcase = wibox.widget.imagebox(PATH.home .. "icons/terminal.png")}
     }
   }
 	})
