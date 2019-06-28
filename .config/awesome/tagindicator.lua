@@ -10,6 +10,7 @@ function tagindicator:initWidgets()
     )
     self.tags.widgets[i].margin = wibox.container.margin(self.tags.widgets[i].background)
     self.tags.widgets[i].final = self.tags.widgets[i].margin
+    self.tags.widgets[i].final:connect_signal("button::press", function() tags.list[i]:view_only() self:update() end)
   end
   self.tags.contained = wibox.widget(
     gears.table.join(
@@ -18,7 +19,7 @@ function tagindicator:initWidgets()
     )
   )
   self.tags.margin = wibox.container.margin(self.tags.contained)
-  self.widget = self.tags.contained
+  self.widget = self.tags.margin
 end
 
 function tagindicator:refreshTheme()
@@ -86,7 +87,7 @@ function tagindicator:setup()
     autostart = false,
     call_now = false,
     single_shot = true,
-    timeout = 2,
+    timeout = 1,
     callback = function()
       self.wibox.widget.visible = false
     end
@@ -103,6 +104,8 @@ function tagindicator:setup()
     shape = self.wibox.config.shape,
     widget = self.widget
   }
+  self.wibox.widget:connect_signal("mouse::enter", function() self.aliveTimer:stop() end)
+  self.wibox.widget:connect_signal("mouse::leave", function() self.aliveTimer:again() end)
 end
 
 tagindicator:setup()
