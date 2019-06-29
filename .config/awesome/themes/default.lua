@@ -103,6 +103,12 @@ theme.tagIndicator.tags = {
   end
 }
 
+theme.volumeSlider = {}
+
+theme.volumeSlider.wibox = {
+  
+}
+
 
 theme.font = theme.font_name .. " " .. tostring(theme.font_size)
 theme.titlebar_bg_normal = theme.bg_normal

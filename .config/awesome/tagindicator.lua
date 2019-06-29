@@ -109,3 +109,30 @@ function tagindicator:setup()
 end
 
 tagindicator:setup()
+
+tagindicator.animationRunning = false
+
+function tagindicator.showAnimate()
+  if not tagindicator.animationRunning and not tagindicator.wibox.widget.visible then
+    tagindicator.animationRunning = true
+    animate.add({
+      object = tagindicator.wibox.widget,
+      start = {
+	tagindicator.wibox.config.pos[1],
+	tagindicator.wibox.config.pos[2] - tagindicator.wibox.config.size[2]
+      },
+      target = {
+	tagindicator.wibox.config.pos[1],
+	tagindicator.wibox.config.pos[2]
+      },
+      type = "interpolate",
+      magnitude = 0.3,
+      amount = 5,
+      callback = function()
+	tagindicator.animationRunning = false
+	print("FFF")
+      end
+    })
+  end
+  tagindicator:show()
+end

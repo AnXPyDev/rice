@@ -23,3 +23,25 @@ function wrapIP(x, min, max)
     return x
   end
 end
+
+function lerp(x, target, percentage, treshold)
+  treshold = treshold or 0
+  if math.abs(target - x) < treshold then
+    return target
+  end
+
+  return x + (target - x) * percentage
+  
+end
+
+function approach(x, target, amount)
+  amount = math.abs(amount)
+  if math.abs(target - x) < amount then
+    return target
+  end
+  if target < x then
+    return x - amount
+  elseif target > x then
+    return x + amount
+  end
+end

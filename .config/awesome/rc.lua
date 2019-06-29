@@ -31,6 +31,7 @@ local themeName = "default"
 dofile(PATH.modules .. "editdistance.lua")
 dofile(PATH.modules .. "sort.lua")
 dofile(PATH.modules .. "math.lua")
+dofile(PATH.modules .. "animate.lua")
 dofile(PATH.modules .. "searchmenu.lua")
 
 dofile(PATH.theme .. themeName .. ".lua")

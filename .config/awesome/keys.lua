@@ -3,8 +3,8 @@ keys = {}
 keys.mod = "Mod4"
 
 keys.global = gears.table.join(
-  awful.key({keys.mod}, "d", function() launcher:show() end),
-  awful.key({keys.mod}, "q", function() powermenu:show() end),
+  awful.key({keys.mod}, "d", function() launcher.showAnimate() end),
+  awful.key({keys.mod}, "q", function() powermenu.showAnimate() end),
   awful.key({keys.mod, "Shift"}, "r", awesome.restart),
   awful.key({keys.mod}, "n", function() awful.client.focus.global_bydirection("down") end),
   awful.key({keys.mod}, "p", function() awful.client.focus.global_bydirection("up") end),
@@ -14,6 +14,9 @@ keys.global = gears.table.join(
   awful.key({keys.mod, "Shift"}, "p", function() awful.client.swap.global_bydirection("up") end),
   awful.key({keys.mod, "Shift"}, "b", function() awful.client.swap.global_bydirection("left") end),
   awful.key({keys.mod, "Shift"}, "f", function() awful.client.swap.global_bydirection("right") end),
+  awful.key({keys.mod}, "v", function() awful.spawn.with_shell("pulsemixer --change-volume -5") end),
+  awful.key({keys.mod, "Shift"}, "v", function() awful.spawn.with_shell("pulsemixer --change-volume +5") end),
+  awful.key({keys.mod}, "m", function() awful.spawn.with_shell("pulsemixer --toggle-mute") end),
   awful.key({keys.mod}, "g", toggleGaps),
   awful.key({keys.mod}, "i", setWallpaper)
 )
@@ -36,7 +39,7 @@ for i = 1, #tags.list do
   end))
   keys.global = gears.table.join(keys.global, awful.key({keys.mod}, tostring(i), function(c)
     tags.list[i]:view_only()
-    tagindicator:show()
+    tagindicator.showAnimate()
   end))
 end
 
