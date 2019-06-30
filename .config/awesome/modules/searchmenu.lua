@@ -26,15 +26,15 @@ function SearchMenu:runPrompt()
       self:hide()
     end,
     keypressed_callback = function(mod, key, cmd)
-      if mod["Control"] and key == "n" then
+      if mod["Control"] and key == "n" or key == "Down" then
 	self.cursor.mod = self.elements.config.count[1]
-      elseif mod["Control"] and key == "p" then
+      elseif mod["Control"] and key == "p" or key == "Up" then
 	self.cursor.mod = -self.elements.config.count[1]
-      elseif mod["Control"] and key == "f" then
+      elseif mod["Control"] and key == "f" or key == "Right" then
 	self.cursor.mod = 1
-      elseif mod["Control"] and key == "b" then
+      elseif mod["Control"] and key == "b" or key == "Left" then
 	self.cursor.mod = -1
-      elseif key == "Return" then
+      elseif key == "Return" or key == "Tab" then
  	if self.elements.keys[self.results[self.cursor.pos]] then
 	  self.elements.keys[self.results[self.cursor.pos]].callback()
 	end

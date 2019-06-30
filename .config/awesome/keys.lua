@@ -5,6 +5,7 @@ keys.mod = "Mod4"
 keys.global = gears.table.join(
   awful.key({keys.mod}, "d", function() launcher.showAnimate() end),
   awful.key({keys.mod}, "q", function() powermenu.showAnimate() end),
+  awful.key({keys.mod}, "o", function() volumecontrol:show() end),
   awful.key({keys.mod, "Shift"}, "r", awesome.restart),
   awful.key({keys.mod}, "n", function() awful.client.focus.global_bydirection("down") end),
   awful.key({keys.mod}, "p", function() awful.client.focus.global_bydirection("up") end),
@@ -14,9 +15,9 @@ keys.global = gears.table.join(
   awful.key({keys.mod, "Shift"}, "p", function() awful.client.swap.global_bydirection("up") end),
   awful.key({keys.mod, "Shift"}, "b", function() awful.client.swap.global_bydirection("left") end),
   awful.key({keys.mod, "Shift"}, "f", function() awful.client.swap.global_bydirection("right") end),
-  awful.key({keys.mod}, "v", function() awful.spawn.with_shell("pulsemixer --change-volume -5") end),
-  awful.key({keys.mod, "Shift"}, "v", function() awful.spawn.with_shell("pulsemixer --change-volume +5") end),
-  awful.key({keys.mod}, "m", function() awful.spawn.with_shell("pulsemixer --toggle-mute") end),
+  awful.key({keys.mod}, "v", function() volumecontrol:change(-1) end),
+  awful.key({keys.mod, "Shift"}, "v", function() volumecontrol:change(1) end),
+  awful.key({keys.mod}, "m", function() volumecontrol:toggleMute() end),
   awful.key({keys.mod}, "g", toggleGaps),
   awful.key({keys.mod}, "i", setWallpaper)
 )

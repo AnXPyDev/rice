@@ -13,6 +13,10 @@ local theme = {
   wibar_bg = "#101010"
 }
 
+gears.shape.fixed_rounded_rect = function(cr, w, h)
+  return gears.shape.rounded_rect(cr, w, h, theme.corner_radius)
+end
+
 theme.searchMenu = {}
 
 theme.searchMenu.prompt = {
@@ -22,9 +26,7 @@ theme.searchMenu.prompt = {
   valign = "center",
   text = "",
   font = "Hack 12",
-  shape = function(cr, w, h)
-    return gears.shape.rounded_rect(cr, w, h, theme.corner_radius)
-  end,
+  shape = gears.shape.fixed_rounded_rect,
   margins = {
     left = dpi(5),
     right = dpi(5),
@@ -47,9 +49,7 @@ theme.searchMenu.elements = {
   halign = "left",
   valign = "center",
   font = "Hack 10",
-  shape = function(cr, w, h)
-    return gears.shape.rounded_rect(cr, w, h, theme.corner_radius)
-  end,
+  shape = gears.shape.fixed_rounded_rect,
   margins = {
     left = dpi(5),
     right = dpi(5),
@@ -98,15 +98,43 @@ theme.tagIndicator.tags = {
     occupied = "#606060",
     normal = "#202020"
   },
-  shape = function(cr, w, h)
-    return gears.shape.rounded_rect(cr, w, h, theme.corner_radius)
-  end
+  shape = gears.shape.fixed_rounded_rect
 }
 
-theme.volumeSlider = {}
+theme.slider = {}
 
-theme.volumeSlider.wibox = {
-  
+theme.slider.wibox = {
+  pos = {0,0},
+  size = {dpi(100), dpi(300)},
+  bg = "#101010",
+  shape = gears.shape.fixed_rounded_rect
+}
+
+theme.slider.sliders = {
+  sliderArgs = {
+    bar_shape = gears.shape.rounded_bar,
+    handle_shape = gears.shape.circle,
+    bar_color = "#808080",
+    handle_color = "#FFFFFF",
+    bar_height = dpi(4)
+  },
+  direction = "vertical",
+  sliderMargins = margins(dpi(20)),
+  sliderBg = "#303030",
+  sliderShape = gears.shape.fixed_rounded_rect,
+  sliderOutsideMargins = margins(dpi(5)),
+  showcasePosition = "bottom",
+  showcaseMargins = margins(dpi(10)),
+  showcaseBg = "#f54242",
+  showcaseShape = gears.shape.fixed_rounded_rect,
+  showcaseOutsideMargins = margins(dpi(5)),
+  sliderSize = {},
+  showcaseSize = {},
+  size = {},
+  margins = margins(dpi(10)),
+  bg = "#202020",
+  shape = gears.shape.fixed_rounded_rect,
+  outsideMargins = margins(dpi(10))
 }
 
 
