@@ -6,11 +6,12 @@ local theme = {
   bg_focus = "#f54242",
   fg_normal = "#909090",
   fg_focus = "#FFFFFF",
-  titlebar_size = dpi(20),
+  titlebar_size = dpi(25),
   font_name = "Hack",
   font_size = dpi(10),
   wibar_height = dpi(30),
-  wibar_bg = "#101010"
+  wibar_bg = "#101010",
+  border_width = 0
 }
 
 gears.shape.fixed_rounded_rect = function(cr, w, h)

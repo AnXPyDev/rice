@@ -2,5 +2,6 @@
 
 !.emacs.d/modules
 !.emacs.d/*.el
+!.emacs.d/banner.png
 
 .emacs.d/.*

@@ -1,7 +1,7 @@
 local launcherArgs = {
   screen = screens.primary,
   wibox = {
-    size = {dpi(300), dpi(500) --[[screens.primary.geometry.height - beautiful.wibar_height]]},
+    size = {dpi(300), dpi(500)},
     pos = {screens.primary.geometry.x + dpi(10), screens.primary.geometry.y + dpi(10)},
     shape = function(cr, w, h)
       return gears.shape.rounded_rect(cr, w, h, beautiful.corner_radius)
