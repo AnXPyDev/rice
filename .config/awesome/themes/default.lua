@@ -18,6 +18,14 @@ gears.shape.fixed_rounded_rect = function(cr, w, h)
   return gears.shape.rounded_rect(cr, w, h, theme.corner_radius)
 end
 
+theme = gears.table.join(theme, {
+  notification_border_width = 0,
+  notification_border_color = "#202020",
+  notification_shape = gears.shape.fixed_rounded_rect,
+  notification_font = "Hack 12",
+  notification_margin = dpi(20)
+})
+
 theme.searchMenu = {}
 
 theme.searchMenu.prompt = {
