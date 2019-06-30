@@ -50,6 +50,14 @@ function volumecontrol:setup()
       self:updateExternal()
     end
   }
+  self.refreshTimer = gears.timer {
+    timeout = 5,
+    autostart = true,
+    call_now = true,
+    callback = function()
+      self:refresh()
+    end
+  }
   volumeslider.wibox.widget:connect_signal("mouse::enter", function()
     self.aliveTimer:stop()
   end)
@@ -74,6 +82,7 @@ end
 function volumecontrol:refresh()
   self.volume = tonumber(gears.string.split(os.capture("pulsemixer --get-volume"), " ")[1])
   self.isMuted = tonumber(os.capture("pulsemixer --get-mute")) == 1
+  self:update()
 end
 
 function volumecontrol:update()
@@ -113,7 +122,6 @@ function volumecontrol:show()
       end
     })
   end
-  self:refresh()
   self:update()
   self.aliveTimer:again()
 end
@@ -125,11 +133,13 @@ end
 function volumecontrol:change(sign)
   sign = sign or 1
   awful.spawn.with_shell("pulsemixer --change-volume " .. tostring(self.step * sign))
+  self.volume = clamp(self.volume + self.step * sign, 0, 150)
   self:show()
 end
 
 function volumecontrol:toggleMute()
   awful.spawn.with_shell("pulsemixer --toggle-mute")
+  self.isMuted = not self.isMuted
   self:show()
 end
 
