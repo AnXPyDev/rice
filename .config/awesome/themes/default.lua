@@ -146,6 +146,16 @@ theme.slider.sliders = {
   outsideMargins = margins(dpi(10))
 }
 
+theme.statusBar = {}
+
+theme.statusBar.wibox = {
+  fg = "#FFFFFF",
+  bg = "#101010"
+}
+
+theme.statusBar.widgets = {
+  bg = "#202020"
+}
 
 theme.font = theme.font_name .. " " .. tostring(theme.font_size)
 theme.titlebar_bg_normal = theme.bg_normal

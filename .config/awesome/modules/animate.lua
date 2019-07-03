@@ -16,7 +16,6 @@ end
 
 function animate.add(args)
   animate.queue[#animate.queue + 1] = animation:new():create(args)
-  print(#animate.queue)
 end
 
 animate.timer = gears.timer {
