@@ -1,3 +1,24 @@
+(general-define-key
+ :keymaps 'modal/emacs-map
+ "M-q" 'modal/enable-normal
+ "M-e" 'modal/enable-emacs)
+
+(setq modal/normal-map (make-composed-keymap (make-normal-sparse-keymap) modal/emacs-map))
+(setq modal/insert-map modal/emacs-map)
+
+(general-define-key
+ :keymaps 'modal/normal-map
+ "p" 'previous-line
+ "n" 'next-line
+ "b" 'backward-char
+ "o" 'forward-char
+ "a" 'beginning-of-line
+ "e" 'end-of-line
+ "q" 'modal/enable-insert
+ "Q" 'edit/insert-beginning-of-line
+ "d" 'edit/insert-after
+ "D" 'edit/insert-end-of-line)
+
 (defhydra hydra-edit (:hint nil)
   ("n" next-line)
   ("p" previous-line)

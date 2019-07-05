@@ -6,7 +6,7 @@
   (interactive)
   (package-use 'doom-themes)
   (load-theme 'doom-one t)
-  (hl-line-mode)
+  (global-hl-line-mode)
   (set-face-attribute 'default nil
 		      :background "#151515"
 		      :foreground "#FFFFFF")

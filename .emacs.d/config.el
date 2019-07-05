@@ -1,6 +1,8 @@
 (load-file (concat user-emacs-directory "modules/package-use.el"))
 (load-file (concat user-emacs-directory "modules/make-normal-sparse-keymap.el"))
 (load-file (concat user-emacs-directory "modules/surround.el"))
+(load-file (concat user-emacs-directory "modules/modal.el"))
+(load-file (concat user-emacs-directory "modules/edit.el"))
 
 (setq tab-width 2)
 (setq make-backup-files nil)
@@ -68,7 +70,8 @@
 (package-use 'beacon :require t)
 (beacon-mode 1)
 
-(package-use 'multiple-cursors :require t)
+(package-use 'highlight-parentheses :require t)
+(global-highlight-parentheses-mode)
 
 (package-use 'hydra :require t)
 
@@ -92,3 +95,4 @@
 (load-file (concat user-emacs-directory "eshell.el"))
 (load-file (concat user-emacs-directory "theme.el"))
 (load-file (concat user-emacs-directory "keybindings.el"))
+(modal/init)
