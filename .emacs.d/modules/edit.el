@@ -12,3 +12,8 @@
   (interactive)
   (beginning-of-line)
   (modal/enable-insert))
+
+(defun edit/set-region()
+  (interactive)
+  (set-mark (point))
+  (modal/enable-region))

@@ -3,68 +3,45 @@
  "M-q" 'modal/enable-normal
  "M-e" 'modal/enable-emacs)
 
-(setq modal/normal-map (make-composed-keymap (make-normal-sparse-keymap) modal/emacs-map))
-(setq modal/insert-map modal/emacs-map)
+(defadvice modal/enable-normal (after kill-region-on-normal-mode-enter)
+	(pop-mark))
+
+(setq modal/normal-bare-map (make-sparse-keymap))
+
+(general-define-key
+ :keymaps 'modal/normal-bare-map
+ "p" 'previous-line
+ "P" 'ccm-scroll-down
+ "n" 'next-line
+ "N" 'ccm-scroll-up
+ "b" 'backward-char
+ "B" 'backward-word
+ "o" 'forward-char
+ "O" 'forward-word
+ "a" 'beginning-of-line
+ "e" 'end-of-line)
+
+(setq modal/normal-map (make-composed-keymap (list (copy-keymap modal/emacs-map) (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
 
 (general-define-key
  :keymaps 'modal/normal-map
- "p" 'previous-line
- "n" 'next-line
- "b" 'backward-char
- "o" 'forward-char
- "a" 'beginning-of-line
- "e" 'end-of-line
  "q" 'modal/enable-insert
  "Q" 'edit/insert-beginning-of-line
  "d" 'edit/insert-after
- "D" 'edit/insert-end-of-line)
+ "D" 'edit/insert-end-of-line
+ "r" 'edit/set-region
+ "k" 'delete-char
+ "l" 'yank)
 
-(defhydra hydra-edit (:hint nil)
-  ("n" next-line)
-  ("p" previous-line)
-  ("f" forward-char)
-  ("b" backward-char)
-  ("N" (lambda() (interactive) (next-line 10)))
-  ("P" (lambda() (interactive) (previous-line 10)))
-  ("F" forward-word)
-  ("B" backward-word)
-  ("C-n" ccm-scroll-up)
-  ("C-p" ccm-scroll-down)  
-  ("d" delete-char)
-  ("D" kill-whole-line)
-  ("a" beginning-of-line)
-  ("e" end-of-line)
-  ("SPC" set-mark-command)
-  ("/" undo)
-  ("C-g" keyboard-quit)
-  ("C-SPC" (lambda() (interactive) (beginning-of-line) (set-mark (point)) (end-of-line) (next-line)))
-  ("s (" (lambda() (interactive) (surround-region "(" ")")))
-  ("s {" (lambda() (interactive) (surround-region "{" "}")))
-  ("s \"" (lambda() (interactive) (surround-region "\"" "\"")))
-  ("s '" (lambda() (interactive) (surround-region "' "'"")))
-  ("s [" (lambda() (interactive) (surround-region "[" "]")))
-  ("s <" (lambda() (interactive) (surround-region "<" ">")))
-  ("C-a" beginning-of-line-text)
-  ("C-e" end-of-line)
-  ("m" hydra-multiple-cursors/body :exit t)
-  ("q" nil))
-
-(defhydra hydra-multiple-cursors (:hint nil)
-  ("l" mc/edit-lines :exit t)
-  ("a" mc/mark-all-like-this :exit t)
-  ("n" mc/mark-next-like-this)
-  ("C-n" mc/mark-next-word-like-this)
-  ("<mouse-1>" mc/add-cursor-on-click)
-  ;; Help with click recognition in this hydra
-  ("<down-mouse-1>" ignore)
-  ("<drag-mouse-1>" ignore)
-  ("q" nil))
+(setq modal/region-map (make-composed-keymap (list (copy-keymap modal/emacs-map) (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
 
 (general-define-key
- "C-s" 'swiper
- "C-x C-b" 'ibuffer
- "C-TAB" 'hydra-edit/body
- "C-<tab>" 'hydra-edit/body)
+ :keymaps 'modal/region-map
+ "j" (lambda() (interactive) (copy-region-as-kill (region-beginning) (region-end)) (modal/enable-normal))
+ "k" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-normal))
+ "C-g" (lambda() (interactive) (keyboard-quit) (modal/enable-normal)))
+
+(setq modal/insert-map (copy-keymap modal/emacs-map))
 
 (general-define-key
  :keymaps 'company-active-map
