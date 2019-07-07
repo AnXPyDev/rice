@@ -30,18 +30,31 @@
  "d" 'edit/insert-after
  "D" 'edit/insert-end-of-line
  "r" 'edit/set-region
+ "R" 'edit/set-region-line
  "k" 'delete-char
- "l" 'yank)
+ "K" 'edit/kill-whole-word
+ "C-k" 'kill-whole-line
+ "l" 'yank
+ "L" 'edit/yank-line
+ "f" 'swiper
+ "/" 'undo
+ "s" 'edit/open-line
+ "S" (lambda() (interactive) (edit/open-line) (modal/enable-insert))
+ "w" 'edit/open-line-above
+ "W" (lambda() (interactive) (edit/open-line-above) (modal/enable-insert)))
 
 (setq modal/region-map (make-composed-keymap (list (copy-keymap modal/emacs-map) (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
 
 (general-define-key
  :keymaps 'modal/region-map
+ "h" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-insert))
  "j" (lambda() (interactive) (copy-region-as-kill (region-beginning) (region-end)) (modal/enable-normal))
  "k" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-normal))
- "C-g" (lambda() (interactive) (keyboard-quit) (modal/enable-normal)))
+ "C-g" (lambda() (interactive) (pop-mark) (modal/enable-normal))
+ "r" 'er/expand-region)
 
 (setq modal/insert-map (copy-keymap modal/emacs-map))
+
 
 (general-define-key
  :keymaps 'company-active-map

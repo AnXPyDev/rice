@@ -92,6 +92,11 @@
 			(projects . 5)))
 (setq dashboard-banner-logo-title "Welcome to Emacs.")
 
+(package-use 'expand-region :require t)
+
+(package-use 'undo-tree :require t)
+(global-undo-tree-mode)
+
 (load-file (concat user-emacs-directory "eshell.el"))
 (load-file (concat user-emacs-directory "theme.el"))
 (load-file (concat user-emacs-directory "keybindings.el"))

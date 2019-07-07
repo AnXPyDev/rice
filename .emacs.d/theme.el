@@ -32,3 +32,6 @@
 (if (display-graphic-p)
     (theme/gui)
   (theme/tty))
+
+(when (daemonp)
+  (theme/gui))

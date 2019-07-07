@@ -17,3 +17,32 @@
   (interactive)
   (set-mark (point))
   (modal/enable-region))
+
+(defun edit/set-region-line()
+  (interactive)
+	(beginning-of-line)
+  (set-mark (point))
+	(end-of-line)
+  (modal/enable-region))
+
+(defun edit/open-line()
+  (interactive)
+  (end-of-line)
+  (open-line 1)
+	(next-line))
+
+(defun edit/open-line-above()
+	(interactive)
+	(beginning-of-line)
+	(open-line 1))
+
+(defun edit/yank-line()
+	(interactive)
+	(edit/open-line)
+	(yank))
+
+(defun edit/kill-whole-word()
+	(interactive)
+	(backward-char)
+	(forward-word)
+	(backward-kill-word 1))
