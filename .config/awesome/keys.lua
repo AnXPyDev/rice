@@ -46,7 +46,7 @@ for i = 1, #tags.list do
     tagindicator:update()
   end))
   keys.global = gears.table.join(keys.global, awful.key({keys.mod}, tostring(i), function(c)
-    tags.list[i]:view_only()
+    tags.select(i)
     tagindicator.showAnimate()
   end))
 end

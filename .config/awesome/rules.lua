@@ -6,7 +6,7 @@ awful.rules.rules = {
       focus = true,
       keys = keys.client,
       buttons = buttons.client,
-      screen = awful.screen.preferred,
+      tag = function() return tags.selected end,
       titlebars_enabled = true
     }
   }

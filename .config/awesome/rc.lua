@@ -35,6 +35,7 @@ dofile(PATH.modules .. "util.lua")
 dofile(PATH.modules .. "animate.lua")
 dofile(PATH.modules .. "searchmenu.lua")
 dofile(PATH.modules .. "slider.lua")
+dofile(PATH.modules .. "shape.lua")
 
 dofile(PATH.theme .. themeName .. ".lua")
 

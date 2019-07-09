@@ -54,7 +54,7 @@ function statusbar:setup()
   }
 
   self.wibox.config.offset = beautiful.statusBar.wibox.offset or dpi(10)
-  self.wibox.config.size = {dpi(200), self.screen.geometry.height - 2 * self.wibox.config.offset}
+  self.wibox.config.size = {dpi(300), self.screen.geometry.height - 2 * self.wibox.config.offset}
   self.wibox.config.pos = {self.screen.geometry.x + (self.screen.geometry.width - (self.wibox.config.size[1] + self.wibox.config.offset)), self.screen.geometry.y + self.wibox.config.offset}
   self.wibox.config.shape = beautiful.statusBar.wibox.shape or gears.shape.fixed_rounded_rect or gears.shape.rectangle
   self.wibox.config.bg = beautiful.statusBar.wibox.bg or beautiful.bg_normal or "#000000"

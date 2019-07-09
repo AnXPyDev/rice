@@ -17,7 +17,8 @@
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
-(scroll-bar-mode 0)
+(toggle-scroll-bar -1)
+
 
 (defadvice text-scale-increase (after text-scale-after activate)
   (set-window-margins (selected-window) 1 1))

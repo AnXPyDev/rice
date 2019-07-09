@@ -51,7 +51,7 @@ function volumecontrol:setup()
     end
   }
   self.refreshTimer = gears.timer {
-    timeout = 5,
+    timeout = 1,
     autostart = true,
     call_now = true,
     callback = function()
@@ -73,15 +73,15 @@ function volumecontrol:setup()
   self.slider:connect_signal("property::value", function()
     if not self.recentlyUpdated then
       self.volume = self.slider.value
-      self.updateTimer:again()
+      self:updateExternal()
     end
     self.recentlyUpdated = false
   end)
 end
 
 function volumecontrol:refresh()
-  self.volume = tonumber(gears.string.split(os.capture("pulsemixer --get-volume"), " ")[1])
-  self.isMuted = tonumber(os.capture("pulsemixer --get-mute")) == 1
+  self.volume = tonumber(os.capture("pamixer --get-volume"))
+  self.isMuted = tonumber(os.capture("pamixer --get-mute")) == 1
   self:update()
 end
 
@@ -98,7 +98,7 @@ function volumecontrol:update()
 end
 
 function volumecontrol:updateExternal()
-  awful.spawn.with_shell("pulsemixer --set-volume " .. tostring(self.volume))
+  awful.spawn.with_shell("pamixer --set-volume --allow-boost " .. tostring(self.volume))
 end
 
 function volumecontrol:show()
@@ -131,14 +131,17 @@ function volumecontrol:hide()
 end
 
 function volumecontrol:change(sign)
-  sign = sign or 1
-  awful.spawn.with_shell("pulsemixer --change-volume " .. tostring(self.step * sign))
+  if sign == -1 then
+    awful.spawn.with_shell("pamixer -d --allow-boost " .. tostring(self.step))
+  else
+    awful.spawn.with_shell("pamixer -i --allow-boost " .. tostring(self.step))
+  end
   self.volume = clamp(self.volume + self.step * sign, 0, 150)
   self:show()
 end
 
 function volumecontrol:toggleMute()
-  awful.spawn.with_shell("pulsemixer --toggle-mute")
+  awful.spawn.with_shell("pamixer -t")
   self.isMuted = not self.isMuted
   self:show()
 end
