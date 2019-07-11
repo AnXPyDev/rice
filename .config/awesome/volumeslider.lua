@@ -81,7 +81,7 @@ end
 
 function volumecontrol:refresh()
   self.volume = tonumber(os.capture("pamixer --get-volume"))
-  self.isMuted = tonumber(os.capture("pamixer --get-mute")) == 1
+  self.isMuted = os.capture("pamixer --get-mute") == "true"
   self:update()
 end
 
