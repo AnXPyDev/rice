@@ -98,7 +98,7 @@ function volumecontrol:update()
 end
 
 function volumecontrol:updateExternal()
-  awful.spawn.with_shell("pamixer --set-volume --allow-boost " .. tostring(self.volume))
+  awful.spawn.with_shell("pamixer --set-volume " .. tostring(self.volume))
 end
 
 function volumecontrol:show()
@@ -132,9 +132,9 @@ end
 
 function volumecontrol:change(sign)
   if sign == -1 then
-    awful.spawn.with_shell("pamixer -d --allow-boost " .. tostring(self.step))
+    awful.spawn.with_shell("pamixer -d " .. tostring(self.step))
   else
-    awful.spawn.with_shell("pamixer -i --allow-boost " .. tostring(self.step))
+    awful.spawn.with_shell("pamixer -i " .. tostring(self.step))
   end
   self.volume = clamp(self.volume + self.step * sign, 0, 150)
   self:show()

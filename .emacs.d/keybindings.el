@@ -3,9 +3,6 @@
  "M-q" 'modal/enable-normal
  "M-e" 'modal/enable-emacs)
 
-(defadvice modal/enable-normal (after kill-region-on-normal-mode-enter)
-	(pop-mark))
-
 (setq modal/normal-bare-map (make-sparse-keymap))
 
 (general-define-key
@@ -51,7 +48,10 @@
  "j" (lambda() (interactive) (copy-region-as-kill (region-beginning) (region-end)) (modal/enable-normal))
  "k" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-normal))
  "C-g" (lambda() (interactive) (pop-mark) (modal/enable-normal))
- "r" 'er/expand-region)
+ "M-q" (lambda() (interactive) (pop-mark) (modal/enable-normal))
+ "r" 'er/expand-region
+ "TAB" 'indent-region
+ "<tab>" 'indent-region)
 
 (setq modal/insert-map (copy-keymap modal/emacs-map))
 
