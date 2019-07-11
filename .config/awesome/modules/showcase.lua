@@ -10,7 +10,7 @@ end
 function Showcase:setup(args)
   self.config = {}
   self.widgets = {}
-  self.textEnabled = args.textDisabled or true
+  self.config.textDisabled = 
   
   local widget = self.widgets
 
@@ -32,6 +32,8 @@ function Showcase:setup(args)
     widget.showcaseFinal,
     widget.textFinal
   }
+
+  
 
   
 end
