@@ -32,11 +32,11 @@ dofile(PATH.modules .. "editdistance.lua")
 dofile(PATH.modules .. "sort.lua")
 dofile(PATH.modules .. "math.lua")
 dofile(PATH.modules .. "util.lua")
+dofile(PATH.modules .. "themer.lua")
 dofile(PATH.modules .. "animate.lua")
 dofile(PATH.modules .. "searchmenu.lua")
 dofile(PATH.modules .. "slider.lua")
 dofile(PATH.modules .. "shape.lua")
-dofile(PATH.modules .. "themer.lua")
 
 dofile(PATH.theme .. themeName .. ".lua")
 

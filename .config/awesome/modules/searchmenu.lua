@@ -250,34 +250,47 @@ function SearchMenu:setup(args)
   self.wibox = {
     config = {}
   }
-  self.wibox.config.size = args.wibox and args.wibox.size or beautiful.searchMenu.wibox.size
-  self.wibox.config.pos = args.wibox and args.wibox.pos or {self.screen.geometry.x + (self.screen.geometry.width - self.wibox.config.size[1]) / 2, self.screen.geometry.y + (args.wibox and args.wibox.offset or 0)}
-  self.wibox.config.margins = args.wibox and args.wibox.margins or beautiful.searchMenu.wibox.margins
-  self.wibox.config.shape = args.wibox and args.wibox.shape or beautiful.searchMenu.wibox.shape or gears.shape.rectangle
-  self.wibox.config.bg = args.wibox and args.wibox.bg or beautiful.searchMenu.wibox.bg
-  self.wibox.config.bg = args.wibox and args.wibox.bg or beautiful.searchMenu.wibox.bg
-  self.wibox.config.ontop = args.wibox and args.wibox.ontop or true
 
-  -- Prompt config
+  themer.apply(
+    {
+      {"size", {200, 300}},
+      {"pos", function() return {self.screen.geometry.x + (self.screen.geometry.width - self.wibox.config.size[1]) / 2, self.screen.geometry.y + (args.wibox and args.wibox.offset or 0)} end, true},
+      {"margins", margins(0)},
+      {"shape", gears.shape.rectangle},
+      {"bg", "#000000"},
+      {"ontop", true}
+    }, beautiful.searchMenu and beautiful.searchMenu.wibox or {}, self.wibox.config
+  )
+
+  themer.apply({{"size"}, {"pos"}, {"margins"}, {"shape"}, {"bg"}, {"ontop"}}, args.wibox or {}, self.wibox.config)
+		 
   self.prompt = {
     config = {}
   }
 
-  self.prompt.config.hide = args.prompt and args.prompt.hide or beautiful.searchMenu.prompt.hide or false
-  self.prompt.config.bg = args.prompt and args.prompt.bg or beautiful.searchMenu.prompt.bg
-  self.prompt.config.fg = args.prompt and args.prompt.fg or beautiful.searchMenu.prompt.fg
-  self.prompt.config.margins = args.prompt and args.prompt.margins or beautiful.searchMenu.prompt.margins
-  self.prompt.config.outsideMargins = args.prompt and args.prompt.outsideMargins or beautiful.searchMenu.prompt.outsideMargins
-  self.prompt.config.halign = args.prompt and args.prompt.halign or beautiful.searchMenu.prompt.halign
-  self.prompt.config.valign = args.prompt and args.prompt.valign or beautiful.searchMenu.prompt.valign
-  self.prompt.config.font = args.prompt and args.prompt.font or beautiful.searchMenu.prompt.font
-  self.prompt.config.text = args.prompt and args.prompt.text or beautiful.searchMenu.prompt.text
-  self.prompt.config.shape = args.prompt and args.prompt.shape or beautiful.searchMenu.prompt.shape
-  self.prompt.config.fontSize = tonumber(gears.string.split(self.prompt.config.font, " ")[2])
-  self.prompt.config.size = {
-    self.wibox.config.size[1],
-    self.prompt.config.fontSize * 1.5 + self.prompt.config.margins.top + self.prompt.config.margins.bottom + self.prompt.config.outsideMargins.top + self.prompt.config.outsideMargins.bottom
-  }
+  themer.apply(
+    {
+      {"hide", false},
+      {"bg", "#101010"},
+      {"fg", "#FFFFFF"},
+      {"margins", margins(0)},
+      {"outsideMargins", margins(0)},
+      {"halign", "center"},
+      {"valign", "center"},
+      {"font", beautiful.fontName},
+      {"text"},
+      {"shape", gears.shape.rectangle},
+      {"fontSize", 12},
+      {"size", function()
+	return {
+	  self.wibox.config.size[1],
+	  self.prompt.config.fontSize * 1.5 + self.prompt.config.margins.top + self.prompt.config.margins.bottom + self.prompt.config.outsideMargins.top + self.prompt.config.outsideMargins.bottom
+	}
+      end, true}
+    }, beautiful.searchMenu and beautiful.searchMenu.prompt or {}, self.prompt.config
+  )
+
+  themer.apply({{"hide"}, {"bg"}, {"fg"}, {"margins"}, {"outsideMargins"}, {"halign"}, {"valign"}, {"font"}, {"text"}, {"shape"}, {"fontSize"}, {"size"}}, args.prompt or {}, self.prompt.config)
 
   self.elements = {
     config = {},

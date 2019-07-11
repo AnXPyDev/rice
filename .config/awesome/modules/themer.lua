@@ -2,14 +2,7 @@ themer = {}
 
 function themer.apply(vars, input, output)
   for key, value in pairs(vars) do
-    local splits = gears.string.split(value[1], ".")
-    if not string.match(value[1], ".") then
-      splits = {value[1]}
-      print("nodot")
-    end
-    for k, v in pairs(splits) do
-      print(k, v)
-    end
+    local splits = gears.string.split(value[1], "%.")
     print(value[1])
     local lastAccess = input
     local lastOutput = output
@@ -18,21 +11,11 @@ function themer.apply(vars, input, output)
       if i < #splits then
 	lastOutput[splits[i]] = lastOutput[splits[i]] or {}
 	lastOutput = lastOutput[splits[i]]
-	lastAccess = lastAccess[splits[i]] or nil
-	if not lastAccess then
-	  break
-	end
+	lastAccess = lastAccess and lastAccess[splits[i]] or nil
       else
-	lastOutput[splits[i]] = lastAccess[splits[i]] or value[2] or nil
+	lastOutput[splits[i]] = lastAccess[splits[i]] or value[3] and value[2]() or value[2] or lastOutput[splits[i]] or nil
       end
     end
   end
+  return input
 end
-
-
-local x = {var = 24}
-local y = {}
-
-themer.apply({{"var", 12}}, x, y)
-
-print(y.var, "var")
