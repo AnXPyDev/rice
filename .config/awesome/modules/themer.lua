@@ -13,7 +13,7 @@ function themer.apply(vars, input, output)
 	lastOutput = lastOutput[splits[i]]
 	lastAccess = lastAccess and lastAccess[splits[i]] or nil
       else
-	lastOutput[splits[i]] = lastAccess[splits[i]] or value[3] and value[2]() or value[2] or lastOutput[splits[i]] or nil
+	lastOutput[splits[i]] = lastAccess[splits[i]] or lastOutput[splits[i]] or value[3] and value[2]() or value[2] or nil
       end
     end
   end

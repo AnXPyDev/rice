@@ -12,7 +12,8 @@ local powermenuArgs = {
     end
   },
   prompt = {
-    hide = true
+    hide = true,
+    size = {0,0}
   },
   elements = {
     size = {dpi(100), dpi(100)},

@@ -8,7 +8,8 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (electric-pair-mode)
-(global-linum-mode)
+(global-linum-mode 1)
+(global-visual-line-mode 1)
 (setq linum-format " %d ")
 
 (defun reload-config()

@@ -1,28 +1,30 @@
 local launcherArgs = {
   screen = screens.primary,
   wibox = {
-    size = {dpi(300), dpi(500)},
-    pos = {screens.primary.geometry.x + dpi(10), screens.primary.geometry.y + dpi(10)},
-    shape = function(cr, w, h)
-      return gears.shape.rounded_rect(cr, w, h, beautiful.corner_radius)
-    end
+    size = {dpi(500), dpi(300)},
+    pos = {screens.primary.geometry.x + (screens.primary.geometry.width - dpi(500)) / 2, screens.primary.geometry.y + (screens.primary.geometry.height - dpi(400)) / 2},
+    shape = gears.shape.fixed_rounded_rect
   },
   prompt = {
-    halign = "center",
-    outsideMargins = {
-      top = dpi(10),
-      left = dpi(10),
-      bottom = dpi(5),
-      right = dpi(10)
-    }
-  },
-  elements = {
+    shape = gears.shape.rectangle,
+    outsideMargins = margins(0),
+    margins = margins(dpi(20), nil, 0, 0),
     size = {
-      nil, dpi(40)
+      nil, dpi(60)
     },
     halign = "left",
+  },
+  elements = {
+    shape = gears.shape.fixed_rounded_rect,
+    outsideMargins = margins(dpi(10)),
+    showcaseMargins = margins(dpi(10)),
+    margins = margins(dpi(10)),
+    size = {
+      dpi(100), dpi(120)
+    },
+    halign = "center",
     valign = "center",
-    iconPosition = "left",
+    showcasePosition = "top",
     list = {
       {name = "Emacs", callback = function() awful.spawn("emacs") end, showcase = wibox.widget.imagebox(PATH.home .. "icons/emacs.png")},
       {name = "Firefox", callback = function() awful.spawn("firefox") end, showcase = wibox.widget.imagebox(PATH.home .. "icons/firefox.png")},

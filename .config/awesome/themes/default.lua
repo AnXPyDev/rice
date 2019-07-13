@@ -1,12 +1,13 @@
 local theme = {
   useless_gap = dpi(8),
   gaps = {dpi(8), dpi(24), dpi(40), 0},
-  corner_radius = dpi(5),
-  bg_normal = "#050505",
-  bg_focus = "#2cbdbd", -- gold: bb8722 cyan: 3cffff
+  corner_radius = dpi(4),
+  bg_normal = "#101010",
+  bg_focus = "#fe4848",
   fg_normal = "#909090",
-  fg_focus = "#FFFFFF",
-  titlebar_size = dpi(25),
+  fg_focus = "#000000",
+  titlebar_size = dpi(30),
+  titlebar_bg_focus = "#404040",
   font_name = "Hack",
   font_size = dpi(10),
   wibar_height = dpi(30),
@@ -51,10 +52,10 @@ theme.searchMenu.prompt = {
 }
 
 theme.searchMenu.elements = {
-  bg = "#101010",
-  fg = "#FFFFFF",
+  bg = theme.bg_normal,
+  fg = theme.fg_normal,
   bgHl = theme.bg_focus,
-  fgHl = "#000000",
+  fgHl = theme.fg_focus,
   halign = "left",
   valign = "center",
   font = "Hack 10",
@@ -70,7 +71,8 @@ theme.searchMenu.elements = {
     right = dpi(10),
     top = dpi(5),
     bottom = dpi(5)
-  }
+  },
+  showcaseMargins = margins(0)
 }
 
 theme.searchMenu.wibox = {
