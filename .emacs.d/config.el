@@ -1,10 +1,12 @@
+
 (load-file (concat user-emacs-directory "modules/package-use.el"))
 (load-file (concat user-emacs-directory "modules/make-normal-sparse-keymap.el"))
 (load-file (concat user-emacs-directory "modules/surround.el"))
 (load-file (concat user-emacs-directory "modules/modal.el"))
 (load-file (concat user-emacs-directory "modules/edit.el"))
 
-(setq tab-width 2)
+(setq-default tab-width 2)
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (electric-pair-mode)

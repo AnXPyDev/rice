@@ -6,6 +6,9 @@ naughty = require("naughty")
 xresources = require("beautiful.xresources")
 stringdistance = require("stringdistance")
 dpi = xresources.apply_dpi
+dpi = function(x)
+  return x
+end
 
 require("awful.autofocus")
 

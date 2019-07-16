@@ -127,12 +127,19 @@ function SearchMenu:initElements()
   widget.bare = wibox.widget(
     gears.table.join(
       {
-	layout = wibox.layout.grid.vertical(self.elements.config.count[1])
+	layout = wibox.layout {
+	  forced_num_cols = self.elements.config.count[1],
+	  forced_nim_rows = self.elements.config.count[2],
+	  homogenous = false,
+	  layout = wibox.layout.grid
+	}
       },
       gears.table.map(function(widget) return widget.final end, self.elements.widgets)
     )
   )
   widget.margin = wibox.container.margin(widget.bare)
+  widget.margin.forced_width = self.elements.config.size[1] * self.elements.config.count[1] + self.elements.config.boundedMargins.left + self.elements.config.boundedMargins.right
+  widget.margin.forced_height = self.elements.config.size[2] * self.elements.config.count[2] + self.elements.config.boundedMargins.top + self.elements.config.boundedMargins.bottom
   widget.place = wibox.container.place(widget.margin)
   widget.final = widget.place
   self.elements.widget = widget
@@ -320,30 +327,16 @@ function SearchMenu:setup(args)
   )
   themer.apply(
     {
-      {"bg", "#000000"},
-      {"bgHl", "#FFFFFF"},
-      {"fgHl", "#000000"},
-      {"fg", "#FFFFFF"},
-      {"hideText", false},
-      {"margins", margins(0)},
-      {"outsideMargins", margins(0)},
-      {"showcaseMargins", margins(0)},
-      {"halign", "center"},
-      {"valign", "center"},
-      {"font", "nvm"},
-      {"shape", gears.shape.rectangle},
-      {"showcasePosition", "left"},
-      {"fontSize", function() return tonumber(gears.string.split(self.elements.config.font, " ")[2]) end, true},
-      {"boundedMargins", margins(0)},
-      {"boundedHalign", "center"},
-      {"boundedValign", "center"}
+      {"bg"}, {"bgHl"}, {"fgHl"}, {"fg"}, {"hideText"}, {"margins"}, {"outsideMargins"}, {"showcaseMargins"}, {"halign"}, {"valign"}, {"font"}, {"shape"}, {"showcasePosition"}, {"fontSize"}, {"boundedMargins"}, {"boundedHalign"}, {"boundedValign"}
     }, args.elements, self.elements.config
   )
   self.elements.config.size = {}
   self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]
   self.elements.config.size[2] = args.elements and args.elements.size and args.elements.size[2] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[2] or self.elements.config.fontSize * 1.5 + self.elements.config.margins.top + self.elements.config.margins.bottom + self.elements.config.outsideMargins.top + self.elements.config.outsideMargins.bottom
-  self.elements.config.count = {math.floor(self.wibox.config.size[1] / self.elements.config.size[1]), math.floor((self.wibox.config.size[2] - self.prompt.config.size[2]) / self.elements.config.size[2])}
-  self.elements.config.count[2] = math.floor((self.wibox.config.size[2] - self.prompt.config.size[2]) / self.elements.config.size[2])
+  self.elements.config.count = {
+    math.floor((self.wibox.config.size[1] - (self.elements.config.boundedMargins.left + self.elements.config.boundedMargins.right)) / self.elements.config.size[1]),
+    math.floor(((self.wibox.config.size[2] - self.prompt.config.size[2]) - (self.elements.config.boundedMargins.top + self.elements.config.boundedMargins.bottom)) / self.elements.config.size[2])
+  }
 
   self.cursor = {
     pos = 1,
