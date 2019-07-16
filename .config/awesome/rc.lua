@@ -40,9 +40,9 @@ dofile(PATH.modules .. "animate.lua")
 dofile(PATH.modules .. "searchmenu.lua")
 dofile(PATH.modules .. "slider.lua")
 dofile(PATH.modules .. "shape.lua")
+dofile(PATH.modules .. "showcase.lua")
 
 dofile(PATH.theme .. themeName .. ".lua")
-
 
 dofile(PATH.config .. "wallpaper.lua")
 dofile(PATH.config .. "screen.lua")
@@ -53,6 +53,8 @@ dofile(PATH.config .. "tagindicator.lua")
 dofile(PATH.config .. "volumeslider.lua")
 dofile(PATH.config .. "launcher.lua")
 dofile(PATH.config .. "powermenu.lua")
+dofile(PATH.config .. "internetindicator.lua")
+dofile(PATH.config .. "batteryindicator.lua")
 dofile(PATH.config .. "statusbar.lua")
 dofile(PATH.config .. "keyboardlayout.lua")
 

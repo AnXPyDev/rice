@@ -27,17 +27,13 @@ function SearchMenu:runPrompt()
     end,
     keypressed_callback = function(mod, key, cmd)
       if mod["Control"] and key == "n" or key == "Down" then
-	self.cursor.mod = self.elements.config.count[1]
+				self.cursor.mod = 1
       elseif mod["Control"] and key == "p" or key == "Up" then
-	self.cursor.mod = -self.elements.config.count[1]
-      elseif mod["Control"] and key == "o" or key == "Right" then
-	self.cursor.mod = 1
-      elseif mod["Control"] and key == "b" or key == "Left" then
-	self.cursor.mod = -1
+				self.cursor.mod = -1
       elseif key == "Return" or key == "Tab" then
- 	if self.elements.keys[self.results[self.cursor.pos]] then
-	  self.elements.keys[self.results[self.cursor.pos]].callback()
-	end
+				if self.elements.keys[self.results[self.cursor.pos]] then
+					self.elements.keys[self.results[self.cursor.pos]].callback()
+				end
       end
       for key, val in pairs(self.bindings) do
 	if mod[val[1]] and key == val[2] then

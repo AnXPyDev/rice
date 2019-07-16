@@ -12,7 +12,7 @@ local theme = {
   font_size = dpi(10),
   wibar_height = dpi(30),
   wibar_bg = "#101010",
-  border_width = 0
+  border_width = 0,
 }
 
 gears.shape.fixed_rounded_rect = function(cr, w, h)
@@ -21,10 +21,11 @@ end
 
 theme = gears.table.join(theme, {
   notification_border_width = 0,
-  notification_border_color = "#202020",
+  notification_border_color = theme.bg_normal,
   notification_shape = gears.shape.fixed_rounded_rect,
-  notification_font = "Hack 12",
-  notification_margin = dpi(20)
+  notification_font = "Hack 10",
+  notification_margin = dpi(40),
+	notification_fg = "#FFFFFF"
 })
 
 theme.searchMenu = {}
@@ -157,6 +158,16 @@ theme.statusBar.wibox = {
 
 theme.statusBar.widgets = {
   bg = "#202020"
+}
+
+theme.showcase = {
+	bg = "#202020",
+	fg = "#FFFFFF",
+	margins = margins(dpi(10)),
+	outsideMargins = margins(dpi(10)),
+	showcaseMargins = margins(dpi(10)),
+	showcasePosition = "left",
+	shape = gears.shape.fixed_rounded_rect
 }
 
 theme.font = theme.font_name .. " " .. tostring(theme.font_size)
