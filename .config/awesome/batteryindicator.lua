@@ -14,22 +14,12 @@ function batteryindicator:refresh(output)
 	if output[1] == "noBattery" then
 		self.isBattery = false
 		self.percentage = 100
-		self.margin.widget = self.images.charged
-		self.widget:reset("Powered")
 	else
 		self.isBattery = true
 		self.percentage = tonumber(output[1])
 		self.state = output[2]
-		if self.state == "depleting" then
-			self.margin.widget = self.images.depleting
-		elseif self.state == "charging" then
-			self.margin.widget = self.images.charging
-		elseif self.state == "charged" then
-			self.margin.widget = self.images.charged
-		end
-		self.widget:reset(tostring(self.percentage) .. "")
 	end
-	self.showcase.value = self.percentage
+	print(self.showcase.value)
 end
 
 function batteryindicator:setup(args)
@@ -41,12 +31,16 @@ function batteryindicator:setup(args)
 		charging = wibox.widget.imagebox(PATH.home .. "icons/battery_charging.png"),
 		charged = wibox.widget.imagebox(PATH.home .. "icons/battery_charged.png")
 	}
-	self.margin = wibox.container.margin(self.image)
-	self.showcase = wibox.container.radialprogressbar()
-	self.showcase.widget = self.margin
-	self.showcase.color = "#FFFFFF"
-	self.showcase.border_color = "#404040"
-	gears.table.crush(self.margin, margins(dpi(5)))
+	self.showcase = wibox.widget.progressbar()
+	animate.addBare(
+		{
+			callback = nil,
+			updateLoop = function()
+				print(wave(0,1, 10000))
+				return false
+			end
+		}
+	)
 	self.widget = Showcase:new()
 		:setup(
 			{

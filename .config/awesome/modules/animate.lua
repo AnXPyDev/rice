@@ -5,7 +5,9 @@ animate.fps = 60
 function animate.update()
   for i = 1, #animate.queue do
     if animate.queue[i].done then
-      animate.queue[i].callback()
+			if animate.queue[i].callback then
+				animate.queue[i].callback()
+			end
       table.remove(animate.queue, i)
       i = i - 1
     else
@@ -16,6 +18,14 @@ end
 
 function animate.add(args)
   animate.queue[#animate.queue + 1] = animation:new():create(args)
+	print("added animation", #animate.queue)
+	return animate.queue[#animate.queue]
+end
+
+function animate.addBare(args)
+  animate.queue[#animate.queue + 1] = bareAnimation:new():create(args)
+	print("added bare animation", #animate.queue)
+	return animate.queue[#animate.queue]
 end
 
 animate.timer = gears.timer {
@@ -41,6 +51,7 @@ function animation:create(args)
   self.start = args.start or {nil, nil}
   self.target = args.target
   self.amount = args.amount or 1
+	self.paused = false
   self.magnitude = args.magnitude or 0.5
   self.object.x = self.start[1] or self.object.x
   self.object.y = self.start[2] or self.object.y
@@ -53,7 +64,7 @@ function animation:create(args)
 end
 
 function animation:update()
-  if not self.done then
+  if not self.done and not self.paused then
     if self.type == "linear" then
       self.actualPos[1] = approach(self.actualPos[1], self.target[1], self.amount)
       self.actualPos[2] = approach(self.actualPos[2], self.target[2], self.amount)
@@ -73,4 +84,28 @@ end
 
 function animation:cancel()
   self.done = true
+end
+
+bareAnimation = {}
+
+function bareAnimation:new()
+  local ins = {}
+  setmetatable(ins, self)
+  self.__index = self
+  return ins
+end
+
+function bareAnimation:create(args)
+	self.updateLoop = args.updateLoop
+	self.callback = args.callback or nil
+	self.paused = false
+	self.done = false
+end
+
+function bareAnimation:update()
+	if not self.done and not self.paused then
+		if self.updateLoop() == true then
+			self.done = true
+		end
+	end
 end

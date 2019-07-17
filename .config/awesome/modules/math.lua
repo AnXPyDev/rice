@@ -31,7 +31,6 @@ function lerp(x, target, percentage, treshold)
   end
 
   return x + (target - x) * percentage
-  
 end
 
 function approach(x, target, amount)
@@ -44,4 +43,8 @@ function approach(x, target, amount)
   elseif target > x then
     return x + amount
   end
+end
+
+function wave(min, max, amp)
+	return (math.sin(amp * os.clock()) + 1) / 2 * math.abs(max - min) + min
 end
