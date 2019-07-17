@@ -50,10 +50,6 @@ function Slider:initWidgets()
       widgets.layout = wibox.layout.fixed.vertical
     end
 
-    for key, val in pairs(widgets) do
-      print(key,val)
-    end
-    
     widget.bare = wibox.widget(widgets)
     widget.margin = wibox.container.margin(widget.bare)
     widget.background = wibox.container.background(widget.margin)

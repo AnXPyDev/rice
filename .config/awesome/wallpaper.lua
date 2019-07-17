@@ -1,8 +1,20 @@
+currentWallpaper = ""
+
+-- Recurses until a new wallpaper is found
+
 function setWallpaper()
-  for name in io.popen("ls -1A ~/wallpapers | shuf -n 1", "r"):lines() do
-    for k, screen in pairs(screens.list) do
-      gears.wallpaper.maximized(PATH.home .. "wallpapers/" .. name, screen)
-    end
-    break
-  end
+	awful.spawn.easy_async_with_shell("ls -1A ~/wallpapers/ | shuf -n 1",
+		function(stdout, stderr, reason, exit_code)
+			local stdout = stdout:sub(1, -2)
+			print(currentWallpaper, stdout)
+			if stdout == currentWallpaper then
+				setWallpaper()
+			else
+				currentWallpaper = stdout
+				for k, screen in pairs(screens.list) do
+					gears.wallpaper.maximized(PATH.home .. "wallpapers/" .. currentWallpaper, screen)
+				end
+			end
+		end
+	)
 end

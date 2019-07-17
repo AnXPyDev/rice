@@ -3,28 +3,30 @@ animate.queue = {}
 animate.fps = 60
 
 function animate.update()
-  for i = 1, #animate.queue do
+	local i = 1
+	while true do
+		if i > #animate.queue then
+			break
+		end
     if animate.queue[i].done then
 			if animate.queue[i].callback then
 				animate.queue[i].callback()
 			end
       table.remove(animate.queue, i)
-      i = i - 1
     else
       animate.queue[i]:update()
+			i = i + 1
     end
   end
 end
 
 function animate.add(args)
   animate.queue[#animate.queue + 1] = animation:new():create(args)
-	print("added animation", #animate.queue)
 	return animate.queue[#animate.queue]
 end
 
 function animate.addBare(args)
   animate.queue[#animate.queue + 1] = bareAnimation:new():create(args)
-	print("added bare animation", #animate.queue)
 	return animate.queue[#animate.queue]
 end
 
@@ -100,6 +102,7 @@ function bareAnimation:create(args)
 	self.callback = args.callback or nil
 	self.paused = false
 	self.done = false
+	return self
 end
 
 function bareAnimation:update()

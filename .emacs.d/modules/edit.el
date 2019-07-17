@@ -38,11 +38,24 @@
 
 (defun edit/yank-line()
 	(interactive)
-	(edit/open-line)
-	(yank))
+	(save-excursion
+		(edit/open-line)
+		(yank)
+		(delete-blank-lines)))
 
 (defun edit/kill-whole-word()
 	(interactive)
 	(backward-char)
 	(forward-word)
 	(backward-kill-word 1))
+
+(defun edit/copy-whole-line()
+	(interactive)
+	(save-excursion
+		(kill-whole-line)
+		(yank)))
+
+(defun edit/yank-region()
+	(interactive)
+	(kill-region (region-beginning) (region-end))
+	(yank))

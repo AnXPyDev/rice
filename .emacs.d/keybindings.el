@@ -28,6 +28,7 @@
  "D" 'edit/insert-end-of-line
  "r" 'edit/set-region
  "R" 'edit/set-region-line
+ "J" 'edit/copy-whole-line
  "k" 'delete-char
  "K" 'edit/kill-whole-word
  "C-k" 'kill-whole-line
@@ -38,7 +39,10 @@
  "s" 'edit/open-line
  "S" (lambda() (interactive) (edit/open-line) (modal/enable-insert))
  "w" 'edit/open-line-above
- "W" (lambda() (interactive) (edit/open-line-above) (modal/enable-insert)))
+ "W" (lambda() (interactive) (edit/open-line-above) (modal/enable-insert))
+ "g" nil
+ "g o" 'isearch-forward
+ "g b" 'isearch-backward)
 
 (setq modal/region-map (make-composed-keymap (list (copy-keymap modal/emacs-map) (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
 
@@ -47,11 +51,24 @@
  "h" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-insert))
  "j" (lambda() (interactive) (copy-region-as-kill (region-beginning) (region-end)) (modal/enable-normal))
  "k" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-normal))
+ "l" 'edit/yank-region
  "C-g" (lambda() (interactive) (pop-mark) (modal/enable-normal))
  "M-q" (lambda() (interactive) (pop-mark) (modal/enable-normal))
  "r" 'er/expand-region
  "TAB" 'indent-region
- "<tab>" 'indent-region)
+ "<tab>" 'indent-region
+ "g" nil
+ "g o" 'isearch-forward
+ "g b" 'isearch-backward
+ "s" nil
+ "s (" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))
+ "s )" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))
+ "s {" (lambda() (interactive) (surround-region "{" "}") (modal/enable-normal))
+ "s }" (lambda() (interactive) (surround-region "{" "}") (modal/enable-normal))
+ "s [" (lambda() (interactive) (surround-region "[" "]") (modal/enable-normal))
+ "s ]" (lambda() (interactive) (surround-region "[" "]") (modal/enable-normal))
+ "s \"" (lambda() (interactive) (surround-region "\"" "\"") (modal/enable-normal))
+ "s '" (lambda() (interactive) (surround-region "'" "'") (modal/enable-normal)))
 
 (setq modal/insert-map (copy-keymap modal/emacs-map))
 

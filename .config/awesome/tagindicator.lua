@@ -118,19 +118,18 @@ function tagindicator.showAnimate()
     animate.add({
       object = tagindicator.wibox.widget,
       start = {
-	tagindicator.wibox.config.pos[1],
-	tagindicator.wibox.config.pos[2] - tagindicator.wibox.config.size[2]
+				tagindicator.wibox.config.pos[1],
+				tagindicator.wibox.config.pos[2] - tagindicator.wibox.config.size[2]
       },
       target = {
-	tagindicator.wibox.config.pos[1],
-	tagindicator.wibox.config.pos[2]
+				tagindicator.wibox.config.pos[1],
+				tagindicator.wibox.config.pos[2]
       },
       type = "interpolate",
       magnitude = 0.3,
       amount = 5,
       callback = function()
-	tagindicator.animationRunning = false
-	print("FFF")
+				tagindicator.animationRunning = false
       end
     })
   end
