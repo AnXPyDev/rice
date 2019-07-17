@@ -55,6 +55,7 @@ dofile(PATH.config .. "launcher.lua")
 dofile(PATH.config .. "powermenu.lua")
 dofile(PATH.config .. "internetindicator.lua")
 dofile(PATH.config .. "batteryindicator.lua")
+dofile(PATH.config .. "sysgraph.lua")
 dofile(PATH.config .. "statusbar.lua")
 dofile(PATH.config .. "keyboardlayout.lua")
 

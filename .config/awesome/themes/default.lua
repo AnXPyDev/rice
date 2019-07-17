@@ -3,7 +3,7 @@ local theme = {
   gaps = {dpi(8), dpi(24), dpi(40), 0},
   corner_radius = dpi(4),
   bg_normal = "#101010",
-  bg_focus = "#fe4848",
+  bg_focus = "#" .. os.capture("colorman 4c6ca1 hue 140"),--"#fe4848",
   fg_normal = "#909090",
   fg_focus = "#000000",
   titlebar_size = dpi(30),
@@ -91,9 +91,7 @@ theme.tagIndicator.wibox = {
   size = {nil, nil},
   pos = {nil, nil},
   bg = "#101010",
-  shape = function(cr, w, h)
-    return gears.shape.partially_rounded_rect(cr, w, h, false, false, true, true, theme.corner_radius)
-  end
+  shape = gears.shape.fixed_rounded_rect
 }
 
 

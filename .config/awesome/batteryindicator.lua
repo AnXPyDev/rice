@@ -39,7 +39,7 @@ end
 
 function batteryindicator:makeWidget()
 	self.progressbar = wibox.widget.progressbar()
-	self.progressbar.shape = gears.shape.rounded_bar
+	self.progressbar.shape = gears.shape.fixed_rounded_rect
 	self.progressbar.color = beautiful.bg_focus
 	self.progressbar.background_color = "#" .. os.capture("colorman " .. beautiful.bg_focus:sub(2) .. " / 1.5")
 	self.imageMargin = wibox.container.margin()

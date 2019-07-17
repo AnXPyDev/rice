@@ -34,7 +34,8 @@ function statusbar:initWidgets()
   local widgets = {
     datetimeFinal,
 		internetindicator.widget.widget.final,
-		batteryindicator.widget.widget.final
+		batteryindicator.widget.widget.final,
+		sysgraph.widget.widget.final
   }
   local widget = wibox.widget(
     gears.table.join(widgets, {layout = wibox.layout.fixed.vertical})

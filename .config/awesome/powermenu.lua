@@ -4,12 +4,10 @@ local powermenuArgs = {
   wibox = {
     size = {dpi(100), dpi(300)},
     pos = {
-      screens.primary.geometry.x + (screens.primary.geometry.width - dpi(100)),
+      screens.primary.geometry.x + (screens.primary.geometry.width - dpi(100)) - dpi(10),
       screens.primary.geometry.y + ((screens.primary.geometry.height - dpi(300)) / 2)
     },
-    shape = function(cr, w, h)
-      return gears.shape.partially_rounded_rect(cr, w, h, true, false, false, true, beautiful.corner_radius)
-    end
+    shape = gears.shape.fixed_rounded_rect
   },
   prompt = {
     hide = true,

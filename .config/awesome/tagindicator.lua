@@ -78,7 +78,7 @@ function tagindicator:setup()
   self.wibox.config.size[2] = beautiful.tagIndicator.wibox.size[2] or self.tags.config.size[2]
   self.wibox.config.pos = {}
   self.wibox.config.pos[1] = beautiful.tagIndicator.wibox.pos[1] or self.screen.geometry.x + (self.screen.geometry.width - self.wibox.config.size[1]) / 2
-  self.wibox.config.pos[2] = beautiful.tagIndicator.wibox.pos[2] or self.screen.geometry.y
+  self.wibox.config.pos[2] = beautiful.tagIndicator.wibox.pos[2] or self.screen.geometry.y + dpi(10)
   self.wibox.config.bg = beautiful.tagIndicator.wibox.bg or "#000000"
   self.wibox.config.ontop = true
   self.wibox.config.shape = beautiful.tagIndicator.wibox.shape or gears.shape.rectangle
