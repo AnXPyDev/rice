@@ -22,7 +22,7 @@ function statusbar:initWidgets()
   local datetime = wibox.widget {
     wibox.container.place(self.widgets.clock, "center"),
     wibox.container.place(self.widgets.date, "center"),
-    layout = wibox.layout.fixed.vertical
+    layout = wibox.layout.flex.vertical
   }
 
   local datetimeMargin = wibox.container.margin(datetime)

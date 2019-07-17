@@ -16,10 +16,6 @@ function internetindicator:refresh(output)
 	self.isWifi = lines[2] == "true"
 	self.signalStrength = tonumber(lines[3]) / 100
 	self.isConnected = lines[4] == "true"
-	print(self.wifiName)
-	print(self.isWifi)
-	print(self.signalStrength)
-	print(self.isConnected)
 	if self.isConnected then
 		if not isLastConnected then
 			naughty.notify({text = "Back online"})
@@ -83,7 +79,7 @@ function internetindicator:setup()
 				halign = "left",
 				size = {nil, dpi(50)},
 				showcaseMargins = margins(0, dpi(10), 0),
-				outsideMargins = margins(0, nil, dpi(10))
+				outsideMargins = margins(0, nil, dpi(10), 0)
 			}
 	)
 						--dasd

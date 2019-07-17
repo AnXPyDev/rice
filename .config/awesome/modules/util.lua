@@ -1,8 +1,8 @@
 function margins(l, r, t, b)
   l = l or 0
   r = r or l
-  t = t or l
-  b = b or l
+  t = t or r
+  b = b or t
   return {
     left = l,
     right = r,
