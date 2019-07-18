@@ -60,7 +60,7 @@ function internetindicator:setup()
 	self.image = wibox.widget.imagebox(self.images.ethernet.onBackground)
 
 	self.pie = {
-		background = wibox.container.background(wibox.widget.textbox(), colorful.primaryShades[2], function(cr, w, h) return self:pieShape(cr, 1) end),
+		background = wibox.container.background(wibox.widget.textbox(), colorful.primaryShades[10], function(cr, w, h) return self:pieShape(cr, 1) end),
 		foreground = wibox.container.background(wibox.widget.textbox(), colorful.onPrimary, function(cr, w, h) return self:pieShape(cr, self.signalStrength) end),
 		bare = nil,
 		size = {}
