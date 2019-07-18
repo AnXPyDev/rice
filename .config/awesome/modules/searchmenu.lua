@@ -260,7 +260,7 @@ function SearchMenu:setup(args)
       {"shape", gears.shape.rectangle},
       {"bg", "#000000"},
       {"ontop", true}
-    }, beautiful.searchMenu and beautiful.searchMenu.wibox or {}, self.wibox.config
+    }, themeful.searchMenu and themeful.searchMenu.wibox or {}, self.wibox.config
   )
 
   themer.apply({{"size"}, {"pos"}, {"margins"}, {"shape"}, {"bg"}, {"ontop"}}, args.wibox or {}, self.wibox.config)
@@ -288,7 +288,7 @@ function SearchMenu:setup(args)
 	  self.prompt.config.fontSize * 1.5 + self.prompt.config.margins.top + self.prompt.config.margins.bottom + self.prompt.config.outsideMargins.top + self.prompt.config.outsideMargins.bottom
 	}
       end, true}
-    }, beautiful.searchMenu and beautiful.searchMenu.prompt or {}, self.prompt.config
+    }, themeful.searchMenu and themeful.searchMenu.prompt or {}, self.prompt.config
   )
 
   themer.apply({{"hide"}, {"bg"}, {"fg"}, {"margins"}, {"outsideMargins"}, {"halign"}, {"valign"}, {"font"}, {"text"}, {"shape"}, {"fontSize"}, {"size"}}, args.prompt or {}, self.prompt.config)
@@ -319,7 +319,7 @@ function SearchMenu:setup(args)
       {"boundedMargins", margins(0)},
       {"boundedHalign", "center"},
       {"boundedValign", "center"}
-    }, beautiful.searchMenu and beautiful.searchMenu.elements, self.elements.config
+    }, themeful.searchMenu and themeful.searchMenu.elements, self.elements.config
   )
   themer.apply(
     {

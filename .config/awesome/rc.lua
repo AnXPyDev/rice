@@ -31,6 +31,7 @@ end
 
 local themeName = "default"
 
+colors = dofile(PATH.modules .. "colors.lua")
 dofile(PATH.modules .. "editdistance.lua")
 dofile(PATH.modules .. "sort.lua")
 dofile(PATH.modules .. "math.lua")

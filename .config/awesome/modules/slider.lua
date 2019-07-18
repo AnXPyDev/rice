@@ -105,48 +105,71 @@ function Slider:setup(args)
     widget = nil
   }
 
-  self.wibox.config.pos = args.wibox.pos or {self.screen.geometry.x, self.screen.geometry.y}
-  self.wibox.config.size = args.wibox.size or {dpi(400), dpi(200)}
-  self.wibox.config.bg = args.wibox.bg or beautiful.slider.wibox.bg or "#000000"
-  self.wibox.config.shape = args.wibox.shape or beautiful.slider.wibox.shape or gears.shape.rectangle
-  
+	themer.apply(
+		{
+			{"pos", {self.screen.geometry.x, self.screen.geometry.y}},
+			{"size", {dpi(400), dpi(200)}},
+			{"bg", "#000000"},
+			{"shape", gears.shape.rectangle}
+		},
+		themeful.slider and themeful.slider.wibox or nil, self.wibox.config
+	)
+
+	themer.apply(
+		{
+			{"pos"}, {"size"}, {"bg"}, {"shape"}
+		},
+		args.wibox or {}, self.wibox.config
+	)
+	
   self.sliders = {
     config = {},
     widgets = {}
   }
 
-  self.sliders.config.sliderArgs = args.sliders.sliderArgs or beautiful.slider.sliders.sliderArgs or {
-    bar_shape = gears.shape.rounded_bar,
-    handle_shape = gears.shape.circle,
-    bar_color = "#FFFFFF",
-    handle_color = "#FFFFFF",
-    bar_height = dpi(3)
-  }
+	themer.apply(
+		{
+			{"sliderArgs", {
+				bar_shape = gears.shape.rounded_bar,
+				handle_shape = gears.shape.circle,
+				bar_color = "#FFFFFF",
+				handle_color = "#FFFFFF",
+				bar_height = dpi(3)
+			}},
+			{"direction", "horizontal"},
+			{"sliderMargins", margins(0)},
+			{"sliderBg", "#000000"},
+			{"sliderShape", gears.shape.rectangle},
+			{"sliderOutsideMargins", margins(0)},
+			{"showcasePosition", "left"},
+			{"showcaseMargins", margins(0)},
+			{"showcaseBg", "#000000"},
+			{"showcaseShape", gears.shape.rectangle},
+			{"showcaseOutsideMargins", margins(0)},
+			{"sliderSize", {}},
+			{"showcaseSize", {}},
+			{"size", {}},
+			{"margins", margins(0)},
+			{"bg", "#000000"},
+			{"shape", gears.shape.rectangle},
+			{"outsideMargins", margins(0)}
+		},
+		themeful.slider and themeful.slider.sliders or {}, self.sliders.config
+	)
 
-  self.sliders.config.direction = args.sliders.direction or beautiful.slider.sliders.direction or "vertical"
-  if self.sliders.config.direction == "vertical" then
-    self.sliders.config.rotation = "east"
-  else
-    self.sliders.config.rotation = "north"
-  end
-  self.sliders.config.sliderMargins = args.sliders.sliderMargins or beautiful.slider.sliders.sliderMargins or margins(20)
-  self.sliders.config.sliderBg = args.sliders.sliderBg or beautiful.slider.sliders.sliderBg or "#000000"
-  self.sliders.config.sliderShape = args.sliders.sliderShape or beautiful.slider.sliders.sliderShape or gears.shape.rectangle
-  self.sliders.config.sliderOutsideMargins = args.sliders.sliderOutsideMargins or beautiful.slider.sliders.sliderOutsideMargins or margins(5)
-  self.sliders.config.showcasePosition = args.sliders.showcasePosition or beautiful.slider.sliders.showcasePosition or "left"
-  self.sliders.config.showcaseMargins = args.sliders.showcaseMargins or beautiful.slider.sliders.showcaseMargins or margins(20)
-  self.sliders.config.showcaseBg = args.sliders.showcaseBg or beautiful.slider.sliders.showcaseBg or "#000000"
-  self.sliders.config.showcaseShape = args.sliders.showcaseShape or beautiful.slider.sliders.showcaseShape or gears.shape.rectangle
-  self.sliders.config.showcaseOutsideMargins = args.sliders.showcaseOutsideMargins or beautiful.slider.sliders.showcaseOutsideMargins or margins(5)
-  self.sliders.config.sliderSize = args.sliders.sliderSize or beautiful.slider.sliders.sliderSize or {}
-  self.sliders.config.showcaseSize = args.sliders.showcaseSize or beautiful.slider.sliders.showcaseSize or {}
-  self.sliders.config.size = args.sliders.size or beautiful.slider.sliders.size or {}
+	themer.apply(
+		{
+			{"sliderArgs"},	{"direction"},	{"sliderMargins"},	{"sliderBg"},	{"sliderShape"},	{"sliderOutsideMargins"},	{"showcasePosition"},	{"showcaseMargins"},	{"showcaseBg"},	{"showcaseShape"},	{"showcaseOutsideMargins"},	{"sliderSize"},	{"size"},	{"bg"},	{"shape"},	{"outsideMargins"}
+		},
+		args.sliders or {}, self.sliders.config
+	)
 
-  self.sliders.config.margins = args.sliders.margins or beautiful.slider.sliders.margins or margins(0)
-  self.sliders.config.bg = args.sliders.bg or beautiful.slider.sliders.bg or "#AAAAAA"
-  self.sliders.config.shape = args.sliders.shape or beautiful.slider.sliders.shape or gears.shape.rectangle
-  self.sliders.config.outsideMargins = args.sliders.outsideMargins or beautiful.slider.sliders.outsideMargins or margins(2)
-
+	if self.sliders.config.direction == "horizontal" then
+		self.sliders.config.rotation = "north"
+	else
+		self.sliders.config.rotation = "east"
+	end
+	
   self.sliders.config.list = args.sliders.list
   
   self.widget = nil

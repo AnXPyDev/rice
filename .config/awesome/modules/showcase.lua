@@ -88,8 +88,6 @@ function Showcase:setup(args)
 	-- initialize widget table which holds all containers leading up and including the final widget
   self.widget = {}
 
-	-- load theme
-	
 	themer.apply(
 		{
 			{"text", nil},

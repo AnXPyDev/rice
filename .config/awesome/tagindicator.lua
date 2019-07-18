@@ -67,22 +67,33 @@ function tagindicator:setup()
     config = {},
     widgets = {}
   }
-  self.tags.config.size = beautiful.tagIndicator.tags.size
-  self.tags.config.shape = beautiful.tagIndicator.tags.shape or gears.shape.rectangle
-  self.tags.config.margins = beautiful.tagIndicator.tags.margins or {left = 0, right = 0, top = 0, bottom = 0}
-  self.tags.config.colors = beautiful.tagIndicator.tags.colors or {occupied = "#757575", focused = "#FFFFFF", normal = "#000000"}
 
-  self.wibox.config.margins = beautiful.tagIndicator.wibox.margins or {left = 0, right = 0, top = 0, bottom = 0}
-  self.wibox.config.size = {}
-  self.wibox.config.size[1] = beautiful.tagIndicator.wibox.size[1] or #tags.list * self.tags.config.size[1]
-  self.wibox.config.size[2] = beautiful.tagIndicator.wibox.size[2] or self.tags.config.size[2]
-  self.wibox.config.pos = {}
-  self.wibox.config.pos[1] = beautiful.tagIndicator.wibox.pos[1] or self.screen.geometry.x + (self.screen.geometry.width - self.wibox.config.size[1]) / 2
-  self.wibox.config.pos[2] = beautiful.tagIndicator.wibox.pos[2] or self.screen.geometry.y + dpi(10)
-  self.wibox.config.bg = beautiful.tagIndicator.wibox.bg or "#000000"
-  self.wibox.config.ontop = true
-  self.wibox.config.shape = beautiful.tagIndicator.wibox.shape or gears.shape.rectangle
+	themer.apply(
+		{
+			{"size", {dpi(40), dpi(40)}},
+			{"shape", gears.shape.rectangle},
+			{"margins", margins(0)},
+			{"colors.occupied", "#757575"},
+			{"colors.focused", "#FFFFFF"},
+			{"colors.normal", "#000000"}
+		},
+		themeful.tagIndicator and themeful.tagIndicator.tags, self.tags.config
+	)
 
+	themer.apply(
+		{
+			{"margins", margins(0)},
+			{{"size", 1}, #tags.list * self.tags.config.size[1]},
+			{{"size", 2}, self.tags.config.size[2]},
+			{{"pos", 1}, function() return self.screen.geometry.x + (self.screen.geometry.width - self.wibox.config.size[1]) / 2 end, true},
+			{{"pos", 2}, self.screen.geometry.y + dpi(10)},
+			{"bg", "#000000"},
+			{"ontop", true},
+			{"shape", gears.shape.rectangle}
+		},
+		themeful.tagIndicator and themeful.tagIndicator.wibox, self.wibox.config
+	)
+	
   self.aliveTimer = gears.timer {
     autostart = false,
     call_now = false,

@@ -11,15 +11,13 @@ local volumesliderArgs = {
   },
   sliders = {
     margins = margins(0),
-    bg = "#101010",
-    sliderBg = "#202020",
     direction = "horizontal",
     showcasePosition = "left",
     sliderSize = {dpi(400)},
-    showcaseSize = {dpi(75)},
-    sliderMargins = margins(dpi(20), dpi(20), dpi(10), dpi(10)),
-    showcaseMargins = margins(dpi(16)),
-    outsideMargins = margins(dpi(5)),
+    showcaseSize = {dpi(100)},
+		sliderMargins = margins(dpi(10), nil, dpi(15)),
+		showcaseMargins = margins(dpi(15)),
+		showcaseOutsideMargins = margins(0),
     list = {{showcase = wibox.widget.imagebox(volumeImage)}}
   }
 }
@@ -89,7 +87,7 @@ function volumecontrol:update()
   self.recentlyUpdated = true
   if self.isMuted then
     volumeslider.sliders.widgets[1].showcase.image = muteImage
-    volumeslider.sliders.widgets[1].showcaseBackground.bg = "#202020"
+    volumeslider.sliders.widgets[1].showcaseBackground.bg = colorful.backgroundShades[1]
   else
     volumeslider.sliders.widgets[1].showcase.image = volumeImage
     volumeslider.sliders.widgets[1].showcaseBackground.bg = volumeslider.sliders.config.showcaseBg
