@@ -63,7 +63,7 @@ gears.table.crush(themeful.slider.sliders, {
   sliderArgs = {
     bar_shape = gears.shape.rounded_bar,
     handle_shape = themeful.shape,
-    bar_color = colorful.onBackgroundShades[10],
+    bar_color = colorful.backgroundTints[4],
     handle_color = colorful.primary,
     bar_height = dpi(5)
   },

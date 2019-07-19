@@ -24,7 +24,7 @@ themeful = {}
 colorful = {}
 theme = {}
 
-local colorschemeName = "light"
+local colorschemeName = "dark"
 local themeName = "material"
 
 colors = dofile(PATH.modules .. "colors.lua")

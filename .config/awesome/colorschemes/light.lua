@@ -63,7 +63,7 @@ gears.table.crush(themeful.slider.sliders, {
   sliderArgs = {
     bar_shape = gears.shape.rounded_bar,
     handle_shape = themeful.shape,
-    bar_color = colorful.backgroundShades[10],
+    bar_color = colorful.backgroundShades[4],
     handle_color = colorful.primary,
     bar_height = dpi(5)
   },
@@ -74,7 +74,7 @@ gears.table.crush(themeful.slider.sliders, {
 
 gears.table.crush(themeful.statusBar.wibox, {
 	fg = colorful.onBackground,
-  bg = colorful.backgroundShades[4]
+  bg = colorful.backgroundShades[3]
 })
 
 gears.table.crush(themeful.statusBar.widgets, {
@@ -104,7 +104,7 @@ gears.table.crush(themeful.batteryIndicator, {
 
 gears.table.crush(themeful.loadScreen, {
 	startBg = "#000000",
-	targetBg = colorful.backgroundShades[4],
+	targetBg = colorful.backgroundShades[3],
 	imageColor = colorful.primary,
 	imageBg = colorful.background
 })
