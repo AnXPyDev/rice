@@ -20,8 +20,8 @@ function internetindicator:refresh(output)
 		if not isLastConnected then
 			naughty.notify({text = "Back online"})
 		end
-		self.widget.widget.background.bg = colorful.primary
-		self.widget.widget.background.fg = colorful.onPrimary
+		self.widget.widget.background.bg = self.config.bgOnline
+		self.widget.widget.background.fg = self.config.fgOnline
 		if self.isWifi then
 			self.widget:reset(self.wifiName, self.pie.final)
 		else
@@ -32,8 +32,8 @@ function internetindicator:refresh(output)
 		if isLastConnected then
 			naughty.notify({text = "Gone offline"})
 		end
-		self.widget.widget.background.bg = themeful.statusBar.widgets.bg
-		self.widget.widget.background.fg = colorful.onBackground
+		self.widget.widget.background.bg = self.config.bg
+		self.widget.widget.background.fg = self.config.fg
 		self.widget:reset("Offline", self.image)
 		self.image.image = self.images.ethernet.onBackground
 	end
@@ -57,11 +57,25 @@ function internetindicator:setup()
 		ethernet = materializeSurface(gears.surface.load(PATH.home .. "icons/ethernet.png")),
 	}
 
+	self.config = {}
+
+	themer.apply(
+		{
+			{"bg", "#000000"},
+			{"bgOnline", "#FFFFFF"},
+			{"fg", "#FFFFFF"},
+			{"fgOnline", "#000000"},
+			{"bg2Online", "#aaaaaa"},
+			{"shape", gears.shape.rectangle}
+		},
+		themeful.internetIndicator or {}, self.config
+	)
+	
 	self.image = wibox.widget.imagebox(self.images.ethernet.onBackground)
 
 	self.pie = {
-		background = wibox.container.background(wibox.widget.textbox(), colorful.primaryShades[10], function(cr, w, h) return self:pieShape(cr, 1) end),
-		foreground = wibox.container.background(wibox.widget.textbox(), colorful.onPrimary, function(cr, w, h) return self:pieShape(cr, self.signalStrength) end),
+		background = wibox.container.background(wibox.widget.textbox(), self.config.bg2Online, function(cr, w, h) return self:pieShape(cr, 1) end),
+		foreground = wibox.container.background(wibox.widget.textbox(), self.config.fgOnline, function(cr, w, h) return self:pieShape(cr, self.signalStrength) end),
 		bare = nil,
 		size = {}
 	}
@@ -77,13 +91,14 @@ function internetindicator:setup()
 	self.widget = Showcase:new()
 		:setup(
 			{
-				text = "Ethernet",
+				text = "Offline",
 				showcase = self.image,
 				bg = beautiful.bg_focus,
 				halign = "left",
 				size = {nil, dpi(50)},
 				showcaseMargins = margins(0, dpi(10), 0),
-				outsideMargins = margins(0, nil, dpi(10), 0)
+				outsideMargins = margins(0, nil, dpi(10), 0),
+				shape = self.config.shape
 			}
 	)
 						--dasd

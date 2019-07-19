@@ -39,9 +39,10 @@ end
 
 function batteryindicator:makeWidget()
 	self.progressbar = wibox.widget.progressbar()
-	self.progressbar.shape = themeful.shape
-	self.progressbar.color = colorful.primary
-	self.progressbar.background_color = colorful.primaryShades[10]
+	self.progressbar.shape = self.config.barShape
+	self.progressbar.bar_shape = self.config.barShape
+	self.progressbar.color = self.config.bgHl
+	self.progressbar.background_color = self.config.bg2Hl
 	self.imageMargin = wibox.container.margin()
 	gears.table.crush(self.imageMargin, margins(0, dpi(10), 0))
 	self.widgets = wibox.widget {
@@ -61,8 +62,23 @@ function batteryindicator:setup(args)
 		charging = materializeSurface(PATH.home .. "icons/battery_charging.png"),
 		charged = materializeSurface(PATH.home .. "icons/battery_charged.png")
 	}
+
+	self.config = {}
+
+	themer.apply(
+		{
+			{"bg", "#000000"},
+			{"fg", "#FFFFFF"},
+			{"bgHl", "#FFFFFF"},
+			{"bg2Hl", "#aaaaaa"},
+			{"barShape", gears.shape.rectangle},
+			{"shape", gears.shape.rectangle}
+		},
+		themeful.batteryIndicator or {}, self.config
+	)
+	
 	self:makeWidget()
-	self.imageMargin.widget = wibox.widget.imagebox()
+	self.imageMargin.widget = wibox.widget.imagebox(self.images.charging.onBackground)
 	self.animation = animate.addBare(
 		{
 			callback = nil,
@@ -83,6 +99,8 @@ function batteryindicator:setup(args)
 				halign = "left",
 				showcaseMargins = margins(0),
 				showcasePosition = "left",
+				shape = self.config.shape,
+				bg = self.config.bg
 			}
 					)
 						

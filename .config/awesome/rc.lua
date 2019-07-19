@@ -6,9 +6,9 @@ naughty = require("naughty")
 xresources = require("beautiful.xresources")
 stringdistance = require("stringdistance")
 dpi = xresources.apply_dpi
-dpi = function(x)
-  return x
-end
+-- dpi = function(x)
+--   return x
+-- end
 
 require("awful.autofocus")
 
@@ -20,18 +20,12 @@ PATH = {
   modules = os.getenv("HOME") .. "/.config/awesome/modules/"
 }
 
-function log(...)
-  local arg = {...}
- local result = ""
-  for i = 1, #arg do
-    result = result .. " " .. tostring(arg[i])
-  end
-  naughty.notify({text = result:sub(2)})
-  return arg[1]
-end
+themeful = {}
+colorful = {}
+theme = {}
 
 local colorschemeName = "dark"
-local themeName = "default"
+local themeName = "material"
 
 colors = dofile(PATH.modules .. "colors.lua")
 dofile(PATH.modules .. "editdistance.lua")
@@ -45,8 +39,10 @@ dofile(PATH.modules .. "slider.lua")
 dofile(PATH.modules .. "shape.lua")
 dofile(PATH.modules .. "showcase.lua")
 
-dofile(PATH.colorscheme .. colorschemeName .. ".lua")
 dofile(PATH.theme .. themeName .. ".lua")
+dofile(PATH.colorscheme .. colorschemeName .. ".lua")
+
+beautiful.init(theme)
 
 dofile(PATH.config .. "wallpaper.lua")
 dofile(PATH.config .. "screen.lua")
