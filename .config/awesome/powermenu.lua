@@ -63,19 +63,18 @@ function powermenu.showAnimate()
     animate.add({
       object = powermenu.wibox.widget,
       start = {
-	powermenuArgs.wibox.pos[1] + powermenuArgs.wibox.size[1],
-	powermenuArgs.wibox.pos[2]
+				powermenuArgs.wibox.pos[1] + powermenuArgs.wibox.size[1],
+				powermenuArgs.wibox.pos[2]
       },
       target = {
-	powermenuArgs.wibox.pos[1],
-	powermenuArgs.wibox.pos[2]
+				powermenuArgs.wibox.pos[1],
+				powermenuArgs.wibox.pos[2]
       },
       type = "interpolate",
       magnitude = 0.3,
       amount = 5,
       callback = function()
-	powermenu.animationRunning = false
-	print("FFF")
+				powermenu.animationRunning = false
       end
     })
   end

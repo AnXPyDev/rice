@@ -34,7 +34,6 @@ function materializeSurface(surface, colors)
 	local result = {}
 
 	for name, color in pairs(colors) do
-		print(name, color)
 		result[name] = gears.color.recolor_image(gears.surface.duplicate_surface(surface), color)
 	end
 

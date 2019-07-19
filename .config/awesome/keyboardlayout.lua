@@ -21,5 +21,6 @@ function nextKbdLayout()
   end
   currentKbdLayout = keys[next]
   awful.spawn.with_shell("setxkbmap " .. kbdlayouts[currentKbdLayout])
+	keyboardindicator:update()
 end
 --ßß==

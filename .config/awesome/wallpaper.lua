@@ -12,6 +12,7 @@ function setWallpaper()
 			else
 				currentWallpaper = stdout
 				for k, screen in pairs(screens.list) do
+					local currentWallpaperSurface = gears.surface.load_uncached()
 					gears.wallpaper.maximized(PATH.home .. "wallpapers/" .. currentWallpaper, screen)
 				end
 			end
