@@ -35,7 +35,8 @@
  "l" 'yank
  "L" 'edit/yank-line
  "f" 'swiper
- "/" 'undo
+ "/" 'undo-tree-undo
+ "\\" 'undo-tree-redo
  "s" 'edit/open-line
  "S" (lambda() (interactive) (edit/open-line) (modal/enable-insert))
  "w" 'edit/open-line-above
@@ -61,6 +62,7 @@
  "g o" 'isearch-forward
  "g b" 'isearch-backward
  "s" nil
+ "m" (lambda() (interactive) (modal/multiple-cursors-mode 1))
  "s (" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))
  "s )" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))
  "s {" (lambda() (interactive) (surround-region "{" "}") (modal/enable-normal))
@@ -93,3 +95,16 @@
 				:keymaps 'eshell-mode-map
 				"RET" 'eshell-toggle
 				"<return>" 'eshell-toggle)))
+
+(setq modal/multiple-cursors-map (make-sparse-keymap))
+
+(general-define-key
+ :keymaps 'modal/multiple-cursors-map
+ "n" 'mc/mark-next-like-this
+ "p" 'mc/mark-pop
+ "a" 'mc/mark-all-like-this
+ "r" 'mc/mark-in-region
+ "M-q" (lambda() (interactive) (pop-mark) (modal/multiple-cursors-mode 0) (modal/enable-normal))
+ "C-g" (lambda() (interactive) (pop-mark) (modal/multiple-cursors-mode 0) (modal/enable-normal)))
+
+(define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map)
