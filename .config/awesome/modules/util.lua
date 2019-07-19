@@ -42,5 +42,10 @@ function materializeSurface(surface, colors)
 	end
 
 	return result
-				
+end
+
+function loadScreensAnimate()
+	for k, screen in pairs(screens.list) do
+		screen.loadScreen:animate()
+	end
 end

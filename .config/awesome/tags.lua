@@ -18,4 +18,8 @@ tags.selected = tags.list[1]
 function tags.select(n)
   tags.selected = tags.list[clamp(n, 1, #tags.list)]
   tags.selected:view_only()
+	local clients = tags.selected:clients()
+	if #clients > 0 then
+		clients[1]:jump_to()
+	end
 end

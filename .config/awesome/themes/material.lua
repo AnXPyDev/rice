@@ -115,6 +115,11 @@ themeful.loadScreen = {
 	imagePath = PATH.home .. "icons/awesomewm.png"
 }
 
+themeful.titleButton = {
+	margins = margins(dpi(8)),
+	icon = PATH.home .. "icons/close.png"
+}
+
 theme.useless_gap = themeful.gap
 theme.titlebar_size = themeful.barSize
 theme.corner_radius = themeful.radius

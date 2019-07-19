@@ -109,6 +109,13 @@ gears.table.crush(themeful.loadScreen, {
 	imageBg = colorful.backgroundTints[2]
 })
 
+gears.table.crush(themeful.titleButton, {
+	bg = gears.color.transparent,
+	fg = colorful.onBackground,
+	bgHl = colorful.complementary,
+	fgHl = colorful.onComplementary
+})
+
 theme.bg_normal = colorful.background
 theme.fg_normal = colorful.foregroundShades[4]
 theme.bg_focus = colorful.backgroundTints[2]

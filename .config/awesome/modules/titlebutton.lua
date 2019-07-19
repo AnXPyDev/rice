@@ -8,7 +8,15 @@ function titlebutton:new()
 end
 
 function titlebutton:makeIcon()
-	self.icon = materializeSurface(gears.surface.load(self.config.icon), {normal = self.config.fg, highlight = self.config.fgHl})
+	if self.config.icon then
+		self.icon = materializeSurface(gears.surface.load(self.config.icon), {normal = self.config.fg, highlight = self.config.fgHl})
+	else
+		self.icon = {normal = nil, highlight = nil}
+	end
+end
+
+function titlebutton:setIcon(icon)
+	self.icon = icon
 end
 
 function titlebutton:setup(args)
@@ -44,6 +52,7 @@ function titlebutton:setup(args)
 	gears.table.crush(self.margin, self.config.margins)
 	self.background.bg = self.config.bg
 
+
 	self.background:connect_signal("mouse::enter", function()
 		self.image.image = self.icon.highlight
 		self.background.bg = self.config.bgHl
@@ -59,5 +68,9 @@ function titlebutton:setup(args)
 	self.background:connect_signal("button::press", function()
 		self.callback(self)
 	end)
+
+	if args.initCallback then
+		args.initCallback(self)
+	end
 	return self
 end

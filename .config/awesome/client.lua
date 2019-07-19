@@ -27,6 +27,10 @@ client.connect_signal("mouse::enter", function(c)
   c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
+local closeIcon = materializeSurface(gears.surface.load(PATH.home .. "icons/close.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
+local floatIcon = materializeSurface(gears.surface.load(PATH.home .. "icons/float.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
+local tileIcon = materializeSurface(gears.surface.load(PATH.home .. "icons/tile.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
+
 client.connect_signal("request::titlebars" ,
   function(c)
     awful.titlebar(c, {size = beautiful.titlebar_size, position = "top"}) : setup({
@@ -40,10 +44,57 @@ client.connect_signal("request::titlebars" ,
       },
       {
 				titlebutton:new()
-					:setup(c, PATH.home .. "icons/close.png",
-						function()
-							c:kill()
+					:setup({
+						initCallback = function(button)
+							if c.floating then
+								button.state = "tile"
+								button:setIcon(tiletIcon)
+								button.image.image = button.icon.normal
+							else
+								button.state = "float"
+								button:setIcon(floatIcon)
+								button.image.image = button.icon.normal
+							end
+							c:connect_signal("property::floating", function()
+								if c.floating then
+									button.state = "tile"
+									button:setIcon(tileIcon)
+									button.image.image = button.icon.normal
+									c.floating = true
+								else
+									button.state = "float"
+									button:setIcon(floatIcon)
+									button.image.image = button.icon.normal
+									c.floating = false
+								end
+							end)
+						end,
+						callback = function(button)
+							if button.state and button.state == "float" then
+								button.state = "tile"
+								button:setIcon(tileIcon)
+								button.background.bg = button.config.bg
+								button.image.image = button.icon.normal
+								c.floating = true
+							else
+								button.state = "float"
+								button:setIcon(floatIcon)
+								button.background.bg = button.config.bg
+								button.image.image = button.icon.normal
+								c.floating = false
+							end
 						end
+										}
+								).widget,
+				titlebutton:new()
+					:setup({
+						callback = function(button)
+							c:kill()
+						end,
+						initCallback = function(button)
+							button:setIcon(closeIcon)
+						end
+										}
 								).widget,
 				layout = wibox.layout.fixed.horizontal
 			},

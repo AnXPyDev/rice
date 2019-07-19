@@ -46,5 +46,7 @@ function approach(x, target, amount)
 end
 
 function wave(min, max, amp, off)
+	local amp = amp or 1
+	local off = off or 1
 	return (math.sin(amp * os.clock() + off) + 1) / 2 * math.abs(max - min) + min
 end

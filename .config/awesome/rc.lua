@@ -24,7 +24,7 @@ themeful = {}
 colorful = {}
 theme = {}
 
-local colorschemeName = "dark"
+local colorschemeName = "light"
 local themeName = "material"
 
 colors = dofile(PATH.modules .. "colors.lua")
@@ -39,6 +39,7 @@ dofile(PATH.modules .. "slider.lua")
 dofile(PATH.modules .. "shape.lua")
 dofile(PATH.modules .. "showcase.lua")
 dofile(PATH.modules .. "loadscreen.lua")
+dofile(PATH.modules .. "titlebutton.lua")
 
 dofile(PATH.theme .. themeName .. ".lua")
 dofile(PATH.colorscheme .. colorschemeName .. ".lua")
@@ -47,10 +48,6 @@ beautiful.init(theme)
 
 dofile(PATH.config .. "wallpaper.lua")
 dofile(PATH.config .. "screen.lua")
-
-for k, screen in pairs(screens.list) do
-	loadscreen:new():setup({screen = screen}):stage1()
-end
 
 dofile(PATH.config .. "layout.lua")
 dofile(PATH.config .. "tags.lua")
@@ -65,7 +62,6 @@ dofile(PATH.config .. "batteryindicator.lua")
 dofile(PATH.config .. "sysgraph.lua")
 dofile(PATH.config .. "keyboardindicator.lua")
 dofile(PATH.config .. "statusbar.lua")
-dofile(PATH.config .. "titlebutton.lua")
 
 dofile(PATH.config .. "keys.lua")
 dofile(PATH.config .. "buttons.lua")

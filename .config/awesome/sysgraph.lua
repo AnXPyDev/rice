@@ -49,7 +49,7 @@ function sysgraph:setup()
 	}
 	self.graph = wibox.widget {
 		layout = wibox.layout.stack,
-		wibox.container.rotate(self.ramgraph, "south"),
+		wibox.container.mirror(self.ramgraph, {vertical = true, horizontal = false}),
 		self.cpugraph
 	}
 	self.widget = Showcase:new()
