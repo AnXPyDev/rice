@@ -26,15 +26,23 @@ client.connect_signal("request::titlebars" ,
     awful.titlebar(c, {size = beautiful.titlebar_size, position = "top"}) : setup({
       nil,
       {
-	{
-	  align = "center",
-	  widget = awful.titlebar.widget.titlewidget(c)
-	},
-	layout = wibox.layout.flex.horizontal
+				{
+					align = "center",
+					widget = awful.titlebar.widget.titlewidget(c)
+				},
+				layout = wibox.layout.flex.horizontal
       },
-      nil,
+      {
+				titlebutton:new()
+					:setup(c, PATH.home .. "icons/close.png",
+						function()
+							c:kill()
+						end
+								).widget,
+				layout = wibox.layout.fixed.horizontal
+			},
       layout = wibox.layout.align.horizontal
 
-										 })
-										 
+																																								 })
+																																									 
 end)

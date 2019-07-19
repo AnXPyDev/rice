@@ -55,8 +55,8 @@
  "C-g" (lambda() (interactive) (pop-mark) (modal/enable-normal))
  "M-q" (lambda() (interactive) (pop-mark) (modal/enable-normal))
  "r" 'er/expand-region
- "TAB" (lambda() (interactive) (indent-region) (modal/enable-normal))
- "<tab>" (lambda() (interactive) (indent-region) (modal/enable-normal))
+ "TAB" (lambda() (interactive) (indent-region (region-beginning) (region-end)) (modal/enable-normal))
+ "<tab>" (lambda() (interactive) (indent-region (region-beginning) (region-end)) (modal/enable-normal))
  "g" nil
  "g o" 'isearch-forward
  "g b" 'isearch-backward

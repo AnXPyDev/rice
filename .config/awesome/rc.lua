@@ -16,6 +16,7 @@ PATH = {
   home = os.getenv("HOME") .. "/",
   config = os.getenv("HOME") .. "/.config/awesome/",
   theme = os.getenv("HOME") .. "/.config/awesome/themes/",
+  colorscheme = os.getenv("HOME") .. "/.config/awesome/colorschemes/",
   modules = os.getenv("HOME") .. "/.config/awesome/modules/"
 }
 
@@ -29,6 +30,7 @@ function log(...)
   return arg[1]
 end
 
+local colorschemeName = "dark"
 local themeName = "default"
 
 colors = dofile(PATH.modules .. "colors.lua")
@@ -43,6 +45,7 @@ dofile(PATH.modules .. "slider.lua")
 dofile(PATH.modules .. "shape.lua")
 dofile(PATH.modules .. "showcase.lua")
 
+dofile(PATH.colorscheme .. colorschemeName .. ".lua")
 dofile(PATH.theme .. themeName .. ".lua")
 
 dofile(PATH.config .. "wallpaper.lua")
@@ -59,6 +62,7 @@ dofile(PATH.config .. "batteryindicator.lua")
 dofile(PATH.config .. "sysgraph.lua")
 dofile(PATH.config .. "statusbar.lua")
 dofile(PATH.config .. "keyboardlayout.lua")
+dofile(PATH.config .. "titlebutton.lua")
 
 dofile(PATH.config .. "keys.lua")
 dofile(PATH.config .. "buttons.lua")
