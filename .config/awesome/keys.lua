@@ -7,6 +7,7 @@ keys.global = gears.table.join(
   awful.key({keys.mod}, "q", function() powermenu.showAnimate() end),
   awful.key({keys.mod}, "w", function() statusbar:show() end),
   awful.key({keys.mod}, "t", function() nextKbdLayout() end),
+  awful.key({keys.mod}, "u", function() loadscreen:new():setup({screen = screens.primary}):stage1() end),
   awful.key({keys.mod, "Shift"}, "r", awesome.restart),
   awful.key({keys.mod}, "Return", function() awful.spawn("xst") end),
   awful.key({keys.mod}, "n", function() awful.client.focus.global_bydirection("down") end),

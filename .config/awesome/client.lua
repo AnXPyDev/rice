@@ -10,11 +10,17 @@ client.connect_signal("manage", function(c)
 end)
 
 client.connect_signal("focus", function(c)
-  c.border_color = beautiful.bg_focus
-end)
-
-client.connect_signal("unfocus", function(c)
-  c.border_color = beautiful.bg_normal
+	-- c.opacity = 0.5
+	-- if c.animation and c.animation.done or not c.animation then
+	-- 	c.animation = animate.addBare({
+	-- 		updateLoop = function()
+	-- 			if not c or c.opacity == 1 then
+	-- 				return true
+	-- 			end
+	-- 			c.opacity = lerp(c.opacity, 1, 0.1, 0.01)
+	-- 		end
+	-- 	})
+	-- end
 end)
 
 client.connect_signal("mouse::enter", function(c)

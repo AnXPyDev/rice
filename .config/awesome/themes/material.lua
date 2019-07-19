@@ -110,6 +110,11 @@ themeful.batteryIndicator = {
 	barShape = themeful.shape
 }
 
+themeful.loadScreen = {
+	imageShape = themeful.shape,
+	imagePath = PATH.home .. "icons/awesomewm.png"
+}
+
 theme.useless_gap = themeful.gap
 theme.titlebar_size = themeful.barSize
 theme.corner_radius = themeful.radius

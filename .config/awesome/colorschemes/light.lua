@@ -51,7 +51,7 @@ gears.table.crush(themeful.tagIndicator.tags, {
 	colors = {
 		focused = colorful.primary,
 		occupied = colorful.complementary,
-		normal = colorful.backgroundShades[3]
+		normal = colorful.backgroundShades[4]
 	}
 })
 
@@ -63,7 +63,7 @@ gears.table.crush(themeful.slider.sliders, {
   sliderArgs = {
     bar_shape = gears.shape.rounded_bar,
     handle_shape = themeful.shape,
-    bar_color = colorful.onBackground,
+    bar_color = colorful.backgroundShades[10],
     handle_color = colorful.primary,
     bar_height = dpi(5)
   },
@@ -74,16 +74,16 @@ gears.table.crush(themeful.slider.sliders, {
 
 gears.table.crush(themeful.statusBar.wibox, {
 	fg = colorful.onBackground,
-  bg = colorful.background
+  bg = colorful.backgroundShades[4]
 })
 
 gears.table.crush(themeful.statusBar.widgets, {
-  bg = colorful.backgroundShades[4],
+  bg = colorful.background,
 	fg = colorful.onBackground
 })
 
 gears.table.crush(themeful.showcase, {
-	bg = colorful.backgroundShades[4],
+	bg = colorful.background,
 	fg = colorful.onBackground
 })
 
@@ -100,6 +100,13 @@ gears.table.crush(themeful.batteryIndicator, {
 	fg = themeful.showcase.fg,
 	bgHl = colorful.primary,
 	bg2Hl = colorful.primaryTints[5]
+})
+
+gears.table.crush(themeful.loadScreen, {
+	startBg = "#000000",
+	targetBg = colorful.backgroundShades[4],
+	imageColor = colorful.primary,
+	imageBg = colorful.background
 })
 
 theme.bg_normal = colorful.backgroundShades[4]

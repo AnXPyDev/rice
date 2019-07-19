@@ -102,6 +102,13 @@ gears.table.crush(themeful.batteryIndicator, {
 	bg2Hl = colorful.primaryTints[5]
 })
 
+gears.table.crush(themeful.loadScreen, {
+	startBg = "#000000",
+	targetBg = colorful.background,
+	imageColor = colorful.primary,
+	imageBg = colorful.backgroundTints[2]
+})
+
 theme.bg_normal = colorful.background
 theme.fg_normal = colorful.foregroundShades[4]
 theme.bg_focus = colorful.backgroundTints[2]

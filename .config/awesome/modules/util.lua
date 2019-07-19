@@ -25,6 +25,10 @@ end
 function materializeSurface(surface, colors)
 	local colors = colors or
 		{
+			primary = colorful.primary,
+			complementary = colorful.complementary,
+			background = colorful.background,
+			foreground = colorful.foreground,
 			onBackground = colorful.onBackground,
 			onForeground = colorful.onForeground,
 			onPrimary = colorful.onPrimary,
