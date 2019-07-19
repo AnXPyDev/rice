@@ -4,10 +4,10 @@
 
 (defun theme/gui()
   (interactive)
-  (package-use 'doom-themes)
-  (load-theme 'doom-one t)
+  (package-use 'kaolin-themes)
+  (load-theme 'kaolin-galaxy t)
   (global-hl-line-mode)
-  (when t
+  (when nil
     (set-face-attribute 'default nil
 			:background "#101010"
 			:foreground "#FFFFFF")

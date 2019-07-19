@@ -62,7 +62,7 @@
  "g o" 'isearch-forward
  "g b" 'isearch-backward
  "s" nil
- "m" (lambda() (interactive) (modal/multiple-cursors-mode 1))
+ "m" (lambda() (interactive) (modal/region-mode 0) (modal/multiple-cursors-mode 1))
  "s (" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))
  "s )" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))
  "s {" (lambda() (interactive) (surround-region "{" "}") (modal/enable-normal))
@@ -107,4 +107,4 @@
  "M-q" (lambda() (interactive) (pop-mark) (modal/multiple-cursors-mode 0) (modal/enable-normal))
  "C-g" (lambda() (interactive) (pop-mark) (modal/multiple-cursors-mode 0) (modal/enable-normal)))
 
-(define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map)
+(define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map) 

@@ -20,7 +20,9 @@
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
-(toggle-scroll-bar -1)
+(add-hook 'after-init-hook
+					(lambda() (interactive) (scroll-bar-mode 0)))
+;;(toggle-scroll-bar -1)
 
 
 (defadvice text-scale-increase (after text-scale-after activate)
