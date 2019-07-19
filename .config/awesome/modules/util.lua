@@ -21,3 +21,23 @@ function os.capture(cmd, raw)
   s = string.gsub(s, '[\n\r]+', ' ')
   return s
 end
+
+function materializeSurface(surface, colors)
+	local colors = colors or
+		{
+			onBackground = colorful.onBackground,
+			onForeground = colorful.onForeground,
+			onPrimary = colorful.onPrimary,
+			onComplementary = colorful.onComplementary
+		}
+
+	local result = {}
+
+	for name, color in pairs(colors) do
+		print(name, color)
+		result[name] = gears.color.recolor_image(gears.surface.duplicate_surface(surface), color)
+	end
+
+	return result
+				
+end

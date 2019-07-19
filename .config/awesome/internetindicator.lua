@@ -20,20 +20,22 @@ function internetindicator:refresh(output)
 		if not isLastConnected then
 			naughty.notify({text = "Back online"})
 		end
-		self.widget.widget.background.bg = beautiful.bg_focus
-		self.widget.widget.background.fg = "#FFFFFF"
+		self.widget.widget.background.bg = colorful.primary
+		self.widget.widget.background.fg = colorful.onPrimary
 		if self.isWifi then
 			self.widget:reset(self.wifiName, self.pie.final)
 		else
-			self.widget:reset("Ethernet", self.images.ethernet)
+			self.widget:reset("Ethernet", self.image)
+			self.image.image = self.images.ethernet.onPrimary
 		end
 	else
 		if isLastConnected then
 			naughty.notify({text = "Gone offline"})
 		end
-		self.widget.widget.background.bg = "#202020"
-		self.widget.widget.background.fg = beautiful.fg_normal
-		self.widget:reset("Offline", self.images.ethernet)
+		self.widget.widget.background.bg = themeful.statusBar.widgets.bg
+		self.widget.widget.background.fg = colorful.onBackground
+		self.widget:reset("Offline", self.image)
+		self.image.image = self.images.ethernet.onBackground
 	end
 	
 end
@@ -52,12 +54,14 @@ function internetindicator:setup()
 	self.signalStrength = 0
 	self.refreshInterval = 3
 	self.images = {
-		ethernet = wibox.widget.imagebox(PATH.home .. "icons/ethernet.png"),
+		ethernet = materializeSurface(gears.surface.load(PATH.home .. "icons/ethernet.png")),
 	}
 
+	self.image = wibox.widget.imagebox(self.images.ethernet.onBackground)
+
 	self.pie = {
-		background = wibox.container.background(wibox.widget.textbox(), "#" .. os.capture("colorman " .. beautiful.bg_focus:sub(2) .. " / 1.25"), function(cr, w, h) return self:pieShape(cr, 1) end),
-		foreground = wibox.container.background(wibox.widget.textbox(), "#FFFFFF", function(cr, w, h) return self:pieShape(cr, self.signalStrength) end),
+		background = wibox.container.background(wibox.widget.textbox(), colorful.primaryShades[2], function(cr, w, h) return self:pieShape(cr, 1) end),
+		foreground = wibox.container.background(wibox.widget.textbox(), colorful.onPrimary, function(cr, w, h) return self:pieShape(cr, self.signalStrength) end),
 		bare = nil,
 		size = {}
 	}
@@ -74,7 +78,7 @@ function internetindicator:setup()
 		:setup(
 			{
 				text = "Ethernet",
-				showcase = wibox.widget.imagebox(PATH.home .. "icons/ethernet.png"),
+				showcase = self.image,
 				bg = beautiful.bg_focus,
 				halign = "left",
 				size = {nil, dpi(50)},

@@ -108,29 +108,13 @@ function Showcase:setup(args)
 			{"size", {}},
 			{"font", beautiful.font}
 		},
-		beautiful.showcase or {},
+		themeful.showcase or {},
 		self.config
 	)
 
 	themer.apply(
 		{
-			{"text"},
-			{"showcase"},
-			{"disableText"},
-			{"disableShowcase"},
-			{"showcasePosition"},
-			{"showcaseMargins"},
-			{"textHalign"},
-			{"textValign"},
-			{"halign"},
-			{"valign"},
-			{"margins"},
-			{"outsideMargins"},
-			{"bg"},
-			{"fg"},
-			{"shape"},
-			{"size"},
-			{"font"}
+			{"text"},	{"showcase"},	{"disableText"},	{"disableShowcase"},	{"showcasePosition"},	{"showcaseMargins"},	{"textHalign"},	{"textValign"},	{"halign"},	{"valign"},	{"margins"},	{"outsideMargins"},	{"bg"},	{"fg"},	{"shape"},	{"size"},	{"font"}
 		},
 		args or {},
 		self.config

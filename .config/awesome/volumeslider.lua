@@ -1,5 +1,6 @@
-local muteImage = gears.surface.load(PATH.home .. "icons/volumeMute.png")
-local volumeImage = gears.surface.load(PATH.home .. "icons/volume.png")
+local muteImage = materializeSurface(gears.surface.load(PATH.home .. "icons/volumeMute.png"))
+local volumeImage =	materializeSurface(gears.surface.load(PATH.home .. "icons/volume.png"))
+
 local volumesliderArgs = {
   screen = screens.primary,
   wibox = {
@@ -18,7 +19,7 @@ local volumesliderArgs = {
 		sliderMargins = margins(dpi(10), nil, dpi(15)),
 		showcaseMargins = margins(dpi(15)),
 		showcaseOutsideMargins = margins(0),
-    list = {{showcase = wibox.widget.imagebox(volumeImage)}}
+    list = {{showcase = wibox.widget.imagebox(volumeImage.onPrimary)}}
   }
 }
 
@@ -86,10 +87,10 @@ end
 function volumecontrol:update()
   self.recentlyUpdated = true
   if self.isMuted then
-    volumeslider.sliders.widgets[1].showcase.image = muteImage
+    volumeslider.sliders.widgets[1].showcase.image = muteImage.onBackground
     volumeslider.sliders.widgets[1].showcaseBackground.bg = colorful.backgroundShades[1]
   else
-    volumeslider.sliders.widgets[1].showcase.image = volumeImage
+    volumeslider.sliders.widgets[1].showcase.image = volumeImage.onPrimary
     volumeslider.sliders.widgets[1].showcaseBackground.bg = volumeslider.sliders.config.showcaseBg
   end
   self.slider.value = self.volume

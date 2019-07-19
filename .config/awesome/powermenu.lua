@@ -1,3 +1,27 @@
+local powermenuIcons = {
+	poweroff = materializeSurface(gears.surface.load(PATH.home .. "icons/poweroff.png")),
+	reboot = materializeSurface(gears.surface.load(PATH.home .. "icons/reboot.png")),
+	suspend = materializeSurface(gears.surface.load(PATH.home .. "icons/suspend.png")),
+}
+
+local powermenuImages = {
+	poweroff = wibox.widget.imagebox(),
+	reboot = wibox.widget.imagebox(),
+	suspend = wibox.widget.imagebox()
+}
+
+local function makeBgFunction(name)
+	return function(i, isSelected)
+		if isSelected then
+			powermenuImages[name].image = powermenuIcons[name].onPrimary
+			return themeful.searchMenu.elements.bgHl
+		else
+			powermenuImages[name].image = powermenuIcons[name].onBackground
+			return themeful.searchMenu.elements.bg
+		end
+	end
+end
+
 local powermenuArgs = {
   searchDisabled = true,
   screen = screens.primary,
@@ -7,7 +31,6 @@ local powermenuArgs = {
       screens.primary.geometry.x + (screens.primary.geometry.width - dpi(100)) - dpi(10),
       screens.primary.geometry.y + ((screens.primary.geometry.height - dpi(300)) / 2)
     },
-    shape = gears.shape.fixed_rounded_rect
   },
   prompt = {
     hide = true,
@@ -19,22 +42,13 @@ local powermenuArgs = {
     valign = "center",
     iconPosition = "top",
     hideText = true,
-    margins = {
-      left = dpi(20),
-      right = dpi(20),
-      top = dpi(20),
-      bottom = dpi(20)
-    },
-    outsideMargins = {
-      left = dpi(10),
-      right = dpi(10),
-      top = dpi(10),
-      bottom = dpi(10)
-    },
+		margins = margins(20),
+		outsideMargins = margins(10),
+		showcaseMargins = margins(0),
     list = {
-      {name = "Power Off", callback = function() awful.spawn.with_shell("poweroff") end, showcase =  wibox.widget.imagebox(PATH.home .. "icons/poweroff.png")},
-      {name = "Reboot", callback = function() awful.spawn.with_shell("reboot") end, showcase =  wibox.widget.imagebox(PATH.home .. "icons/reboot.png")},
-      {name = "Suspend", callback = function() awful.spawn.with_shell("systemctl suspend") end, showcase =  wibox.widget.imagebox(PATH.home .. "icons/suspend.png")}
+      {name = "Power Off", callback = function() awful.spawn.with_shell("poweroff") end, showcase = powermenuImages.poweroff, bgFunc = makeBgFunction("poweroff")},
+      {name = "Reboot", callback = function() awful.spawn.with_shell("reboot") end, showcase = powermenuImages.reboot, bgFunc = makeBgFunction("reboot")},
+      {name = "Suspend", callback = function() awful.spawn.with_shell("systemctl suspend") end, showcase = powermenuImages.suspend, bgFunc = makeBgFunction("suspend")}
     }
   }
 }

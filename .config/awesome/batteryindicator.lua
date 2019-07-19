@@ -17,17 +17,17 @@ function batteryindicator:refresh(output)
 		self.percentage = 100
 		self.animation.paused = true
 		self.progressbar.value = self.percentage / 100
-		self.imageMargin.widget = self.images.charged
+		self.imageMargin.widget.image = self.images.charged.onBackground
 	else
 		if self.state == "charging" then
-			self.imageMargin.widget = self.images.charging
+			self.imageMargin.widget.image = self.images.charging.onBackground
 			self.animation.paused = false
 		elseif self.state == "depleting" then
-			self.imageMargin.widget = self.images.depleting
+			self.imageMargin.widget.image = self.images.depleting.onBackground
 			self.animation.paused = true
 			self.progressbar.value = self.percentage / 100
 		elseif self.state == "charged" then
-			self.imageMargin.widget = self.images.charged
+			self.imageMargin.widget.image = self.images.charged.onBackground
 			self.animation.paused = true
 			self.progressbar.value = self.percentage / 100
 		end
@@ -39,9 +39,9 @@ end
 
 function batteryindicator:makeWidget()
 	self.progressbar = wibox.widget.progressbar()
-	self.progressbar.shape = gears.shape.fixed_rounded_rect
-	self.progressbar.color = beautiful.bg_focus
-	self.progressbar.background_color = "#" .. os.capture("colorman " .. beautiful.bg_focus:sub(2) .. " / 1.5")
+	self.progressbar.shape = themeful.shape
+	self.progressbar.color = colorful.primary
+	self.progressbar.background_color = colorful.primaryShades[2]
 	self.imageMargin = wibox.container.margin()
 	gears.table.crush(self.imageMargin, margins(0, dpi(10), 0))
 	self.widgets = wibox.widget {
@@ -57,12 +57,12 @@ function batteryindicator:setup(args)
 	self.percentage = 0
 	self.refreshInterval = 3
 	self.images = {
-		depleting = wibox.widget.imagebox(PATH.home .. "icons/battery_depleting.png"),
-		charging = wibox.widget.imagebox(PATH.home .. "icons/battery_charging.png"),
-		charged = wibox.widget.imagebox(PATH.home .. "icons/battery_charged.png")
+		depleting = materializeSurface(PATH.home .. "icons/battery_depleting.png"),
+		charging = materializeSurface(PATH.home .. "icons/battery_charging.png"),
+		charged = materializeSurface(PATH.home .. "icons/battery_charged.png")
 	}
 	self:makeWidget()
-	self.imageMargin.widget = self.images.charging
+	self.imageMargin.widget = wibox.widget.imagebox()
 	self.animation = animate.addBare(
 		{
 			callback = nil,

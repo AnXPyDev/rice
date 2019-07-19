@@ -21,8 +21,8 @@ function sysgraph:setup()
 		step_shape = gears.shape.rounded_bar,
 		forced_width = 10000,
 		forced_height = 10000,
-		background_color = "#202020",
-		color = beautiful.bg_focus,
+		background_color = themeful.showcase.bg,
+		color = colorful.primary,
 		widget = wibox.widget.graph
 	}
 	self.refreshTimer = gears.timer {

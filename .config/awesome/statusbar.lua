@@ -56,17 +56,28 @@ function statusbar:setup()
     config = {}
   }
 
-  self.wibox.config.offset = beautiful.statusBar.wibox.offset or dpi(10)
-  self.wibox.config.size = {dpi(300), self.screen.geometry.height - 2 * self.wibox.config.offset}
-  self.wibox.config.pos = {self.screen.geometry.x + (self.screen.geometry.width - (self.wibox.config.size[1] + self.wibox.config.offset)), self.screen.geometry.y + self.wibox.config.offset}
-  self.wibox.config.shape = beautiful.statusBar.wibox.shape or gears.shape.fixed_rounded_rect or gears.shape.rectangle
-  self.wibox.config.bg = beautiful.statusBar.wibox.bg or beautiful.bg_normal or "#000000"
-  self.wibox.config.fg = beautiful.statusBar.wibox.fg or beautiful.fg_focus or "#FFFFFF"
-  self.wibox.config.margins = beautiful.statusBar.wibox.margins or margins(dpi(10))
-
-  self.widgets.config.bg = beautiful.statusBar.widgets.bg or "#202020"
-  self.widgets.config.shape = beautiful.statusBar.widgets.shape or gears.shape.fixed_rounded_rect or gears.shape.rectangle
-  
+	themer.apply(
+		{
+			{"offset", dpi(10)},
+			{"size", function () return {dpi(300), self.screen.geometry.height - 2 * self.wibox.config.offset} end, true},
+			{"pos", function() return {self.screen.geometry.x + (self.screen.geometry.width - (self.wibox.config.size[1] + self.wibox.config.offset)), self.screen.geometry.y + self.wibox.config.offset} end, true},
+			{"shape", gears.shape.rectangle},
+			{"bg", "#000000"},
+			{"fg", "#FFFFFF"},
+			{"margins", margins(0)}
+		},
+		themeful.statusBar and themeful.statusBar.wibox or {}, self.wibox.config
+	)
+	
+	themer.apply(
+		{
+			{"bg", "#202020"},
+			{"fg", "#FFFFFF"},
+			{"shape", gears.shape.rectangle}
+		},
+		themeful.statusBar and themeful.statusBar.widgets or {}, self.widgets.config
+	)
+	
   self.widget = nil
 
   self.aliveTimer = gears.timer {
