@@ -30,6 +30,10 @@ function animate.addBare(args)
 	return animate.queue[#animate.queue]
 end
 
+function animate.addBackground(args)
+  animate.queue[#animate.queue + 1] = backgroundAnimation:new():create(args)
+	return animate.queue[#animate.queue]
+end
 animate.timer = gears.timer {
   autostart = true,
   timeout = 1 / animate.fps,
@@ -109,6 +113,48 @@ function bareAnimation:update()
 	if not self.done and not self.paused then
 		if self.updateLoop() == true then
 			self.done = true
+		end
+	end
+end
+
+backgroundAnimation = {}
+
+function backgroundAnimation:new()
+  local ins = {}
+  setmetatable(ins, self)
+  self.__index = self
+  return ins
+end
+
+function backgroundAnimation:create(args)
+	self.element = args.element
+	self.index = args.index or "bg"
+	self.startColor = args.startColor or colors.new("#000000")
+	self.targetColor = args.targetColor or colors.new("#FFFFFF")
+	self.color = args.color or colors.new(self.startColor:to_rgb())
+	if args.hue then
+		if args.hue == "color" then
+			self.targetColor.H = self.color.H
+		elseif args.hue == "target" then
+			self.color.H = self.targetColor.H
+		end
+	end
+	self.amp = args.amplitude or 0.5
+	self.callback = args.callback or nil
+	self.paused = false
+	self.done = false
+	return self
+end
+
+function backgroundAnimation:update()
+	if not self.done and not self.paused then
+		lerpColor(self.color, self.targetColor, self.amp, 0.01)
+		print(self.color:to_rgb())
+		self.element[self.index] = self.color:to_rgb()
+		if self.color.H == self.targetColor.H and
+			self.color.S == self.targetColor.S and
+				self.color.L == self.targetColor.L then
+					self.done = true
 		end
 	end
 end

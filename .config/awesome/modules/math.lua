@@ -33,6 +33,12 @@ function lerp(x, target, percentage, treshold)
   return x + (target - x) * percentage
 end
 
+function lerpColor(color, target, percentage, treshold)
+	color.H = lerp(color.H, target.H, percentage, treshold)
+	color.S = lerp(color.S, target.S, percentage, treshold)
+	color.L = lerp(color.L, target.L, percentage, treshold)
+end
+
 function approach(x, target, amount)
   amount = math.abs(amount)
   if math.abs(target - x) < amount then

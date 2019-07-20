@@ -25,9 +25,6 @@ function loadscreen:setup(args)
 	)
 
 	self.animationRunning = false
-	self.startColor = colors.new(self.config.startBg)
-	self.targetColor = colors.new(self.config.targetBg)
-	self.currentColor = colors.new("#000000")
 	self.icon = materializeSurface(gears.surface.load(PATH.home .. "icons/awesomewm.png"), {color = self.config.imageColor})
 	self.image = wibox.widget.imagebox(self.icon.color)
 	self.imageMargin = wibox.container.margin(self.image)
@@ -80,22 +77,12 @@ end
 function loadscreen:stage1()
 	self.wibox.opacity = 1
 	self.wibox.visible = true
-	self.currentColor.H = self.startColor.H
-	self.currentColor.S = self.startColor.S
-	self.currentColor.L = self.startColor.L
-	self.wibox.bg = self.currentColor:to_rgb()
-	animate.addBare({
-		updateLoop = function()
-			self.currentColor.H = lerp(self.currentColor.H, self.targetColor.H, 0.05, 0.01)
-			self.currentColor.S = lerp(self.currentColor.S, self.targetColor.S, 0.05, 0.01)
-			self.currentColor.L = lerp(self.currentColor.L, self.targetColor.L, 0.05, 0.01)
-			self.wibox.bg = self.currentColor:to_rgb()
-			if self.currentColor.H == self.targetColor.H and
-				self.currentColor.S == self.targetColor.S and
-					self.currentColor.L == self.targetColor.L then
-						return true
-			end
-		end,
+	animate.addBackground({
+		startColor = colors.new(self.config.startBg),
+		targetColor = colors.new(self.config.targetBg),
+		element = self.wibox,
+		index = "bg",
+		amplitude = 0.05,
 		callback = function()
 			self:stage2()
 		end

@@ -35,6 +35,8 @@ function volumecontrol:setup()
   self.volume = 0
   self.step = 5
   self.recentlyUpdated = false
+	self.showcaseAnimation = {}
+	self.showcaseColor = colors.new(volumeslider.sliders.config.bg)
   self.aliveTimer = gears.timer {
     timeout = 2,
     single_shot = true,
@@ -87,11 +89,26 @@ end
 function volumecontrol:update()
   self.recentlyUpdated = true
   if self.isMuted then
+		self.showcaseAnimation.done = true
     volumeslider.sliders.widgets[1].showcase.image = muteImage.onBackground
-    volumeslider.sliders.widgets[1].showcaseBackground.bg = colorful.backgroundShades[1]
+    volumeslider.sliders.widgets[1].showcaseBackground.bg = colorful.background
+		self.showcaseAnimation = animate.addBackground({
+			element = volumeslider.sliders.widgets[1].showcaseBackground,
+			color = self.showcaseColor,
+			targetColor = colors.new(volumeslider.sliders.config.bg),
+			amplitude = 0.2,
+			hue = "color"
+		})
   else
+		self.showcaseAnimation.done = true
     volumeslider.sliders.widgets[1].showcase.image = volumeImage.onPrimary
-    volumeslider.sliders.widgets[1].showcaseBackground.bg = volumeslider.sliders.config.showcaseBg
+		self.showcaseAnimation = animate.addBackground({
+			element = volumeslider.sliders.widgets[1].showcaseBackground,
+			color = self.showcaseColor,
+			targetColor = colors.new(volumeslider.sliders.config.showcaseBg),
+			amplitude = 0.2,
+			hue = "target"
+		})
   end
   self.slider.value = self.volume
 end
