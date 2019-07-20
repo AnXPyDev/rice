@@ -25,6 +25,14 @@ colorful.onPrimaryTints = gears.table.map(function(x) return x:to_rgb() end, col
 colorful.onComplementaryShades = gears.table.map(function(x) return x:to_rgb() end, colors.new(colorful.onComplementary):shades(colorful.tintCount))
 colorful.onComplementaryTints = gears.table.map(function(x) return x:to_rgb() end, colors.new(colorful.onComplementary):tints(colorful.tintCount))
 
+if colorful.onPrimary == colorful.background then
+	colorful.primaryTints, colorful.primaryShades = colorful.primaryShades, colorful.primaryTints
+end
+
+if colorful.onComplementary == colorful.background then
+	colorful.complementaryTints, colorful.complementaryShades = colorful.complementaryShades, colorful.complementaryTints
+end
+
 gears.table.crush(themeful.searchMenu.prompt, {
 	bg = colorful.backgroundTints[1],
 	fg = colorful.onBackground,

@@ -104,7 +104,7 @@
  "p" 'mc/mark-pop
  "a" 'mc/mark-all-like-this
  "r" 'mc/mark-in-region
- "M-q" (lambda() (interactive) (pop-mark) (modal/multiple-cursors-mode 0) (modal/enable-region))
- "C-g" (lambda() (interactive) (pop-mark) (modal/multiple-cursors-mode 0) (modal/enable-region)))
+ "M-q" (lambda() (interactive) (pop-mark) (modal/multiple-cursors-mode 0) (modal/enable-normal))
+ "C-g" (lambda() (interactive) (pop-mark) (modal/multiple-cursors-mode 0) (modal/enable-normal)))
 
 (define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map) 
