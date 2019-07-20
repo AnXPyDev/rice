@@ -37,8 +37,9 @@ function loadscreen:setup(args)
 	gears.table.crush(self.imageMargin, margins(dpi(20)))
 	self.imagePlace = wibox.container.place(self.imageBackground)
 	self.imageRadius = 0
+	self.imageAngle = 0
 	self.image.clip_shape = function(cr, w, h)
-		return gears.shape.transform(gears.shape.circle) : translate(dpi(20), dpi(20)) (cr, dpi(200), dpi(200), self.imageRadius)
+		return gears.shape.transform(gears.shape.pie) : translate(dpi(20), dpi(20)) (cr, dpi(200), dpi(200), 0, self.imageAngle, self.imageRadius)
 	end
 	self.radiusAnimation = nil
 	self.wibox = wibox {
@@ -61,10 +62,12 @@ function loadscreen:animate()
 	if not self.animationRunning then
 		self.animationRunning = true
 		self.imageRadius = 0
+		self.imageAngle = 0
 		self.radiusAnimation = animate.addBare({
 			updateLoop = function()
 				self.imageRadius = lerp(self.imageRadius, self.imageMargin.forced_width, 0.07, 0.01)
-				if self.imageRadius == self.imageMargin.forced_width then
+				self.imageAngle = lerp(self.imageAngle, math.pi * 2, 0.2, 0.01)
+				if self.imageRadius == self.imageMargin.forced_width and self.imageAngle == math.pi * 2 then
 					return true
 				end
 				self.image:emit_signal("widget::redraw_needed")

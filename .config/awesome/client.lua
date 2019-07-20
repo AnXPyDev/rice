@@ -10,17 +10,7 @@ client.connect_signal("manage", function(c)
 end)
 
 client.connect_signal("focus", function(c)
-	-- c.opacity = 0.5
-	-- if c.animation and c.animation.done or not c.animation then
-	-- 	c.animation = animate.addBare({
-	-- 		updateLoop = function()
-	-- 			if not c or c.opacity == 1 then
-	-- 				return true
-	-- 			end
-	-- 			c.opacity = lerp(c.opacity, 1, 0.1, 0.01)
-	-- 		end
-	-- 	})
-	-- end
+
 end)
 
 client.connect_signal("mouse::enter", function(c)
@@ -33,13 +23,29 @@ local tileIcon = materializeSurface(gears.surface.load(PATH.home .. "icons/tile.
 
 client.connect_signal("request::titlebars" ,
   function(c)
+		local buttons = gears.table.join(
+			awful.button({ }, 1, function()
+				client.focus = c
+				c:raise()
+				awful.mouse.client.move(c)
+			end),
+			awful.button({ }, 3, function()
+				client.focus = c
+				c:raise()
+				awful.mouse.client.resize(c)
+			end)
+		)
     awful.titlebar(c, {size = beautiful.titlebar_size, position = "top"}) : setup({
-      nil,
+			{
+				layout = wibox.layout.flex.horizontal,
+				buttons = buttons
+			},
       {
 				{
 					align = "center",
 					widget = awful.titlebar.widget.titlewidget(c)
 				},
+				buttons = buttons,
 				layout = wibox.layout.flex.horizontal
       },
       {
@@ -48,7 +54,7 @@ client.connect_signal("request::titlebars" ,
 						initCallback = function(button)
 							if c.floating then
 								button.state = "tile"
-								button:setIcon(tiletIcon)
+								button:setIcon(tileIcon)
 								button.image.image = button.icon.normal
 							else
 								button.state = "float"
