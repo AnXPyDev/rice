@@ -1,3 +1,12 @@
+-- /keyboardlayout.lua
+
+--[[
+	This file is a part of my (notabug.org/anxpydev) awesomewm configuration.
+	Feel free to use anything from this file for your configuration, but be aware that
+	this file might depend on other modules from my config.
+]]--
+
+
 kbdlayouts = {}
 
 kbdlayouts["English"] = "us"
@@ -7,6 +16,8 @@ kbdlayouts["German"] = "de qwerty"
 currentKbdLayout = "English"
 
 awful.spawn.with_shell("setxkbmap " .. kbdlayouts[currentKbdLayout])
+
+-- Cycles through defined keyboard layouts and updates "keyboardindicator"
 
 function nextKbdLayout()
   local keys = gears.table.keys(kbdlayouts)
@@ -23,4 +34,3 @@ function nextKbdLayout()
   awful.spawn.with_shell("setxkbmap " .. kbdlayouts[currentKbdLayout])
 	keyboardindicator:update()
 end
---ßß==

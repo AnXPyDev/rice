@@ -1,4 +1,14 @@
+-- /buttons.lua
+
+--[[
+	This file is a part of my (notabug.org/anxpydev) awesomewm configuration.
+	Feel free to use anything from this file for your configuration, but be aware that
+	this file might depend on other modules from my config.
+]]--
+
 buttons = {}
+
+-- Creates buttons which are later used in /rules.lua
 
 buttons.client = gears.table.join(
   awful.button({ }, 1, function (c)
