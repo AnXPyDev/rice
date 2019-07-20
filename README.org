@@ -1,0 +1,11 @@
+* GNUplusRice
+
+These are my dotfiles for GNU/Linux.
+Most of the files are either Emacs or AwesomeWM related.
+
+** Programs i use:
+*** Emacs - Text Editor
+*** Emacs - Terminal Emulator
+*** Firefox - Browser
+*** AwesomeWM - Window Manager
+*** AwesomeWM - Everything Else
