@@ -20,7 +20,15 @@ function internetindicator:refresh(output)
 		if not isLastConnected then
 			naughty.notify({text = "Back online"})
 		end
-		self.widget.widget.background.bg = self.config.bgOnline
+		self.colorAnimation.done = true
+		self.colorAnimation = animate.addColor({
+			element = self.widget.widget.background,
+			color = self.color,
+			targetColor = colors.new(self.config.bgOnline),
+			hue = "target",
+			amplitude = 0.2,
+			treshold = 0.01
+		})
 		self.widget.widget.background.fg = self.config.fgOnline
 		if self.isWifi then
 			self.widget:reset(self.wifiName, self.pie.final)
@@ -29,10 +37,19 @@ function internetindicator:refresh(output)
 			self.image.image = self.images.ethernet.onPrimary
 		end
 	else
+
 		if isLastConnected then
 			naughty.notify({text = "Gone offline"})
 		end
-		self.widget.widget.background.bg = self.config.bg
+		self.colorAnimation.done = true
+		self.colorAnimation = animate.addColor({
+			element = self.widget.widget.background,
+			color = self.color,
+			targetColor = colors.new(self.config.bg),
+			hue = "color",
+			amplitude = 0.2,
+			treshold = 0.01
+		})
 		self.widget.widget.background.fg = self.config.fg
 		self.widget:reset("Offline", self.image)
 		self.image.image = self.images.ethernet.onBackground
@@ -88,6 +105,9 @@ function internetindicator:setup()
 
 	self.pie.final = wibox.container.margin(self.pie.bare)
 
+	self.colorAnimation = {}
+	self.color = colors.new(self.config.bg)
+	
 	self.widget = Showcase:new()
 		:setup(
 			{

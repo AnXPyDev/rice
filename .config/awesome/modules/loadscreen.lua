@@ -77,7 +77,7 @@ end
 function loadscreen:stage1()
 	self.wibox.opacity = 1
 	self.wibox.visible = true
-	animate.addBackground({
+	animate.addColor({
 		startColor = colors.new(self.config.startBg),
 		targetColor = colors.new(self.config.targetBg),
 		element = self.wibox,

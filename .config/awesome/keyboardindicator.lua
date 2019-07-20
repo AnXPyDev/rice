@@ -3,6 +3,8 @@ keyboardindicator = {}
 function keyboardindicator:setup()
 	self.icon = materializeSurface(gears.surface.load(PATH.home .. "icons/keyboard.png"))
 	self.image = wibox.widget.imagebox(self.icon.onComplementary)
+	self.color = colors.new(colorful.complementary)
+	self.colorAnimation = {}
 	self.widget = Showcase:new()
 		:setup(
 			{
@@ -27,7 +29,25 @@ function keyboardindicator:setup()
 end
 
 function keyboardindicator:update()
+	self.colorAnimation.done = true
+	self.colorAnimation.callback = function() end
 	self.widget:reset(currentKbdLayout .. " " .. kbdlayouts[currentKbdLayout]:upper())
+	self.colorAnimation = animate.addColor({
+		element = self.widget.widget.background,
+		color = self.color,
+		targetColor = colors.new(colorful.complementaryShades[4]),
+		amplitude = 0.3,
+		treshold = 0.01,
+		callback = function()
+			self.colorAnimation = animate.addColor({
+				element = self.widget.widget.background,
+				color = self.color,
+				targetColor = colors.new(colorful.complementary),
+				amplitude = 0.2,
+				treshold = 0.01
+			})
+		end
+	})
 end
 
 keyboardindicator:setup()

@@ -343,7 +343,6 @@ function SearchMenu:setup(args)
   self.results = {}
   self.selectedElement = nil
   self.bindings = {}
-
   self:initPrompt()
   self:generateElements(args.elements.list)  self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]
   self:initElements()

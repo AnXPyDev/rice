@@ -2,6 +2,8 @@ tagindicator = {}
 
 function tagindicator:initWidgets()
   for i = 1, #tags.list do
+		self.colors[i] = colors.new(self.tags.config.colors.normal)
+		self.colorAnimations[i] = {}
     self.tags.widgets[i] = {}
     self.tags.widgets[i].background = wibox.container.background(
       wibox.widget.textbox(),
@@ -46,7 +48,18 @@ function tagindicator:update()
     elseif #tags.list[i]:clients() > 0 then
       color = self.tags.config.colors.occupied
     end
-    self.tags.widgets[i].background.bg = color
+		if not (self.colorAnimations[i].targetColor and (color == self.colorAnimations[i].targetColor:to_rgb())) or false then
+			self.colorAnimations[i].done = true
+			self.colorAnimations[i] = animate.addColor({
+				startColor = colors.new(self.tags.config.colors.normal),
+				targetColor = colors.new(color),
+				color = self.colors[i],
+				element = self.tags.widgets[i].background,
+				hue = "target",
+				amplitude = 0.1,
+				treshold = 0.01
+			})
+		end
   end
 end
 
@@ -67,6 +80,8 @@ function tagindicator:setup()
     config = {},
     widgets = {}
   }
+	self.colorAnimations = {}
+	self.colors = {}
 
 	themer.apply(
 		{

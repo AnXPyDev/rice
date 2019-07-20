@@ -88,25 +88,26 @@ end
 
 function volumecontrol:update()
   self.recentlyUpdated = true
+	self.showcaseAnimation.done = true
   if self.isMuted then
-		self.showcaseAnimation.done = true
     volumeslider.sliders.widgets[1].showcase.image = muteImage.onBackground
     volumeslider.sliders.widgets[1].showcaseBackground.bg = colorful.background
-		self.showcaseAnimation = animate.addBackground({
+		self.showcaseAnimation = animate.addColor({
 			element = volumeslider.sliders.widgets[1].showcaseBackground,
 			color = self.showcaseColor,
 			targetColor = colors.new(volumeslider.sliders.config.bg),
 			amplitude = 0.2,
+			treshold = 0.01,
 			hue = "color"
 		})
   else
-		self.showcaseAnimation.done = true
     volumeslider.sliders.widgets[1].showcase.image = volumeImage.onPrimary
-		self.showcaseAnimation = animate.addBackground({
+		self.showcaseAnimation = animate.addColor({
 			element = volumeslider.sliders.widgets[1].showcaseBackground,
 			color = self.showcaseColor,
 			targetColor = colors.new(volumeslider.sliders.config.showcaseBg),
 			amplitude = 0.2,
+			treshold = 0.01,
 			hue = "target"
 		})
   end
