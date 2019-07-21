@@ -1,6 +1,14 @@
+-- /modules/animate.lua
+
+--[[
+	This file is a part of my (notabug.org/anxpydev) awesomewm configuration.
+	Feel free to use anything from this file for your configuration, but be aware that
+	this file might depend on other modules from my config.
+]]--
+
 animate = {}
-animate.queue = {}
-animate.fps = 60
+animate.queue = {} -- Stores currently running animations
+animate.fps = 60 -- How many times per second animations get updated
 
 function animate.update()
 	local i = 1
@@ -8,6 +16,7 @@ function animate.update()
 		if i > #animate.queue then
 			break
 		end
+		-- Deletes animations if they finished
     if animate.queue[i].done then
 			if animate.queue[i].callback then
 				animate.queue[i].callback()
@@ -19,6 +28,8 @@ function animate.update()
     end
   end
 end
+
+-- Adds different types of animations to the queue
 
 function animate.add(args)
   animate.queue[#animate.queue + 1] = animation:new():create(args)
@@ -34,12 +45,17 @@ function animate.addColor(args)
   animate.queue[#animate.queue + 1] = colorAnimation:new():create(args)
 	return animate.queue[#animate.queue]
 end
+
+-- Timer that runs animate.update
+
 animate.timer = gears.timer {
   autostart = true,
   timeout = 1 / animate.fps,
   call_now = true,
   callback = animate.update
 }
+
+-- animation controls position of wiboxes
 
 animation = {}
 
@@ -92,6 +108,8 @@ function animation:cancel()
   self.done = true
 end
 
+-- bareAnimations does whatever you want it to
+
 bareAnimation = {}
 
 function bareAnimation:new()
@@ -116,6 +134,8 @@ function bareAnimation:update()
 		end
 	end
 end
+
+-- colorAnimation interpolates between two colors
 
 colorAnimation = {}
 

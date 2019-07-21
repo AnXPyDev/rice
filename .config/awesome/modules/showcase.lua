@@ -1,3 +1,11 @@
+-- /modules/showcase.lua
+
+--[[
+	This file is a part of my (notabug.org/anxpydev) awesomewm configuration.
+	Feel free to use anything from this file for your configuration, but be aware that
+	this file might depend on other modules from my config.
+]]--
+
 Showcase = {}
 
 function Showcase:new()
@@ -70,6 +78,8 @@ function Showcase:refreshTheme()
 	widget.final.forced_width = config.size[1] or nil
 	widget.final.forced_height = config.size[2] or nil
 end
+
+-- Replaces current text or showcase with new ones
 
 function Showcase:reset(text, showcase)
 	local text = text or nil

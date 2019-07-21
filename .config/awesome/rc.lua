@@ -26,7 +26,7 @@ themeful = {}
 colorful = {}
 theme = {}
 
-local colorschemeName = "light"
+local colorschemeName = "dark"
 local themeName = "material"
 
 -- Modules
@@ -39,7 +39,6 @@ dofile(PATH.modules .. "themer.lua")
 dofile(PATH.modules .. "animate.lua")
 dofile(PATH.modules .. "searchmenu.lua")
 dofile(PATH.modules .. "slider.lua")
-dofile(PATH.modules .. "shape.lua")
 dofile(PATH.modules .. "showcase.lua")
 dofile(PATH.modules .. "loadscreen.lua")
 dofile(PATH.modules .. "titlebutton.lua")

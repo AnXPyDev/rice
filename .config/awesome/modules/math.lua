@@ -1,8 +1,20 @@
+-- /modules/math.lua
+
+--[[
+	This file is a part of my (notabug.org/anxpydev) awesomewm configuration.
+	Feel free to use anything from this file for your configuration, but be aware that
+	this file might depend on other modules from my config.
+]]--
+
+-- Clamps a value between two values e.g. clamp(100, 0, 1) -> 1
+
 function clamp(x, min, max)
   if min and x < min then return min end
   if max and x > max then return max end
   return x
 end
+
+-- Wraps a value around min and max
 
 function wrap(x, min, max)
   if x < min then
@@ -14,6 +26,8 @@ function wrap(x, min, max)
   end
 end
 
+-- Wraps a value around min and max but doesn't add the overshoot
+
 function wrapIP(x, min, max)
   if x < min then
     return max
@@ -24,6 +38,8 @@ function wrapIP(x, min, max)
   end
 end
 
+-- Linearly interpolates between two values, if difference is less than treshold, returns target value
+
 function lerp(x, target, percentage, treshold)
   treshold = treshold or 0
   if math.abs(target - x) < treshold then
@@ -33,11 +49,15 @@ function lerp(x, target, percentage, treshold)
   return x + (target - x) * percentage
 end
 
+-- Linearly interpolates between two colors' HSV values using lerp
+
 function lerpColor(color, target, percentage, treshold)
 	color.H = lerp(color.H, target.H, percentage, treshold)
 	color.S = lerp(color.S, target.S, percentage, treshold)
 	color.L = lerp(color.L, target.L, percentage, treshold)
 end
+
+-- Approaches target value by ammount
 
 function approach(x, target, amount)
   amount = math.abs(amount)
@@ -50,6 +70,8 @@ function approach(x, target, amount)
     return x + amount
   end
 end
+
+-- Uses sine wave to "wave" a value between min and max
 
 function wave(min, max, amp, off)
 	local amp = amp or 1

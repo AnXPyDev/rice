@@ -1,3 +1,9 @@
+-- WARNING:Probably not going to finish this
+--[[
+	This was supposed to be a physics engine, for wiboxes, used for moving
+	them out of way when a new one appears and stuff like that ...
+]]--
+
 PhysObject = {}
 
 function PhysObject:new()

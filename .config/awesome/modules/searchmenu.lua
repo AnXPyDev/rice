@@ -1,4 +1,14 @@
+-- /modules/searchmenu.lua
+
+--[[
+	This file is a part of my (notabug.org/anxpydev) awesomewm configuration.
+	Feel free to use anything from this file for your configuration, but be aware that
+	this file might depend on other modules from my config.
+]]--
+
 SearchMenu = {}
+
+-- Creates new SearchMenu
 
 function SearchMenu:new()
   local ins = {}
@@ -7,9 +17,7 @@ function SearchMenu:new()
   return ins
 end
 
-function SearchMenu.shape(cr, w, h)
-  return gears.shape.rounded_rect(cr, w, h, beautiful.corner_radius)
-end
+-- Runs a prompt on the SearchMenu's prompt textbox
 
 function SearchMenu:runPrompt()
   awful.prompt.run({
@@ -25,40 +33,31 @@ function SearchMenu:runPrompt()
     done_callback = function()
       self:hide()
     end,
+
+		-- Loops through default and selected element's keybindings and runs them if necessary
     keypressed_callback = function(mod, key, cmd)
-      if mod["Control"] and key == "n" or key == "Down" then
-				self.cursor.mod = 1
-      elseif mod["Control"] and key == "p" or key == "Up" then
-				self.cursor.mod = -1
-      elseif key == "Return" or key == "Tab" then
-				if self.elements.keys[self.results[self.cursor.pos]] then
-					self.elements.keys[self.results[self.cursor.pos]].callback()
+			mod["any"] = true
+			for p, bindings in pairs({self.bindings, self.selectedElement and self.selectedElement.bindings or {}}) do
+				for k, keybind in pairs(bindings) do
+					local match = true
+					if key == keybind[2] then
+						for i, modifier in pairs(keybind[1]) do
+							if not mod[modifier] then
+								match = false
+								break
+							end
+						end
+						if match then
+							keybind[3]()
+						end
+					end
 				end
-      end
-      for key, val in pairs(self.bindings) do
-	if mod[val[1]] and key == val[2] then
-	  val[3]()
-	end
-      end
-      if self.selectedElement and self.selectedElement.keys then
-	for k, keybind in pairs(self.selectedElement.keys) do
-	  local match = true
-	  if key == keybind[2] then
-	    for i, modifier in  pairs(keybind[1]) do
-	      if not mod[modifier] then
-		match = false
-		break
-	      end
-	    end
-	    if match then
-	      keybind[3]()
-	    end
-	  end
-	end
-      end
+			end
     end
   })
 end
+
+-- Creates prompt widget
 
 function SearchMenu:initPrompt()
   self.prompt.widget = {}
@@ -69,6 +68,8 @@ function SearchMenu:initPrompt()
   self.prompt.widget.outsideMargin = wibox.container.margin(self.prompt.widget.background)
   self.prompt.widget.final = self.prompt.widget.outsideMargin
 end
+
+-- Creates widget for the maximum amount of elements that can fit on the screen
 
 function SearchMenu:initElements()
   for i = 1, self.elements.config.count[1] * self.elements.config.count[2] do
@@ -141,6 +142,8 @@ function SearchMenu:initElements()
   self.elements.widget = widget
 end
 
+-- Joins widgets
+
 function SearchMenu:initWidget()
   if not self.prompt.config.hide then
     self.widget = wibox.widget {
@@ -156,6 +159,8 @@ function SearchMenu:initWidget()
   end
 end
 
+-- Places all elements into an indexable table
+
 function SearchMenu:generateElements(tbl)
   local i = 1
   for key, element in pairs(tbl) do
@@ -164,6 +169,8 @@ function SearchMenu:generateElements(tbl)
     i = i + 1
   end
 end
+
+-- Refreshes theme
 
 function SearchMenu:refreshTheme()
   self.prompt.widget.place.halign = self.prompt.config.halign
@@ -197,21 +204,29 @@ function SearchMenu:refreshTheme()
   self.elements.widget.place.valign = self.elements.config.boundedValign
 end
 
+-- Updates selection of elements when text in prompt changes
+
 function SearchMenu:update(text)
   self.prompt.widget.bare.font = self.prompt.config.font
   text = text:sub(1,-2)
   local results = self.elements.names
   if text:len() > 0 and not self.searchDisabled then
+		-- Sorts all the elements by comparison with entered text
     results = sortByComparison(text, self.elements.names, 0.5)
   end
   self.results = results
+	-- Wraps cursor around available positions
   self.cursor.pos = wrapIP(clamp(self.cursor.pos, 1, #results) + self.cursor.mod, 1, #results)
   self.cursor.mod = 0
+	-- Calculates page, that the cursor is on
   local page = clamp(math.ceil(self.cursor.pos / #self.elements.widgets) - 1, 0, false)
   self.cursor.page = page
   self.selectedElement = nil
   self:redraw()
 end
+
+-- Redraws all the widgets (changes text and icons)
+-- If a widget is not used, it will be hidden
 
 function SearchMenu:redraw()
   local placeInvert = {left = "right", right = "left", top = "bottom", bottom = "top"}
@@ -242,6 +257,8 @@ function SearchMenu:redraw()
     end
   end
 end
+
+-- Initializes SearchMenu
 
 function SearchMenu:setup(args)
   self.screen = args.screen
@@ -326,10 +343,13 @@ function SearchMenu:setup(args)
       {"bg"}, {"bgHl"}, {"fgHl"}, {"fg"}, {"hideText"}, {"margins"}, {"outsideMargins"}, {"showcaseMargins"}, {"halign"}, {"valign"}, {"font"}, {"shape"}, {"showcasePosition"}, {"fontSize"}, {"boundedMargins"}, {"boundedHalign"}, {"boundedValign"}
     }, args.elements, self.elements.config
   )
+	
   self.elements.config.size = {}
   self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]
   self.elements.config.size[2] = args.elements and args.elements.size and args.elements.size[2] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[2] or self.elements.config.fontSize * 1.5 + self.elements.config.margins.top + self.elements.config.margins.bottom + self.elements.config.outsideMargins.top + self.elements.config.outsideMargins.bottom
-  self.elements.config.count = {
+
+	-- Calculates ammount of widgets that fit into the wibox
+	self.elements.config.count = {
     math.floor((self.wibox.config.size[1] - (self.elements.config.boundedMargins.left + self.elements.config.boundedMargins.right)) / self.elements.config.size[1]),
     math.floor(((self.wibox.config.size[2] - self.prompt.config.size[2]) - (self.elements.config.boundedMargins.top + self.elements.config.boundedMargins.bottom)) / self.elements.config.size[2])
   }
@@ -340,9 +360,33 @@ function SearchMenu:setup(args)
     page = 0
   }
 
+	self.bindings = {
+		{{"Mod1"}, "n", function() self.cursor.mod = self.elements.config.count[1] end},
+		{{"Mod1"}, "p", function() self.cursor.mod = - self.elements.config.count[1] end},
+		{{"Mod1"}, "o", function() self.cursor.mod = 1 end},
+		{{"Mod1"}, "b", function() self.cursor.mod = -1 end},
+		{{"any"}, "Down", function() self.cursor.mod = self.elements.config.count[1] end},
+		{{"any"}, "Up", function() self.cursor.mod = - self.elements.config.count[1] end},
+		{{"any"}, "Left", function() self.cursor.mod = -1 end},
+		{{"any"}, "Right", function() self.cursor.mod = 1 end},
+		{{"any"}, "Return",
+			function()
+				if self.selectedElement then
+					self.selectedElement.callback()
+				end
+			end
+		},
+		{{"any"}, "Tab",
+			function()
+				if self.selectedElement then
+					self.selectedElement.callback()
+				end
+			end
+		}
+	}
+
   self.results = {}
   self.selectedElement = nil
-  self.bindings = {}
   self:initPrompt()
   self:generateElements(args.elements.list)  self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]
   self:initElements()
