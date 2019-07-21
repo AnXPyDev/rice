@@ -87,7 +87,7 @@ themeful.showcase = {
 
 themeful.internetIndicator = {
 	shape = themeful.shape,
-	aniamte = true
+	animate = true
 }
 
 themeful.batteryIndicator = {
