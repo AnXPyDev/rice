@@ -1,3 +1,4 @@
+-- Libraries
 awful = require("awful")
 gears = require("gears")
 wibox = require("wibox")
@@ -27,6 +28,7 @@ theme = {}
 local colorschemeName = "dark"
 local themeName = "material"
 
+-- Modules
 colors = dofile(PATH.modules .. "colors.lua")
 dofile(PATH.modules .. "editdistance.lua")
 dofile(PATH.modules .. "sort.lua")
@@ -57,6 +59,7 @@ dofile(PATH.config .. "volumeslider.lua")
 dofile(PATH.config .. "launcher.lua")
 dofile(PATH.config .. "powermenu.lua")
 dofile(PATH.config .. "keyboardlayout.lua")
+dofile(PATH.config .. "timeindicator.lua")
 dofile(PATH.config .. "internetindicator.lua")
 dofile(PATH.config .. "batteryindicator.lua")
 dofile(PATH.config .. "sysgraph.lua")
@@ -74,6 +77,7 @@ setWallpaper()
 
 -- Kill compton and restart it
 awful.spawn.with_shell("killall compton; compton --config ~/.config/compton.conf")
+-- Load Xresources
 awful.spawn.with_shell("xrdb ~/.Xresources")
 
 if awesome.startup_errors then

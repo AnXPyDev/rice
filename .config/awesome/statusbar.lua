@@ -1,51 +1,35 @@
+-- /statusbar.lua
+
+--[[
+	This file is a part of my (notabug.org/anxpydev) awesomewm configuration.
+	Feel free to use anything from this file for your configuration, but be aware that
+	this file might depend on other modules from my config.
+]]--
+
 statusbar = {}
 
+-- Initializes widgets
+
 function statusbar:initWidgets()
-  local widget = nil
-  self.widgets.clock = wibox.widget.textclock("%H:%M:%S", 1)
-  self.widgets.clock.font = "Hack " .. tostring(dpi(20))
-  self.widgets.date = wibox.widget.textbox()
-
-  gears.timer {
-    autostart = true,
-    call_now = true,
-    timeout = 60,
-    callback = function()
-      local day = os.date("%d")
-      local digit = day:sub(-1)
-      local suffix = digit == "1" and "st" or digit == "2" and "nd" or digit == "3" and "rd" or "th"
-      local number = day:sub(1, 1) == "0" and digit or day
-      self.widgets.date.text = os.date("%a, " .. number .. suffix .. " %b %Y")
-    end
-  }
-
-  local datetime = wibox.widget {
-    wibox.container.place(self.widgets.clock, "center"),
-    wibox.container.place(self.widgets.date, "center"),
-    layout = wibox.layout.flex.vertical
-  }
-
-  local datetimeMargin = wibox.container.margin(datetime)
-  datetimeMargin.margins = dpi(10)
-
-  local datetimeBackground = wibox.container.background(datetimeMargin, self.widgets.config.bg, self.widgets.config.shape)
-  local datetimeFinal = datetimeBackground
-  
   local widgets = {
-    datetimeFinal,
+    timeindicator.widget.final,
 		internetindicator.widget.widget.final,
 		batteryindicator.widget.widget.final,
 		sysgraph.widget.widget.final,
 		keyboardindicator.widget.widget.final
   }
+
   local widget = wibox.widget(
     gears.table.join(widgets, {layout = wibox.layout.fixed.vertical})
   )
+
   local margin = wibox.container.margin(widget)
   gears.table.crush(margin, self.wibox.config.margins)
+
   self.widget = margin
 end
 
+-- Initializes statusbar
 function statusbar:setup()
   self.screen = screens.primary
   self.wibox = {
@@ -81,6 +65,7 @@ function statusbar:setup()
 	
   self.widget = nil
 
+	-- Keeps the statusbar visible for a certain amount of time
   self.aliveTimer = gears.timer {
     single_shot = true,
     autostart = false,
@@ -118,6 +103,7 @@ function statusbar:setup()
 end
 
 function statusbar:show()
+	-- Animates the statusbar to slide in from right if it is invisible, else resets "aliveTimer"
   if not self.animationRunning and not self.wibox.widget.visible then
     self.animationRunning = true
     animate.add({

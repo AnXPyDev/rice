@@ -124,6 +124,11 @@ gears.table.crush(themeful.titleButton, {
 	fgHl = colorful.onComplementary
 })
 
+gears.table.crush(themeful.timeIndicator, {
+	bg = themeful.showcase.bg,
+	fg = themeful.showcase.fg
+})
+
 theme.bg_normal = colorful.background
 theme.fg_normal = colorful.foregroundShades[4]
 theme.bg_focus = colorful.backgroundTints[2]

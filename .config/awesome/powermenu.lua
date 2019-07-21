@@ -1,8 +1,20 @@
+-- /powermenu.lua
+
+--[[
+	This file is a part of my (notabug.org/anxpydev) awesomewm configuration.
+	Feel free to use anything from this file for your configuration, but be aware that
+	this file might depend on other modules from my config.
+]]--
+
+-- Icons used by powermenu
+
 local powermenuIcons = {
 	poweroff = materializeSurface(gears.surface.load(PATH.home .. "icons/poweroff.png")),
 	reboot = materializeSurface(gears.surface.load(PATH.home .. "icons/reboot.png")),
 	suspend = materializeSurface(gears.surface.load(PATH.home .. "icons/suspend.png")),
 }
+
+-- Images that hold the icons, so they can be changed later
 
 local powermenuImages = {
 	poweroff = wibox.widget.imagebox(),
@@ -10,17 +22,19 @@ local powermenuImages = {
 	suspend = wibox.widget.imagebox()
 }
 
-local function makeBgFunction(name)
+-- Function that changes icon colors to match background
+
+local function makeUpdateFunction(name)
 	return function(i, isSelected)
 		if isSelected then
 			powermenuImages[name].image = powermenuIcons[name].onPrimary
-			return themeful.searchMenu.elements.bgHl
 		else
 			powermenuImages[name].image = powermenuIcons[name].onBackground
-			return themeful.searchMenu.elements.bg
 		end
 	end
 end
+
+-- Arguments for SearchMenu
 
 local powermenuArgs = {
   searchDisabled = true,
@@ -46,16 +60,19 @@ local powermenuArgs = {
 		outsideMargins = margins(10),
 		showcaseMargins = margins(0),
     list = {
-      {name = "Power Off", callback = function() awful.spawn.with_shell("poweroff") end, showcase = powermenuImages.poweroff, bgFunc = makeBgFunction("poweroff")},
-      {name = "Reboot", callback = function() awful.spawn.with_shell("reboot") end, showcase = powermenuImages.reboot, bgFunc = makeBgFunction("reboot")},
-      {name = "Suspend", callback = function() awful.spawn.with_shell("systemctl suspend") end, showcase = powermenuImages.suspend, bgFunc = makeBgFunction("suspend")}
+      {name = "Power Off", callback = function() awful.spawn.with_shell("poweroff") end, showcase = powermenuImages.poweroff, update = makeUpdateFunction("poweroff")},
+      {name = "Reboot", callback = function() awful.spawn.with_shell("reboot") end, showcase = powermenuImages.reboot, update = makeUpdateFunction("reboot")},
+      {name = "Suspend", callback = function() awful.spawn.with_shell("systemctl suspend") end, showcase = powermenuImages.suspend, update = makeUpdateFunction("suspend")}
     }
   }
 }
 
+-- Creates powermenu
 powermenu = SearchMenu:new():setup(powermenuArgs)
 
 powermenu.animationRunning = false
+
+-- Animates powermenu to slide in from right
 
 function powermenu.showAnimate()
   if not powermenu.animationRunning then

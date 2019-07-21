@@ -1,5 +1,14 @@
+-- /tagindicator.lua
+
+--[[
+	This file is a part of my (notabug.org/anxpydev) awesomewm configuration.
+	Feel free to use anything from this file for your configuration, but be aware that
+	this file might depend on other modules from my config.
+]]--
+
 tagindicator = {}
 
+-- Creates an "icon" for every tag
 function tagindicator:initWidgets()
   for i = 1, #tags.list do
 		self.colors[i] = colors.new(self.tags.config.colors.normal)

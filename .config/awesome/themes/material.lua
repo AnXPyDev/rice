@@ -120,6 +120,11 @@ themeful.titleButton = {
 	icon = PATH.home .. "icons/close.png"
 }
 
+themeful.timeIndicator = {
+	margins = themeful.outsideMargins,
+	shape = themeful.shape
+}
+
 theme.useless_gap = themeful.gap
 theme.titlebar_size = themeful.barSize
 theme.corner_radius = themeful.radius

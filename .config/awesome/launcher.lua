@@ -1,3 +1,13 @@
+-- /launcher.lua
+
+--[[
+	This file is a part of my (notabug.org/anxpydev) awesomewm configuration.
+	Feel free to use anything from this file for your configuration, but be aware that
+	this file might depend on other modules from my config.
+]]--
+
+-- Arguments for the SearchMenu instance
+
 local launcherArgs = {
   screen = screens.primary,
   wibox = {
@@ -31,10 +41,13 @@ local launcherArgs = {
   }
 }
 
+
+-- Create launcher with arguments
 launcher = SearchMenu:new():setup(launcherArgs)
 
 launcher.animationRunning = false
 
+-- Animates launcher when shown (Slides from top)
 function launcher.showAnimate()
   if not launcher.animationRunning then
     launcher.animationRunning = true
