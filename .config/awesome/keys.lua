@@ -64,11 +64,10 @@ keys.client = gears.table.join(
 for i = 1, #tags.list do
   keys.client = gears.table.join(keys.client, awful.key({keys.mod, "Shift"}, tostring(i), function(c)
     c:move_to_tag(tags.list[i])
-    tagindicator:update()
   end))
   keys.global = gears.table.join(keys.global, awful.key({keys.mod}, tostring(i), function(c)
     tags.select(i)
-		-- Updates "tagindicator"
+		-- Displays tagindicator
     tagindicator.showAnimate()
   end))
 end

@@ -38,22 +38,6 @@ themeful.searchMenu.wibox = {
 	shape = themeful.shape
 }
 
--- Tag Indicator
-
-themeful.tagIndicator = {}
-
-themeful.tagIndicator.wibox = {
-	size = {nil, nil},
-	pos = {nil, nil},
-	shape = themeful.shape
-}
-
-themeful.tagIndicator.tags = {
-	size = {dpi(40), dpi(40)},
-	margins = themeful.outsideMargins,
-	shape = themeful.shape
-}
-
 -- Slider
 
 themeful.slider = {}
@@ -102,12 +86,14 @@ themeful.showcase = {
 }
 
 themeful.internetIndicator = {
-	shape = themeful.shape
+	shape = themeful.shape,
+	aniamte = true
 }
 
 themeful.batteryIndicator = {
 	shape = themeful.shape,
-	barShape = themeful.shape
+	barShape = themeful.shape,
+	animate = true
 }
 
 themeful.loadScreen = {
@@ -116,13 +102,28 @@ themeful.loadScreen = {
 }
 
 themeful.titleButton = {
-	margins = margins(dpi(8)),
-	icon = PATH.home .. "icons/close.png"
+	margins = margins(dpi(8))
 }
 
 themeful.timeIndicator = {
 	margins = themeful.outsideMargins,
 	shape = themeful.shape
+}
+
+themeful.tagIndicator = {
+	shape = themeful.shape,
+	tagShape = themeful.shape,
+	margins = themeful.outsideMargins,
+	animate = true,
+	tagSize = {dpi(40), dpi(40)}
+}
+
+themeful.volumeControl = {
+	animate = true
+}
+
+themeful.keyboardIndicator = {
+	animate = true
 }
 
 theme.useless_gap = themeful.gap

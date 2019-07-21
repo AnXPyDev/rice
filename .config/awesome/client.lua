@@ -135,6 +135,7 @@ client.connect_signal("request::titlebars" ,
 						end,
 						initCallback = function(button)
 							button:setIcon(closeIcon)
+							button.image.image = button.icon.normal
 						end
 										}
 								).widget,

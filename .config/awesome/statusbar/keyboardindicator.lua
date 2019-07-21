@@ -25,14 +25,14 @@ function keyboardindicator:setup()
 		themeful.keyboardIndicator or {}, self.config
 	)
 	
-	self.icon = materializeSurface(gears.surface.load(PATH.home .. "icons/keyboard.png"))
-	self.image = wibox.widget.imagebox(self.icon.onComplementary)
+	self.icon = materializeSurface(gears.surface.load(PATH.home .. "icons/keyboard.png"), {fg = self.config.fg})
+	self.image = wibox.widget.imagebox(self.icon.fg)
 
 	if self.config.animate then
 		-- Color used for animating background
-		self.backgroundColor = colors.new(colorful.complementary)
+		self.animatedColor = colors.new(self.config.bg)
 		-- Animation that blinks background when clicked on or updated
-		self.backgroundAnimation = {}
+		self.colorAnimation = {}
 	end
 	
 	self.widget = Showcase:new()
@@ -41,8 +41,8 @@ function keyboardindicator:setup()
 				text = "bruh",
 				showcase = self.image,
 				halign = "left",
-				bg = colorful.complementary,
-				fg = colorful.onComplementary,
+				bg = self.config.bg,
+				fg = self.config.fg,
 				showcasePosition = "left",
 				size = {nil, dpi(50)},
 				outsideMargins = margins(0, nil, dpi(10), 0),
@@ -69,18 +69,18 @@ function keyboardindicator:update()
 
 	if self.config.animate then
 		-- Starts an animation which fades background to blink color and back
-		self.backgroundAnimation.done = true
-		self.backgroundAnimation.callback = function() end
-		self.backgroundAnimation = animate.addColor({
+		self.colorAnimation.done = true
+		self.colorAnimation.callback = function() end
+		self.colorAnimation = animate.addColor({
 			element = self.widget.widget.background,
-			color = self.backgroundColor,
+			color = self.animatedColor,
 			targetColor = colors.new(self.config.blinkBg),
 			amplitude = 0.3,
 			treshold = 0.01,
 			callback = function()
 				self.colorAnimation = animate.addColor({
 					element = self.widget.widget.background,
-					color = self.color,
+					color = self.animatedColor,
 					targetColor = colors.new(self.config.bg),
 					amplitude = 0.2,
 					treshold = 0.01

@@ -18,14 +18,15 @@ PATH = {
   config = os.getenv("HOME") .. "/.config/awesome/",
   theme = os.getenv("HOME") .. "/.config/awesome/themes/",
   colorscheme = os.getenv("HOME") .. "/.config/awesome/colorschemes/",
-  modules = os.getenv("HOME") .. "/.config/awesome/modules/"
+  modules = os.getenv("HOME") .. "/.config/awesome/modules/",
+	statusbar = os.getenv("HOME") .. "/.config/awesome/statusbar/"
 }
 
 themeful = {}
 colorful = {}
 theme = {}
 
-local colorschemeName = "dark"
+local colorschemeName = "light"
 local themeName = "material"
 
 -- Modules
@@ -59,12 +60,13 @@ dofile(PATH.config .. "volumeslider.lua")
 dofile(PATH.config .. "launcher.lua")
 dofile(PATH.config .. "powermenu.lua")
 dofile(PATH.config .. "keyboardlayout.lua")
-dofile(PATH.config .. "timeindicator.lua")
-dofile(PATH.config .. "internetindicator.lua")
-dofile(PATH.config .. "batteryindicator.lua")
-dofile(PATH.config .. "sysgraph.lua")
-dofile(PATH.config .. "keyboardindicator.lua")
-dofile(PATH.config .. "statusbar.lua")
+
+dofile(PATH.statusbar .. "timeindicator.lua")
+dofile(PATH.statusbar .. "internetindicator.lua")
+dofile(PATH.statusbar .. "batteryindicator.lua")
+dofile(PATH.statusbar .. "sysgraph.lua")
+dofile(PATH.statusbar .. "keyboardindicator.lua")
+dofile(PATH.statusbar .. "statusbar.lua")
 
 dofile(PATH.config .. "keys.lua")
 dofile(PATH.config .. "buttons.lua")

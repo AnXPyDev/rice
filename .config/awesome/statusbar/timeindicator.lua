@@ -8,6 +8,8 @@
 
 timeindicator = {}
 
+-- Initializes time indicator
+
 function timeindicator:setup()
 	self.config = {}
 
@@ -29,6 +31,8 @@ function timeindicator:setup()
 	self.widget.clock.font = "Hack " .. tostring(dpi(20))
 	self.widget.date = wibox.widget.textbox()
 
+	-- Creates a string to display as the date e.g. "Sun, 21st Jul 2019"
+	
 	gears.timer {
 		autostart = true,
 		call_now = true,

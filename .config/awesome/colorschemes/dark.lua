@@ -50,19 +50,6 @@ gears.table.crush(themeful.searchMenu.wibox, {
 	fg = colorful.onBackground
 })
 
-gears.table.crush(themeful.tagIndicator.wibox, {
-	bg = colorful.background,
-	fg = colorful.onBackground
-})
-
-gears.table.crush(themeful.tagIndicator.tags, {
-	colors = {
-		focused = colorful.primary,
-		occupied = colorful.complementary,
-		normal = colorful.backgroundTints[1]
-	}
-})
-
 gears.table.crush(themeful.slider.wibox, {
 	bg = colorful.background
 })
@@ -127,6 +114,20 @@ gears.table.crush(themeful.titleButton, {
 gears.table.crush(themeful.timeIndicator, {
 	bg = themeful.showcase.bg,
 	fg = themeful.showcase.fg
+})
+
+gears.table.crush(themeful.tagIndicator, {
+	bg = colorful.background,
+	fg = colorful.onBackground,
+	clrNormal = colorful.backgroundTints[4],
+	clrFocused = colorful.primary,
+	clrOccupied = colorful.complementary
+})
+
+gears.table.crush(themeful.keyboardIndicator, {
+	bg = colorful.complementary,
+	fg = colorful.onComplementary,
+	blinkBg = colorful.complementaryShades[3]
 })
 
 theme.bg_normal = colorful.background
