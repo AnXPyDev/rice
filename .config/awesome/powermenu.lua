@@ -70,30 +70,23 @@ local powermenuArgs = {
 -- Creates powermenu
 powermenu = SearchMenu:new():setup(powermenuArgs)
 
-powermenu.animationRunning = false
+powermenu.directedBox = {}
 
 -- Animates powermenu to slide in from right
 
-function powermenu.showAnimate()
-  if not powermenu.animationRunning then
-    powermenu.animationRunning = true
-    animate.add({
-      object = powermenu.wibox.widget,
-      start = {
-				powermenuArgs.wibox.pos[1] + powermenuArgs.wibox.size[1],
-				powermenuArgs.wibox.pos[2]
-      },
-      target = {
-				powermenuArgs.wibox.pos[1],
-				powermenuArgs.wibox.pos[2]
-      },
-      type = "interpolate",
-      magnitude = 0.3,
-      amount = 5,
-      callback = function()
-				powermenu.animationRunning = false
-      end
-    })
+function powermenu:hide()
+	self.wibox.widget.visible = false
+	self.screen.director:remove(self.directedBox)
+end
+
+function powermenu:showAnimate()
+  if not self.wibox.widget.visible then
+		self.directedBox = self.screen.director:add({
+			side = "right",
+			priority = 5,
+			padding = themeful.outsideMargins,
+			wibox = self.wibox.widget
+		})
   end
   powermenu:show()
 end

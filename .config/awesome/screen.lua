@@ -16,6 +16,7 @@ awful.screen.connect_for_each_screen(
     screens.list = gears.table.join(screens.list, {s})
 		s.loadScreen = loadscreen:new():setup({screen = s})
 		s.loadScreen:animate()
+		s.director = director:new():setup({screen = s})
   end
 )
 

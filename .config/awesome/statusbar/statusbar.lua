@@ -73,10 +73,11 @@ function statusbar:setup()
     timeout = 2,
     callback = function()
       self.wibox.widget.visible = false
+			self.screen.director:remove(self.directedBox)
     end
   }
 
-  self.animationRunning = false
+  self.directedBox = {}
 
   self:initWidgets()
   
@@ -104,18 +105,13 @@ end
 
 function statusbar:show()
 	-- Animates the statusbar to slide in from right if it is invisible, else resets "aliveTimer"
-  if not self.animationRunning and not self.wibox.widget.visible then
-    self.animationRunning = true
-    animate.add({
-      object = self.wibox.widget,
-      type = "interpolate",
-      start = {self.wibox.config.pos[1] + self.wibox.config.size[1] + self.wibox.config.offset, self.wibox.config.pos[2]},
-      target = self.wibox.config.pos,
-      magnitude = 0.3,
-      callback = function()
-	self.animationRunning = false
-      end
-    })
+  if not self.wibox.widget.visible then
+		self.directedBox = self.screen.director:add({
+			side = "right",
+			padding = themeful.outsideMargins,
+			wibox = self.wibox.widget,
+			priority = 0
+		})
   end
   self.wibox.widget.visible = true
   self.aliveTimer:again()

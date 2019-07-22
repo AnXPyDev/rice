@@ -27,7 +27,7 @@ themeful = {}
 colorful = {}
 theme = {}
 
-local colorschemeName = "light"
+local colorschemeName = "dark"
 local themeName = "material"
 
 PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. colorschemeName .. "/"
@@ -44,6 +44,7 @@ dofile(PATH.modules .. "math.lua")
 dofile(PATH.modules .. "util.lua")
 dofile(PATH.modules .. "themer.lua")
 dofile(PATH.modules .. "animate.lua")
+dofile(PATH.modules .. "director.lua")
 dofile(PATH.modules .. "searchmenu.lua")
 dofile(PATH.modules .. "slider.lua")
 dofile(PATH.modules .. "showcase.lua")

@@ -14,7 +14,7 @@ keys.mod = "Mod4"
 -- Global keys, most of these are self-documenting
 keys.global = gears.table.join(
   awful.key({keys.mod}, "d", function() launcher.showAnimate() end),
-  awful.key({keys.mod}, "q", function() powermenu.showAnimate() end),
+  awful.key({keys.mod}, "q", function() powermenu:showAnimate() end),
   awful.key({keys.mod}, "w", function() statusbar:show() end),
   awful.key({keys.mod}, "t", function() nextKbdLayout() end),
   awful.key({keys.mod}, "u", function() loadScreensAnimate() end),
@@ -68,7 +68,7 @@ for i = 1, #tags.list do
   keys.global = gears.table.join(keys.global, awful.key({keys.mod}, tostring(i), function(c)
     tags.select(i)
 		-- Displays tagindicator
-    tagindicator.showAnimate()
+    tagindicator:showAnimate()
   end))
 end
 

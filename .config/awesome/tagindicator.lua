@@ -85,6 +85,10 @@ function tagindicator:show()
   self.aliveTimer:again()
 end
 
+function tagindicator:hide()
+	self.wibox.visible = false
+end
+
 function tagindicator:setup()
   self.screen = screens.primary
   self.widget = nil
@@ -125,7 +129,7 @@ function tagindicator:setup()
     single_shot = true,
     timeout = 1,
     callback = function()
-      self.wibox.visible = false
+      self:hide()
     end
   }
 
@@ -149,29 +153,22 @@ end
 
 tagindicator:setup()
 
-tagindicator.animationRunning = false
+tagindicator.directedBox = {}
 
 -- Makes wibox visible and shows animation (slide from top), if wibox is already visible, then just restarts aliveTimer
-function tagindicator.showAnimate()
-  if not tagindicator.animationRunning and not tagindicator.wibox.visible then
-    tagindicator.animationRunning = true
-    animate.add({
-      object = tagindicator.wibox.widget,
-      start = {
-				tagindicator.config.pos[1],
-				tagindicator.config.pos[2] - tagindicator.config.size[2]
-      },
-      target = {
-				tagindicator.config.pos[1],
-				tagindicator.config.pos[2]
-      },
-      type = "interpolate",
-      magnitude = 0.3,
-      amount = 5,
-      callback = function()
-				tagindicator.animationRunning = false
-      end
-    })
+function tagindicator:showAnimate()
+  if not tagindicator.wibox.visible then
+		self.directedBox = self.screen.director:add({
+			padding = themeful.outsideMargins,
+			priority = 0,
+			side = "top",
+			wibox = self.wibox
+		})
   end
   tagindicator:show()
+end
+
+function tagindicator:hide()
+	self.wibox.visible = false
+	self.screen.director:remove(self.directedBox)
 end

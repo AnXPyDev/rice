@@ -43,6 +43,7 @@ volumeslider = Slider:new():setup(volumesliderArgs)
 volumecontrol = {}
 
 function volumecontrol:setup()
+	self.screen = volumesliderArgs.screen
   self.slider = volumeslider.sliders.widgets[1].slider
   self.slider.maximum = 150
   self.slider.minimum = 0
@@ -50,6 +51,7 @@ function volumecontrol:setup()
   self.volume = 0
   self.step = 5
   self.recentlyUpdated = false
+	self.directedBox = {}
 
 	self.config = {}
 
@@ -162,25 +164,14 @@ end
 
 -- If slider is invisible, shows animation and makes it visible
 function volumecontrol:show()
-  if not self.animationRunning and not volumeslider.wibox.widget.visible then
+  if not volumeslider.wibox.widget.visible then
     volumeslider.wibox.widget.visible = true
-    self.animationRunning = true
-    animate.add({
-      object = volumeslider.wibox.widget,
-      start = {
-	volumesliderArgs.wibox.pos[1],
-	volumesliderArgs.wibox.pos[2] + volumesliderArgs.wibox.size[2]
-      },
-      target = {
-	volumesliderArgs.wibox.pos[1],
-	volumesliderArgs.wibox.pos[2]
-      },
-      type = "interpolate",
-      magnitude = 0.3,
-      callback = function()
-	self.animationRunning = false
-      end
-    })
+		self.directedBox = self.screen.director:add({
+			padding = themeful.outsideMargins,
+			side = "bottom",
+			priority = 0,
+			wibox = volumeslider.wibox.widget
+		})
   end
   self:update()
   self.aliveTimer:again()
@@ -188,6 +179,7 @@ end
 
 function volumecontrol:hide()
   volumeslider.wibox.widget.visible = false
+	self.screen.director:remove(self.directedBox)
 end
 
 -- Increases or decreases volume
