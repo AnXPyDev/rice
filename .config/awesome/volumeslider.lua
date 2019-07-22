@@ -8,8 +8,8 @@
 
 -- Load icons
 
-local muteImage = materializeSurface(gears.surface.load(PATH.home .. "icons/volumeMute.png"))
-local volumeImage =	materializeSurface(gears.surface.load(PATH.home .. "icons/volume.png"))
+local muteImage = materializeSurface(gears.surface.load(PATH.icons .. "volumeMute.png"))
+local volumeImage =	materializeSurface(gears.surface.load(PATH.icons .. "volume.png"))
 
 -- Args to initialize the slider with
 

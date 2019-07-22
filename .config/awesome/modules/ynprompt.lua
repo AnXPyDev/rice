@@ -1,8 +1,8 @@
 ynprompt = {}
 
 local ynIcons = {
-	yes = materializeSurface(gears.surface.load(PATH.home .. "icons/check.png")),
-	no = materializeSurface(gears.surface.load(PATH.home .. "icons/close.png"))
+	yes = materializeSurface(gears.surface.load(PATH.icons .. "check.png")),
+	no = materializeSurface(gears.surface.load(PATH.icons .. "close.png"))
 }
 
 function ynprompt.new(args)

@@ -39,9 +39,9 @@ end)
 
 -- Icons for titlebar buttons
 
-local closeIcon = materializeSurface(gears.surface.load(PATH.home .. "icons/close.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
-local floatIcon = materializeSurface(gears.surface.load(PATH.home .. "icons/float.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
-local tileIcon = materializeSurface(gears.surface.load(PATH.home .. "icons/tile.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
+local closeIcon = materializeSurface(gears.surface.load(PATH.icons .. "close.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
+local floatIcon = materializeSurface(gears.surface.load(PATH.icons .. "float.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
+local tileIcon = materializeSurface(gears.surface.load(PATH.icons .. "tile.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
 
 -- Creates titlebars for each client
 

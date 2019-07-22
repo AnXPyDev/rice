@@ -81,9 +81,9 @@ function batteryindicator:setup(args)
 	self.percentage = 0
 	self.refreshInterval = 3
 	self.images = {
-		depleting = materializeSurface(PATH.home .. "icons/battery_depleting.png"),
-		charging = materializeSurface(PATH.home .. "icons/battery_charging.png"),
-		charged = materializeSurface(PATH.home .. "icons/battery_charged.png")
+		depleting = materializeSurface(PATH.icons .. "battery_depleting.png"),
+		charging = materializeSurface(PATH.icons .. "battery_charging.png"),
+		charged = materializeSurface(PATH.icons .. "battery_charged.png")
 	}
 
 	self.config = {}

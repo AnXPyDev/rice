@@ -113,7 +113,7 @@ function internetindicator:setup()
 	self.signalStrength = 0
 	self.refreshInterval = 3
 	self.images = {
-		ethernet = materializeSurface(gears.surface.load(PATH.home .. "icons/ethernet.png")),
+		ethernet = materializeSurface(gears.surface.load(PATH.icons .. "ethernet.png")),
 	}
 
 	self.config = {}

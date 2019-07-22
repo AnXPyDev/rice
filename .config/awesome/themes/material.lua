@@ -98,7 +98,7 @@ themeful.batteryIndicator = {
 
 themeful.loadScreen = {
 	imageShape = themeful.shape,
-	imagePath = PATH.home .. "icons/awesomewm.png"
+	imagePath = PATH.icons .. "awesomewm.png"
 }
 
 themeful.titleButton = {

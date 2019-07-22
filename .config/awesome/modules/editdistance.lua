@@ -59,7 +59,7 @@ function compareStrings(a, b, isMin)
   a = a:lower()
   b = b:lower()
   if stringdistance then
-    dist = stringdistance.dam(a, b)
+    dist = stringdistance.lev(a, b)
   else
     dist = editDistance(a, b)
   end

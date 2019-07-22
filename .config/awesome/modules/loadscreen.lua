@@ -24,7 +24,7 @@ function loadscreen:setup(args)
 		{
 			{"startBg", "#000000"},
 			{"targetBg", "#FFFFFF"},
-			{"imagePath", PATH.home .. "icons/awesomewm.png"},
+			{"imagePath", PATH.icons .. "awesomewm.png"},
 			{"imageShape", gears.shape.rectangle},
 			{"imageColor", "#AAAAAA"},
 			{"imageBg", "#404040"}
@@ -33,7 +33,7 @@ function loadscreen:setup(args)
 	)
 
 	self.animationRunning = false
-	self.icon = materializeSurface(gears.surface.load(PATH.home .. "icons/awesomewm.png"), {color = self.config.imageColor})
+	self.icon = materializeSurface(gears.surface.load(PATH.icons .. "awesomewm.png"), {color = self.config.imageColor})
 	self.image = wibox.widget.imagebox(self.icon.color)
 	self.imageMargin = wibox.container.margin(self.image)
 	self.imageMargin.forced_width = dpi(200)

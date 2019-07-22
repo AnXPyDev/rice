@@ -9,9 +9,9 @@
 -- Icons used by powermenu
 
 local powermenuIcons = {
-	poweroff = materializeSurface(gears.surface.load(PATH.home .. "icons/poweroff.png")),
-	reboot = materializeSurface(gears.surface.load(PATH.home .. "icons/reboot.png")),
-	suspend = materializeSurface(gears.surface.load(PATH.home .. "icons/suspend.png")),
+	poweroff = materializeSurface(gears.surface.load(PATH.icons .. "poweroff.png")),
+	reboot = materializeSurface(gears.surface.load(PATH.icons .. "reboot.png")),
+	suspend = materializeSurface(gears.surface.load(PATH.icons .. "suspend.png")),
 }
 
 -- Images that hold the icons, so they can be changed later

@@ -5,7 +5,7 @@
 (defun theme/gui()
   (interactive)
   (package-use 'kaolin-themes)
-  (load-theme 'kaolin-galaxy t)
+  (load-theme 'kaolin-light t)
   (global-hl-line-mode)
   (when nil
     (set-face-attribute 'default nil

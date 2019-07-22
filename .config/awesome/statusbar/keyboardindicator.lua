@@ -25,7 +25,7 @@ function keyboardindicator:setup()
 		themeful.keyboardIndicator or {}, self.config
 	)
 	
-	self.icon = materializeSurface(gears.surface.load(PATH.home .. "icons/keyboard.png"), {fg = self.config.fg})
+	self.icon = materializeSurface(gears.surface.load(PATH.icons .. "keyboard.png"), {fg = self.config.fg})
 	self.image = wibox.widget.imagebox(self.icon.fg)
 
 	if self.config.animate then
