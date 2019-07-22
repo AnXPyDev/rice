@@ -42,6 +42,7 @@ dofile(PATH.modules .. "slider.lua")
 dofile(PATH.modules .. "showcase.lua")
 dofile(PATH.modules .. "loadscreen.lua")
 dofile(PATH.modules .. "titlebutton.lua")
+dofile(PATH.modules .. "ynprompt.lua")
 
 dofile(PATH.theme .. themeName .. ".lua")
 dofile(PATH.colorscheme .. colorschemeName .. ".lua")
