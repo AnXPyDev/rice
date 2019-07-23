@@ -23,3 +23,11 @@ buttons.client = gears.table.join(
     awful.mouse.client.resize(c)
   end)
 )
+
+buttons.global = gears.table.join(
+	awful.button({}, 3, function()
+		statusbar:show()
+	end)
+)
+
+root.buttons(buttons.global)
