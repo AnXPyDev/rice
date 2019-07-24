@@ -35,8 +35,8 @@ local launcherArgs = {
       {name = "Terminal", callback = function() awful.spawn("xst") end, showcase = wibox.widget.imagebox(PATH.icons .. "terminal.png")},
       {name = "Minecraft", callback = function() awful.spawn.with_shell("java -jar ~/launcher.jar") end, showcase = wibox.widget.imagebox(PATH.icons .. "minecraft.png")},
       {name = "Team Speak", callback = function() awful.spawn("teamspeak3") end, showcase = wibox.widget.imagebox(PATH.icons .. "teamspeak3.png")},
-      {name = "Steam", callback = function() awful.spawn("steam") end, showcase = wibox.widget.imagebox(PATH.icons .. "steam.png")}
-
+      {name = "Steam", callback = function() awful.spawn("steam") end, showcase = wibox.widget.imagebox(PATH.icons .. "steam.png")},
+      {name = "Libre Office", callback = function() awful.spawn("libreoffice") end, showcase = wibox.widget.imagebox(PATH.icons .. "libre_office.png")}
     }
   }
 }
