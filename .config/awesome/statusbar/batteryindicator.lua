@@ -124,8 +124,9 @@ function batteryindicator:setup(args)
 			{
 				showcase = self.widgets,
 				disableText = true,
-				size = {nil, dpi(60)},
+				size = {nil, dpi(55)},
 				outsideMargins = margins(0, nil, dpi(10), 0),
+				margins = margins(dpi(10)),
 				halign = "left",
 				showcaseMargins = margins(0),
 				showcasePosition = "left",

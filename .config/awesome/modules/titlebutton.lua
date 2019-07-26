@@ -29,43 +29,54 @@ function titlebutton:setup(args)
 		{
 			{"bg", gears.color.transparent},
 			{"fg", "#FFFFFF"},
-			{"bgHl", "#FFFFFF"},
-			{"fgHl", "#000000"},
+			{"bgHover", "#AAAAAA"},
+			{"fgHover", "#000000"},
+			{"bgClick", "#FFFFFF"},
+			{"fgClick", "#000000"},
 			{"margins", margins(0)},
-			{"icon"}
+			{"outsideMargins", margins(0)},
+			{"icon"},
+			{"shape", gears.shape.rectangle},
+			{"animateHover", false},
+			{"animateClick", false}
 		},
 		themeful.titleButton or {}, self.config
 	)
 	
 	themer.apply(
 		{
-			{"bg"}, {"fg"},	{"bgHl"},	{"fgHl"}, {"margins"}, {"icon"}
+			{"bg"}, {"fg"},	{"bgHover"},	{"fgHover"}, {"bgClick"},	{"fgClick"}, {"margins"}, {"icon"}, {"shape"}, {"outsideMargins"}
 		},
 		args or {}, self.config
 	)
 	self:makeIcon()
 	self.image = wibox.widget.imagebox()
-	self.margin = wibox.container.margin(self.image)
-	self.background = wibox.container.background(self.margin)
-	self.widget = self.background
+	self.margins = wibox.container.margin(self.image)
+	self.background = wibox.container.background(self.margis)
 	self.image.image = self.icon.normal
-	gears.table.crush(self.margin, self.config.margins)
+	gears.table.crush(self.margins, self.config.margins)
 	self.background.bg = self.config.bg
+	self.background.shape = self.config.shape
+	self.outsideMargins = wibox.container.margin(self.background)
+	gears.table.crush(self.outsideMargins, self.config.outsideMargins)
+	self.final = self.outsideMargins
+	self.widget = self.final
 
-
-	self.background:connect_signal("mouse::enter", function()
+	self.final:connect_signal("mouse::enter", function()
 		self.image.image = self.icon.highlight
-		self.background.bg = self.config.bgHl
+		self.background.bg = self.config.bgHover
+		self.background.fg = self.config.fgHover
 		self.updateCallback(true, self)
 	end)
 
-	self.background:connect_signal("mouse::leave", function()
+	self.final:connect_signal("mouse::leave", function()
 		self.image.image = self.icon.normal
 		self.background.bg = self.config.bg
+		self.background.fg = self.config.fg
 		self.updateCallback(false, self)
 	end)
 
-	self.background:connect_signal("button::press", function()
+	self.final:connect_signal("button::press", function()
 		self.callback(self)
 	end)
 

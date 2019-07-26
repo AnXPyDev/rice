@@ -1,12 +1,12 @@
 colorful.tintCount = 25
 colorful.background = "#121212"
 colorful.foreground = "#FFFFFF"
-colorful.primary = "#4dd0e1"
-colorful.complementary = "#ef534e"
+colorful.primary = "#4848fe"
+colorful.complementary = "#fe4848"
 colorful.onBackground = colorful.foreground
 colorful.onForeground = colorful.background
-colorful.onPrimary = colorful.background
-colorful.onComplementary = colorful.background
+colorful.onPrimary = colorful.foreground
+colorful.onComplementary = colorful.foreground
 
 colorful.primaryTints = gears.table.map(function(x) return x:to_rgb() end, colors.new(colorful.primary):tints(colorful.tintCount))
 colorful.primaryShades = gears.table.map(function(x) return x:to_rgb() end, colors.new(colorful.primary):shades(colorful.tintCount))
@@ -107,8 +107,8 @@ gears.table.crush(themeful.loadScreen, {
 gears.table.crush(themeful.titleButton, {
 	bg = gears.color.transparent,
 	fg = colorful.onBackground,
-	bgHl = colorful.complementary,
-	fgHl = colorful.onComplementary
+	bgHover = colorful.complementary,
+	fgHover = colorful.onComplementary
 })
 
 gears.table.crush(themeful.timeIndicator, {
