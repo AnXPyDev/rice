@@ -39,9 +39,9 @@ end)
 
 -- Icons for titlebar buttons
 
-local closeIcon = materializeSurface(gears.surface.load(PATH.icons .. "close.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
-local floatIcon = materializeSurface(gears.surface.load(PATH.icons .. "float.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
-local tileIcon = materializeSurface(gears.surface.load(PATH.icons .. "tile.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHl})
+local closeIcon = materializeSurface(gears.surface.load(PATH.icons .. "close.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHover})
+local floatIcon = materializeSurface(gears.surface.load(PATH.icons .. "float.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHover})
+local tileIcon = materializeSurface(gears.surface.load(PATH.icons .. "tile.png"), {normal = themeful.titleButton.fg, highlight = themeful.titleButton.fgHover})
 
 -- Creates titlebars for each client
 
@@ -79,10 +79,20 @@ client.connect_signal("request::titlebars" ,
 			-- Right (titlebar buttons)
       {
 				-- Creates a tile/float button
-				titlebutton:new()
+				Button:new()
 					:setup({
 						-- Changes icon based on initial client state
 						initCallback = function(button)
+							c:connect_signal("focus", function()
+								button.colorAnimation.done = true
+								button.config.bg = beautiful.bg_focus
+								button.background.bg = button.config.bg
+							end)
+							c:connect_signal("unfocus", function()
+								button.colorAnimation.done = true
+								button.config.bg = beautiful.bg_normal
+								button.background.bg = button.config.bg
+							end)
 							if c.floating then
 								button.state = "tile"
 								button:setIcon(tileIcon)
@@ -128,12 +138,22 @@ client.connect_signal("request::titlebars" ,
 								).widget,
 
 				-- Kills client when clicked
-				titlebutton:new()
+				Button:new()
 					:setup({
 						callback = function(button)
 							c:kill()
 						end,
 						initCallback = function(button)
+							c:connect_signal("focus", function()
+								button.colorAnimation.done = true
+								button.config.bg = beautiful.bg_focus
+								button.background.bg = button.config.bg
+							end)
+							c:connect_signal("unfocus", function()
+								button.colorAnimation.done = true
+								button.config.bg = beautiful.bg_normal
+								button.background.bg = button.config.bg
+							end)
 							button:setIcon(closeIcon)
 							button.image.image = button.icon.normal
 						end

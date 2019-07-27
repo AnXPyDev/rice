@@ -32,10 +32,6 @@ local themeName = "material"
 
 PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. colorschemeName .. "/"
 
-for k, val in pairs(PATH) do
-	print(k, val)
-end
-
 -- Modules
 colors = dofile(PATH.modules .. "colors.lua")
 dofile(PATH.modules .. "editdistance.lua")
@@ -49,7 +45,7 @@ dofile(PATH.modules .. "searchmenu.lua")
 dofile(PATH.modules .. "slider.lua")
 dofile(PATH.modules .. "showcase.lua")
 dofile(PATH.modules .. "loadscreen.lua")
-dofile(PATH.modules .. "titlebutton.lua")
+dofile(PATH.modules .. "button.lua")
 dofile(PATH.modules .. "ynprompt.lua")
 
 dofile(PATH.theme .. themeName .. ".lua")
@@ -74,6 +70,7 @@ dofile(PATH.statusbar .. "internetindicator.lua")
 dofile(PATH.statusbar .. "batteryindicator.lua")
 dofile(PATH.statusbar .. "sysgraph.lua")
 dofile(PATH.statusbar .. "keyboardindicator.lua")
+dofile(PATH.statusbar .. "statusbuttons.lua")
 dofile(PATH.statusbar .. "statusbar.lua")
 
 dofile(PATH.config .. "keys.lua")

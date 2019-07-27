@@ -104,7 +104,9 @@ themeful.loadScreen = {
 themeful.titleButton = {
 	margins = margins(dpi(8)),
 	outsideMargins = margins(0),
-	shape = gears.shape.rectangle
+	shape = gears.shape.rectangle,
+	animateHover = true,
+	animateClick = true
 }
 
 themeful.timeIndicator = {

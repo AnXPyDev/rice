@@ -49,7 +49,7 @@ launcher.animationRunning = false
 
 -- Animates launcher when shown (Slides from top)
 function launcher.showAnimate()
-  if not launcher.animationRunning then
+  if not launcher.animationRunning and not launcher.wibox.widget.visible then
     launcher.animationRunning = true
     animate.add({
       object = launcher.wibox.widget,

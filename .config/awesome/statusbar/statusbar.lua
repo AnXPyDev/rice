@@ -11,17 +11,25 @@ statusbar = {}
 -- Initializes widgets
 
 function statusbar:initWidgets()
-  local widgets = {
+	local top = wibox.widget {
     timeindicator.widget.final,
 		internetindicator.widget.widget.final,
 		batteryindicator.widget.widget.final,
 		sysgraph.widget.widget.final,
-		keyboardindicator.widget.widget.final
-  }
+		keyboardindicator.widget.widget.final,
+		layout = wibox.layout.fixed.vertical
+	}
 
-  local widget = wibox.widget(
-    gears.table.join(widgets, {layout = wibox.layout.fixed.vertical})
-  )
+	local bottom = wibox.widget {
+		statusbuttons.widget,
+		layout = wibox.layout.fixed.vertical
+	}
+
+  local widget = wibox.widget {
+		wibox.container.place(top, "center", "top"),
+		wibox.container.place(bottom, "center", "bottom"),
+		layout = wibox.layout.flex.vertical
+	}
 
   local margin = wibox.container.margin(widget)
   gears.table.crush(margin, self.wibox.config.margins)
@@ -108,7 +116,7 @@ function statusbar:show()
   if not self.wibox.widget.visible then
 		self.directedBox = self.screen.director:add({
 			side = "right",
-			padding = themeful.outsideMargins,
+			padding = margins(0,dpi(10)),
 			wibox = self.wibox.widget,
 			priority = 0
 		})
