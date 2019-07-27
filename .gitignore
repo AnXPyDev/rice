@@ -5,3 +5,8 @@
 !.emacs.d/banner.png
 
 .emacs.d/.*
+
+.config/*
+
+!.config/awesome
+!.config/compton.conf
