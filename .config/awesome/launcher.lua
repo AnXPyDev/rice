@@ -12,7 +12,7 @@ local launcherArgs = {
   screen = screens.primary,
   wibox = {
     size = {dpi(540), dpi(340)},
-    pos = {screens.primary.geometry.x + (screens.primary.geometry.width - dpi(500)) / 2, screens.primary.geometry.y + (screens.primary.geometry.height - dpi(400)) / 2},
+    pos = {screens.primary.geometry.x + (screens.primary.geometry.width - dpi(540)) / 2, screens.primary.geometry.y + (screens.primary.geometry.height - dpi(340)) / 2},
   },
   prompt = {
     size = {

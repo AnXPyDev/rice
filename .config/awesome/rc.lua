@@ -27,7 +27,7 @@ themeful = {}
 colorful = {}
 theme = {}
 
-local colorschemeName = "dark"
+local colorschemeName = "light"
 local themeName = "material"
 
 PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. colorschemeName .. "/"

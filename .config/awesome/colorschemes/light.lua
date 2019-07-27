@@ -105,11 +105,15 @@ gears.table.crush(themeful.loadScreen, {
 })
 
 gears.table.crush(themeful.titleButton, {
-	bg = gears.color.transparent,
+	bg = colorful.background,
 	fg = colorful.onBackground,
-	bgHl = colorful.complementary,
-	fgHl = colorful.onComplementary
+	bgHover = colorful.complementary,
+	fgHover = colorful.onComplementary,
+	bgClick = colorful.complementaryShades[3],
+	fgClick = colorful.onComplementary,
+	defaultBg = colorful.complementary
 })
+
 gears.table.crush(themeful.timeIndicator, {
 	bg = themeful.showcase.bg,
 	fg = themeful.showcase.fg

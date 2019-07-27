@@ -28,7 +28,7 @@ function statusbar:initWidgets()
   local widget = wibox.widget {
 		wibox.container.place(top, "center", "top"),
 		wibox.container.place(bottom, "center", "bottom"),
-		layout = wibox.layout.flex.vertical
+		layout = wibox.layout.stack
 	}
 
   local margin = wibox.container.margin(widget)
