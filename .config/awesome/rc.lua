@@ -27,10 +27,15 @@ themeful = {}
 colorful = {}
 theme = {}
 
-local colorschemeName = "light"
-local themeName = "material"
+local availableColorshemes = {
+	dark = {},
+	light = {"anaglyph", "vaporwave"}
+}
 
-PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. colorschemeName .. "/"
+local colorschemeNames = {"dark"}
+local themeNames = {"material"}
+
+PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. colorschemeNames[#colorschemeNames] .. "/"
 
 -- Modules
 colors = dofile(PATH.modules .. "colors.lua")
@@ -51,8 +56,13 @@ dofile(PATH.modules .. "ynprompt.lua")
 dofile(PATH.config .. "wallpaper.lua")
 dofile(PATH.config .. "screen.lua")
 
-dofile(PATH.theme .. themeName .. ".lua")
-dofile(PATH.colorscheme .. colorschemeName .. ".lua")
+for i, name in ipairs(themeNames) do
+	dofile(PATH.theme .. name .. ".lua")
+end
+
+for i, name in ipairs(colorschemeNames) do
+	dofile(PATH.colorscheme .. name .. ".lua")
+end
 
 beautiful.init(theme)
 

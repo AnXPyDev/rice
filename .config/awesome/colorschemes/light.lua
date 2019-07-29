@@ -1,12 +1,4 @@
 colorful.tintCount = 25
-colorful.background = "#FFFFFF"
-colorful.foreground = "#121212"
-colorful.primary = "#ef5350"
-colorful.complementary = "#81d4fa"
-colorful.onBackground = colorful.foreground
-colorful.onForeground = colorful.background
-colorful.onPrimary = colorful.background
-colorful.onComplementary = colorful.foreground
 
 colorful.primaryTints = gears.table.map(function(x) return x:to_rgb() end, colors.new(colorful.primary):tints(colorful.tintCount))
 colorful.primaryShades = gears.table.map(function(x) return x:to_rgb() end, colors.new(colorful.primary):shades(colorful.tintCount))
