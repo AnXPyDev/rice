@@ -104,7 +104,7 @@ gears.table.crush(themeful.loadScreen, {
 	imageBg = colorful.background
 })
 
-gears.table.crush(themeful.titleButton, {
+gears.table.crush(themeful.button, {
 	bg = colorful.background,
 	fg = colorful.onBackground,
 	bgHover = colorful.complementary,
@@ -131,6 +131,14 @@ gears.table.crush(themeful.keyboardIndicator, {
 	bg = colorful.complementary,
 	fg = colorful.onComplementary,
 	blinkBg = colorful.complementaryShades[3]
+})
+
+gears.table.crush(themeful.statusButtons, {
+	bgHover = colorful.primary,
+	fgHover = colorful.onPrimary,
+	bgClick = colorful.primaryShades[3],
+	fgClick = colorful.onPrimary,
+	defaultBg = colorful.primary
 })
 
 theme.bg_normal = colorful.backgroundShades[4]

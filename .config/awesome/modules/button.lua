@@ -29,7 +29,6 @@ function Button:setup(args)
 		{
 			{"bg", "#000000"},
 			{"fg", "#FFFFFF"},
-			{"defaultBg", function() return self.config.bg end, true},
 			{"bgHover", "#AAAAAA"},
 			{"fgHover", "#000000"},
 			{"bgClick", "#FFFFFF"},
@@ -48,7 +47,7 @@ function Button:setup(args)
 	
 	themer.apply(
 		{
-			{"bg"}, {"fg"},	{"bgHover"},	{"fgHover"}, {"bgClick"},	{"fgClick"}, {"margins"}, {"icon"}, {"shape"}, {"outsideMargins"}, {{"size", 1}}, {{"size", 2}}, {"defaultBg", function() return self.config.defaultBg or self.config.bg end, true},
+			{"bg"}, {"fg"},	{"bgHover"},	{"fgHover"}, {"bgClick"},	{"fgClick"}, {"margins"}, {"icon"}, {"shape"}, {"outsideMargins"}, {{"size", 1}}, {{"size", 2}}, {"animateHover"}, {"animateClick"}
 
 		},
 		args or {}, self.config
@@ -76,7 +75,10 @@ function Button:setup(args)
 	self.final.forced_width = self.config.size[1] or nil
 	self.final.forced_height = self.config.size[2] or nil
 
+	self.mouseIn = false
+	
 	self.final:connect_signal("mouse::enter", function()
+		self.mouseIn = true
 		self.image.image = self.icon.highlight
 		if self.config.animateHover then
 			self.colorAnimation.done = true
@@ -95,6 +97,7 @@ function Button:setup(args)
 	end)
 
 	self.final:connect_signal("mouse::leave", function()
+		self.mouseIn = false
 		self.image.image = self.icon.normal
 		if self.config.animateHover then
 			self.colorAnimation.done = true
@@ -121,13 +124,11 @@ function Button:setup(args)
 				targetColor = colors.new(self.config.bgClick),
 				amplitude = 0.3,
 				callback = function()
-					self.colorAnimation.done = true
-					self.colorAnimation = animate.addColor({
-						element = self.background,
-						color = self.animatedColor,
-						targetColor = colors.new(self.config.defaultBg),
-						amplitude = 0.2
-					})
+					if self.mouseIn then
+						self.final:emit_signal("mouse::enter")
+					else
+						self.final:emit_signal("mouse::leave")
+					end
 				end
 			})
 		else

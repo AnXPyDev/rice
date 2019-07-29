@@ -111,7 +111,6 @@ gears.table.crush(themeful.button, {
 	fgHover = colorful.onComplementary,
 	bgClick = colorful.complementaryShades[3],
 	fgClick = colorful.onComplementary,
-	defaultBg = colorful.complementary
 })
 
 gears.table.crush(themeful.timeIndicator, {
@@ -137,8 +136,7 @@ gears.table.crush(themeful.statusButtons, {
 	bgHover = colorful.primary,
 	fgHover = colorful.onPrimary,
 	bgClick = colorful.primaryShades[3],
-	fgClick = colorful.onPrimary,
-	defaultBg = colorful.primary
+	fgClick = colorful.onPrimary
 })
 
 theme.bg_normal = colorful.background
