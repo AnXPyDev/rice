@@ -40,7 +40,7 @@ function statusbar:initWidgets()
 	
 	for i, widget in ipairs(bottom) do
 		if i ~= 1 then
-			newTop[#newTop + 1] = separator
+			newBottom[#newBottom + 1] = separator
 		end
 		newBottom[#newBottom + 1] = widget
 	end
