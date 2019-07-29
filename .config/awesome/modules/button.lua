@@ -43,7 +43,7 @@ function Button:setup(args)
 			{{"size", 1}},
 			{{"size", 2}}
 		},
-		themeful.titleButton or {}, self.config
+		themeful.button or {}, self.config
 	)
 	
 	themer.apply(
@@ -84,6 +84,7 @@ function Button:setup(args)
 				element = self.background,
 				color = self.animatedColor,
 				targetColor = colors.new(self.config.bgHover),
+				hue = "target",
 				amplitude = 0.3,
 			})
 		else
@@ -101,6 +102,7 @@ function Button:setup(args)
 				element = self.background,
 				color = self.animatedColor,
 				targetColor = colors.new(self.config.bg),
+				hue = "color",
 				amplitude = 0.3,
 			})
 		else

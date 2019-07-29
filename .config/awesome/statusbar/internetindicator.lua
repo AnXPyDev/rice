@@ -166,9 +166,9 @@ function internetindicator:setup()
 				showcase = self.image,
 				bg = beautiful.bg_focus,
 				halign = "left",
-				size = {nil, dpi(50)},
+				size = {nil, dpi(40)},
 				showcaseMargins = margins(0, dpi(10), 0),
-				outsideMargins = margins(0, nil, dpi(10), 0),
+				outsideMargins = margins(0),
 				shape = self.config.shape
 			}
 	)

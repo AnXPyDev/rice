@@ -11,23 +11,49 @@ statusbar = {}
 -- Initializes widgets
 
 function statusbar:initWidgets()
-	local top = wibox.widget {
+	local top = {
     timeindicator.widget.final,
 		internetindicator.widget.widget.final,
 		batteryindicator.widget.widget.final,
 		sysgraph.widget.widget.final,
-		keyboardindicator.widget.widget.final,
-		layout = wibox.layout.fixed.vertical
+		keyboardindicator.widget.widget.final
 	}
 
-	local bottom = wibox.widget {
-		statusbuttons.widget,
-		layout = wibox.layout.fixed.vertical
+	local bottom = {
+		statusbuttons.widget
 	}
+
+	-- Apply spacings to widgets
+
+	local newTop = {}
+	local newBottom = {}
+
+	local separator = wibox.container.margin(wibox.widget.textbox(""))
+	separator.forced_height = self.widgets.config.spacing
+	
+	for i, widget in ipairs(top) do
+		newTop[#newTop + 1] = widget
+		if i ~= #top then
+			newTop[#newTop + 1] = separator
+		end
+	end
+	
+	for i, widget in ipairs(bottom) do
+		if i ~= 1 then
+			newTop[#newTop + 1] = separator
+		end
+		newBottom[#newBottom + 1] = widget
+	end
+
+	print(#newTop)
+	print(#newBottom)
+
+	newTop.layout = wibox.layout.fixed.vertical
+	newBottom.layout = wibox.layout.fixed.vertical
 
   local widget = wibox.widget {
-		wibox.container.place(top, "center", "top"),
-		wibox.container.place(bottom, "center", "bottom"),
+		wibox.container.place(wibox.widget(newTop), "center", "top"),
+		wibox.container.place(wibox.widget(newBottom), "center", "bottom"),
 		layout = wibox.layout.stack
 	}
 
@@ -66,7 +92,8 @@ function statusbar:setup()
 		{
 			{"bg", "#202020"},
 			{"fg", "#FFFFFF"},
-			{"shape", gears.shape.rectangle}
+			{"shape", gears.shape.rectangle},
+			{"spacing", 0}
 		},
 		themeful.statusBar and themeful.statusBar.widgets or {}, self.widgets.config
 	)
@@ -92,8 +119,6 @@ function statusbar:setup()
   self.wibox.widget = wibox {
     ontop = true,
     visible = false,
-    x = self.wibox.config.pos[1],
-    y = self.wibox.config.pos[2],
     width = self.wibox.config.size[1],
     height = self.wibox.config.size[2],
     shape = self.wibox.config.shape,
@@ -116,7 +141,7 @@ function statusbar:show()
   if not self.wibox.widget.visible then
 		self.directedBox = self.screen.director:add({
 			side = "right",
-			padding = margins(0,dpi(10)),
+			padding = margins(0,self.wibox.config.offset),
 			wibox = self.wibox.widget,
 			priority = 0
 		})

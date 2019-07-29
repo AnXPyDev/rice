@@ -1,12 +1,39 @@
 statusbuttons = {}
 
 function statusbuttons:setup()
-	local size = {math.floor((dpi(300) - 2 * dpi(10)) / 4),math.floor((dpi(300) - 2 * dpi(10)) / 4)}
-	local imageMargins = margins(dpi(25))
+
+	local config = {}
+
+	config.size = {
+		math.floor((themeful.statusBar.wibox.size[1] - (themeful.statusBar.wibox.margins.left + themeful.statusBar.wibox.margins.right)) / 4)
+	}
+	config.size[2] = config.size[1]
+
+	themer.apply(
+		{
+			{"bg", themeful.button.bg},
+			{"fg", themeful.button.fg},
+			{"bgHover", themeful.button.bgHover},
+			{"fgHover", themeful.button.fgHover},
+			{"bgClick", themeful.button.bgClick},
+			{"fgClick", themeful.button.fgClick},
+			{"defaultBg", themeful.button.defaultBg},
+			{"margins", themeful.button.margins}
+		},
+		themeful.statusButtons or {}, config
+	)
+	
 	self.powerButton = Button:new():setup({
 		icon = PATH.icons .. "poweroff.png",
-		margins = imageMargins,
-		size = size,
+		bg = config.bg,
+		fg = config.fg,
+		bgHover = config.bgHover,
+		fgHover = config.fgHover,
+		bgClick = config.bgClick,
+		fgClick = config.fgClick,
+		defaultBg = config.defaultBg,
+		margins = config.margins,
+		size = config.size,
 		shape = function(cr, w, h)
 			return gears.shape.partially_rounded_rect(cr, w, h, false, true, true, false, themeful.radius)
 		end,
@@ -16,8 +43,15 @@ function statusbuttons:setup()
 	})
 	self.menuButton = Button:new():setup({
 		icon = PATH.icons .. "menu.png",
-		margins = imageMargins,
-		size = size,
+		bg = config.bg,
+		fg = config.fg,
+		bgHover = config.bgHover,
+		fgHover = config.fgHover,
+		bgClick = config.bgClick,
+		fgClick = config.fgClick,
+		defaultBg = config.defaultBg,
+		margins = config.margins,
+		size = config.size,
 		shape = function(cr, w, h)
 			return gears.shape.partially_rounded_rect(cr, w, h, true, false, false, true, themeful.radius)
 		end,
@@ -27,16 +61,30 @@ function statusbuttons:setup()
 	})
 	self.volumeButton = Button:new():setup({
 		icon = PATH.icons .. "volume.png",
-		margins = imageMargins,
-		size = size,
+		bg = config.bg,
+		fg = config.fg,
+		bgHover = config.bgHover,
+		fgHover = config.fgHover,
+		bgClick = config.bgClick,
+		fgClick = config.fgClick,
+		defaultBg = config.defaultBg,
+		margins = config.margins,
+		size = config.size,
 		callback = function()
 			volumecontrol:show()
 		end
 	})
 	self.tagButton = Button:new():setup({
 		icon = PATH.icons .. "tag.png",
-		margins = imageMargins,
-		size = size,
+		bg = config.bg,
+		fg = config.fg,
+		bgHover = config.bgHover,
+		fgHover = config.fgHover,
+		bgClick = config.bgClick,
+		fgClick = config.fgClick,
+		defaultBg = config.defaultBg,
+		margins = config.margins,
+		size = config.size,
 		callback = function()
 			tagindicator:showAnimate()
 		end

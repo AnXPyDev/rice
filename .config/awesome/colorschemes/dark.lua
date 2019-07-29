@@ -1,8 +1,8 @@
 colorful.tintCount = 25
 colorful.background = "#121212"
 colorful.foreground = "#FFFFFF"
-colorful.primary = "#4848fe"
-colorful.complementary = "#fe4848"
+colorful.primary = "#45a3e5"
+colorful.complementary = "#E21b3c"
 colorful.onBackground = colorful.foreground
 colorful.onForeground = colorful.background
 colorful.onPrimary = colorful.foreground
@@ -104,7 +104,7 @@ gears.table.crush(themeful.loadScreen, {
 	imageBg = colorful.backgroundTints[2]
 })
 
-gears.table.crush(themeful.titleButton, {
+gears.table.crush(themeful.button, {
 	bg = colorful.backgroundTints[2],
 	fg = colorful.onBackground,
 	bgHover = colorful.complementary,
@@ -131,6 +131,14 @@ gears.table.crush(themeful.keyboardIndicator, {
 	bg = colorful.complementary,
 	fg = colorful.onComplementary,
 	blinkBg = colorful.complementaryShades[3]
+})
+
+gears.table.crush(themeful.statusButtons, {
+	bgHover = colorful.primary,
+	fgHover = colorful.onPrimary,
+	bgClick = colorful.primaryShades[3],
+	fgClick = colorful.onPrimary,
+	defaultBg = colorful.primary
 })
 
 theme.bg_normal = colorful.background

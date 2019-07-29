@@ -70,11 +70,15 @@ themeful.statusBar = {}
 
 themeful.statusBar.wibox = {
 	shape = themeful.shape,
-	margins = themeful.outsideMargins
+	outsideMargins = themeful.outsideMargins,
+	margins = margins(dpi(10)),
+	offset = dpi(10),
+	size = {dpi(300), screens.primary.geometry.height - 2 * dpi(10)}
 }
 
 themeful.statusBar.widgets = {
-	shape = themeful.shape
+	shape = themeful.shape,
+	spacing = dpi(10)
 }
 
 themeful.showcase = {
@@ -101,7 +105,7 @@ themeful.loadScreen = {
 	imagePath = PATH.icons .. "awesomewm.png"
 }
 
-themeful.titleButton = {
+themeful.button = {
 	margins = margins(dpi(8)),
 	outsideMargins = margins(0),
 	shape = gears.shape.rectangle,
@@ -128,6 +132,10 @@ themeful.volumeControl = {
 
 themeful.keyboardIndicator = {
 	animate = true
+}
+
+themeful.statusButtons = {
+	margins = margins(dpi(24))
 }
 
 theme.useless_gap = themeful.gap

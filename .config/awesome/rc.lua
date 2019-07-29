@@ -27,7 +27,7 @@ themeful = {}
 colorful = {}
 theme = {}
 
-local colorschemeName = "light"
+local colorschemeName = "dark"
 local themeName = "material"
 
 PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. colorschemeName .. "/"
@@ -48,13 +48,23 @@ dofile(PATH.modules .. "loadscreen.lua")
 dofile(PATH.modules .. "button.lua")
 dofile(PATH.modules .. "ynprompt.lua")
 
+dofile(PATH.config .. "wallpaper.lua")
+dofile(PATH.config .. "screen.lua")
+
 dofile(PATH.theme .. themeName .. ".lua")
 dofile(PATH.colorscheme .. colorschemeName .. ".lua")
 
 beautiful.init(theme)
 
-dofile(PATH.config .. "wallpaper.lua")
-dofile(PATH.config .. "screen.lua")
+-- Animate loadscreen for each screen
+
+awful.screen.connect_for_each_screen(
+  function(s)
+		s.loadScreen = loadscreen:new():setup({screen = s})
+		s.loadScreen:animate()
+		s.director = director:new():setup({screen = s})
+  end
+)
 
 dofile(PATH.config .. "layout.lua")
 dofile(PATH.config .. "tags.lua")

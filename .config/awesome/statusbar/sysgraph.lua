@@ -73,7 +73,7 @@ function sysgraph:setup()
 				size = {nil, dpi(230)},
 				disableText = true,
 				showcase = self.graph,
-				outsideMargins = margins(0, nil, dpi(10), 0),
+				outsideMargins = margins(0),
 				showcaseMargins = margins(0)
 			}
 					)

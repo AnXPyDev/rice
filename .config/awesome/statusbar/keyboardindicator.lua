@@ -44,8 +44,8 @@ function keyboardindicator:setup()
 				bg = self.config.bg,
 				fg = self.config.fg,
 				showcasePosition = "left",
-				size = {nil, dpi(50)},
-				outsideMargins = margins(0, nil, dpi(10), 0),
+				size = {nil, dpi(40)},
+				outsideMargins = margins(0),
 				showcaseMargins = margins(0, dpi(10), 0)
 			}
 					)
