@@ -12,6 +12,7 @@ local powermenuIcons = {
 	poweroff = materializeSurface(gears.surface.load(PATH.icons .. "poweroff.png")),
 	reboot = materializeSurface(gears.surface.load(PATH.icons .. "reboot.png")),
 	suspend = materializeSurface(gears.surface.load(PATH.icons .. "suspend.png")),
+	logout = materializeSurface(gears.surface.load(PATH.icons .. "logout.png"))
 }
 
 -- Images that hold the icons, so they can be changed later
@@ -19,7 +20,8 @@ local powermenuIcons = {
 local powermenuImages = {
 	poweroff = wibox.widget.imagebox(),
 	reboot = wibox.widget.imagebox(),
-	suspend = wibox.widget.imagebox()
+	suspend = wibox.widget.imagebox(),
+	logout = wibox.widget.imagebox()
 }
 
 -- Function that changes icon colors to match background
@@ -37,10 +39,10 @@ end
 -- Arguments for SearchMenu
 
 local powermenuArgs = {
-  searchDisabled = true,
+  searchDisabled = false,
   screen = screens.primary,
   wibox = {
-    size = {dpi(100), dpi(300)},
+    size = {dpi(100), dpi(90) * 4 + dpi(10)},
     pos = {
       screens.primary.geometry.x + (screens.primary.geometry.width - dpi(100)) - dpi(10),
       screens.primary.geometry.y + ((screens.primary.geometry.height - dpi(300)) / 2)
@@ -51,18 +53,20 @@ local powermenuArgs = {
     size = {0,0}
   },
   elements = {
-    size = {dpi(100), dpi(100)},
+		boundedMargins = margins(dpi(5)),
+    size = {dpi(90), dpi(90)},
     halign = "center",
     valign = "center",
-    iconPosition = "top",
+		showcasePosition = "top",
     hideText = true,
-		margins = margins(20),
-		outsideMargins = margins(10),
+		margins = margins(dpi(20)),
+		outsideMargins = margins(dpi(5)),
 		showcaseMargins = margins(0),
     list = {
       {name = "Power Off", callback = function() awful.spawn.with_shell("poweroff") end, showcase = powermenuImages.poweroff, update = makeUpdateFunction("poweroff")},
       {name = "Reboot", callback = function() awful.spawn.with_shell("reboot") end, showcase = powermenuImages.reboot, update = makeUpdateFunction("reboot")},
-      {name = "Suspend", callback = function() awful.spawn.with_shell("systemctl suspend") end, showcase = powermenuImages.suspend, update = makeUpdateFunction("suspend")}
+      {name = "Suspend", callback = function() awful.spawn.with_shell("systemctl suspend") end, showcase = powermenuImages.suspend, update = makeUpdateFunction("suspend")},
+      {name = "Log Out", callback = function() awesome.quit() end, showcase = powermenuImages.logout, update = makeUpdateFunction("logout")}
     }
   }
 }

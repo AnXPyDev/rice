@@ -72,7 +72,18 @@ end
 -- Creates widget for the maximum amount of elements that can fit on the screen
 
 function SearchMenu:initElements()
+	if self.elements.config.animate then
+		self.elements.colorAnimations = {}
+		self.elements.animatedColors = {}
+	end
+
   for i = 1, self.elements.config.count[1] * self.elements.config.count[2] do
+
+		if self.elements.config.animate then
+			self.elements.colorAnimations[i] = {}
+			self.elements.animatedColors[i] = colors.new(self.elements.config.bg)
+		end
+		
     local widget = {}
     widget.text = wibox.widget.textbox()
     widget.showcaseMargin = wibox.container.margin()
@@ -245,7 +256,22 @@ function SearchMenu:redraw()
 	element.update(i, isSelected)
       end
       widget.showcaseMargin.widget = element.showcase or nil
-      widget.background.bg = element.bgFunc and element.bgFunc(i, isSelected) or isSelected and self.elements.config.bgHl or self.elements.config.bg
+			local newBg = element.bgFunc and element.bgFunc(i, isSelected) or isSelected and self.elements.config.bgHl or self.elements.config.bg
+
+			if self.elements.config.animate and self.elements.animatedColors[i]:to_rgb() ~= newBg then
+				self.elements.colorAnimations[i].done = true
+				self.elements.colorAnimations[i] = animate.addColor({
+					element = widget.background,
+					color = self.elements.animatedColors[i],
+					targetColor = colors.new(newBg),
+					hue = newBg == self.elements.config.bg and "color" or "target",
+					amplitude = 0.3
+				})
+			else
+				widget.background.bg = newBg
+			end
+						
+
       widget.background.fg = element.fgFunc and element.fgFunc(i, isSelected) or isSelected and self.elements.config.fgHl or self.elements.config.fg
       gears.table.crush(widget.showcaseMargin, self.elements.config.showcaseMargins)
       if not element.hideText and not self.elements.config.hideText then
@@ -308,6 +334,7 @@ function SearchMenu:setup(args)
     }, themeful.searchMenu and themeful.searchMenu.prompt or {}, self.prompt.config
   )
 
+
   themer.apply({{"hide"}, {"bg"}, {"fg"}, {"margins"}, {"outsideMargins"}, {"halign"}, {"valign"}, {"font"}, {"text"}, {"shape"}, {"fontSize"}, {"size"}}, args.prompt or {}, self.prompt.config)
 
   self.elements = {
@@ -335,12 +362,13 @@ function SearchMenu:setup(args)
       {"fontSize", function() return tonumber(gears.string.split(self.elements.config.font, " ")[2]) end, true},
       {"boundedMargins", margins(0)},
       {"boundedHalign", "center"},
-      {"boundedValign", "center"}
+      {"boundedValign", "center"},
+			{"animate", false}
     }, themeful.searchMenu and themeful.searchMenu.elements, self.elements.config
   )
   themer.apply(
     {
-      {"bg"}, {"bgHl"}, {"fgHl"}, {"fg"}, {"hideText"}, {"margins"}, {"outsideMargins"}, {"showcaseMargins"}, {"halign"}, {"valign"}, {"font"}, {"shape"}, {"showcasePosition"}, {"fontSize"}, {"boundedMargins"}, {"boundedHalign"}, {"boundedValign"}
+      {"bg"}, {"bgHl"}, {"fgHl"}, {"fg"}, {"hideText"}, {"margins"}, {"outsideMargins"}, {"showcaseMargins"}, {"halign"}, {"valign"}, {"font"}, {"shape"}, {"showcasePosition"}, {"fontSize"}, {"boundedMargins"}, {"boundedHalign"}, {"boundedValign"}, {"animate"}
     }, args.elements, self.elements.config
   )
 	

@@ -9,6 +9,14 @@ themeful.margins = margins(dpi(5))
 themeful.outsideMargins = margins(dpi(10))
 
 
+-- Settings for general animations
+
+themeful.aniamtions = {
+	colorAmplitude = 0.3,
+	blinkUpAmplitude = 0.3,
+	blinkDownAmplitude = 0.2,
+}
+
 -- Search Menu
 
 themeful.searchMenu = {}
@@ -30,7 +38,8 @@ themeful.searchMenu.elements = {
 	margins = themeful.margins,
 	outsideMargins = themeful.outsideMargins,
 	showcaseMargins = margins(dpi(5)),
-	shape = themeful.shape
+	shape = themeful.shape,
+	animate = true
 }
 
 themeful.searchMenu.wibox = {
