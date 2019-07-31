@@ -145,11 +145,11 @@ function SearchMenu:initElements()
       gears.table.map(function(widget) return widget.final end, self.elements.widgets)
     )
   )
-  widget.margin = wibox.container.margin(widget.bare)
-  widget.margin.forced_width = self.elements.config.size[1] * self.elements.config.count[1] + self.elements.config.boundedMargins.left + self.elements.config.boundedMargins.right
-  widget.margin.forced_height = self.elements.config.size[2] * self.elements.config.count[2] + self.elements.config.boundedMargins.top + self.elements.config.boundedMargins.bottom
-  widget.place = wibox.container.place(widget.margin)
-  widget.final = widget.place
+	widget.place = wibox.container.place(widget.bare)
+  widget.margin = wibox.container.margin(widget.place)
+  widget.margin.forced_width = self.wibox.config.size[1]
+	widget.margin.forced_height = self.wibox.config.size[2] - self.prompt.config.size[2]
+  widget.final = widget.margin
   self.elements.widget = widget
 end
 
@@ -326,11 +326,11 @@ function SearchMenu:setup(args)
       {"shape", gears.shape.rectangle},
       {"fontSize", 12},
       {"size", function()
-	return {
-	  self.wibox.config.size[1],
-	  self.prompt.config.fontSize * 1.5 + self.prompt.config.margins.top + self.prompt.config.margins.bottom + self.prompt.config.outsideMargins.top + self.prompt.config.outsideMargins.bottom
-	}
-      end, true}
+				return {
+					self.wibox.config.size[1],
+					self.prompt.config.fontSize * 1.5 + self.prompt.config.margins.top + self.prompt.config.margins.bottom + self.prompt.config.outsideMargins.top + self.prompt.config.outsideMargins.bottom
+				}
+							 end, true}
     }, themeful.searchMenu and themeful.searchMenu.prompt or {}, self.prompt.config
   )
 

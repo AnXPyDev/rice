@@ -11,8 +11,7 @@
 local launcherArgs = {
   screen = screens.primary,
   wibox = {
-    size = {dpi(540), dpi(340)},
-    pos = {screens.primary.geometry.x + (screens.primary.geometry.width - dpi(540)) / 2, screens.primary.geometry.y + (screens.primary.geometry.height - dpi(340)) / 2},
+    size = {dpi(540), dpi(280 + 60)}
   },
   prompt = {
     size = {
@@ -21,10 +20,13 @@ local launcherArgs = {
     halign = "left",
   },
   elements = {
-    boundedMargins = margins(dpi(10)),
     size = {
       dpi(100), dpi(120)
     },
+		outsideMargins = margins(dpi(5)),
+		margins = margins(dpi(10)),
+		boundedMargins = margins(dpi(20)),
+		hideText = false,
     halign = "center",
     valign = "center",
     showcasePosition = "top",
@@ -40,6 +42,8 @@ local launcherArgs = {
     }
   }
 }
+
+launcherArgs.wibox.pos = {screens.primary.geometry.x + (screens.primary.geometry.width - launcherArgs.wibox.size[1]) / 2, screens.primary.geometry.y + (screens.primary.geometry.height - launcherArgs.wibox.size[2]) / 2}
 
 
 -- Create launcher with arguments
