@@ -57,14 +57,15 @@ function volumecontrol:setup()
 
 	themer.apply(
 		{
-			{"animate", false}
+			{"animate", false},
+			{"colorFadeAmplitude", themeful.animate.colorFadeAmplitude or 0.5}
 		},
 		themeful.volumeControl or {}, self.config
 	)
 
 	if self.config.animate then
 		self.colorAnimation = {}
-		self.animatedColor = colors.new(volumeslider.sliders.config.bg)
+		self.animatedColor = rgbToArray(volumeslider.sliders.config.bg)
 	end
 
 	--  the widget after a certain amount of time
@@ -143,13 +144,12 @@ function volumecontrol:update()
 	-- Fade between current and new selected color or set the color if animations are disabled
 	if self.config.animate then
 		self.colorAnimation.done = true
-		self.colorAnimation = animate.addColor({
+		self.colorAnimation = animate.addRgbColor({
 			element = volumeslider.sliders.widgets[1].showcaseBackground,
 			color = self.animatedColor,
-			targetColor = colors.new(newColor),
-			amplitude = 0.2,
+			targetColor = rgbToArray(newColor),
+			amplitude = self.config.colorFadeAmplitude,
 			treshold = 0.01,
-			hue = self.isMuted and "color" or "target"
 		})
 	else
 		volumeslider.sliders.widgets[1].showcaseBackground.bg = newColor

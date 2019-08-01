@@ -55,7 +55,7 @@ function Button:setup(args)
 
 	if self.config.animateHover or self.config.animateClick then
 		self.colorAnimation = {}
-		self.animatedColor = colors.new(self.config.bg)
+		self.animatedColor = rgbToArray(self.config.bg)
 	end
 	
 	self:makeIcon()
@@ -82,10 +82,10 @@ function Button:setup(args)
 		self.image.image = self.icon.highlight
 		if self.config.animateHover then
 			self.colorAnimation.done = true
-			self.colorAnimation = animate.addColor({
+			self.colorAnimation = animate.addRgbColor({
 				element = self.background,
 				color = self.animatedColor,
-				targetColor = colors.new(self.config.bgHover),
+				targetColor = rgbToArray(self.config.bgHover),
 				hue = "target",
 				amplitude = 0.3,
 			})
@@ -101,11 +101,10 @@ function Button:setup(args)
 		self.image.image = self.icon.normal
 		if self.config.animateHover then
 			self.colorAnimation.done = true
-			self.colorAnimation = animate.addColor({
+			self.colorAnimation = animate.addRgbColor({
 				element = self.background,
 				color = self.animatedColor,
-				targetColor = colors.new(self.config.bg),
-				hue = "target",
+				targetColor = rgbToArray(self.config.bg),
 				amplitude = 0.3,
 			})
 		else
@@ -118,10 +117,10 @@ function Button:setup(args)
 	self.final:connect_signal("button::press", function()
 		if self.config.animateClick then
 			self.colorAnimation.done = true
-			self.colorAnimation = animate.addColor({
+			self.colorAnimation = animate.addRgbColor({
 				element = self.background,
 				color = self.animatedColor,
-				targetColor = colors.new(self.config.bgClick),
+				targetColor = rgbToArray(self.config.bgClick),
 				amplitude = 0.3,
 				callback = function()
 					if self.mouseIn then

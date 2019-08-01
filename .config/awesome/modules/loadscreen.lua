@@ -27,7 +27,8 @@ function loadscreen:setup(args)
 			{"imagePath", PATH.icons .. "awesomewm.png"},
 			{"imageShape", gears.shape.rectangle},
 			{"imageColor", "#AAAAAA"},
-			{"imageBg", "#404040"}
+			{"imageBg", "#404040"},
+			{"colorFadeAmplitude", themeful.animate.colorFadeAmplitude or 0.5}
 		},
 		themeful.loadScreen or {}, self.config
 	)
@@ -87,12 +88,12 @@ end
 function loadscreen:stage1()
 	self.wibox.opacity = 1
 	self.wibox.visible = true
-	animate.addColor({
-		startColor = colors.new(self.config.startBg),
-		targetColor = colors.new(self.config.targetBg),
+	animate.addRgbColor({
+		startColor = rgbToArray(self.config.startBg),
+		targetColor = rgbToArray(self.config.targetBg),
 		element = self.wibox,
 		index = "bg",
-		amplitude = 0.05,
+		amplitude = self.config.colorFadeAmplitude,
 		callback = function()
 			self:stage2()
 		end

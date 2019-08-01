@@ -46,6 +46,11 @@ function animate.addColor(args)
 	return animate.queue[#animate.queue]
 end
 
+function animate.addRgbColor(args)
+  animate.queue[#animate.queue + 1] = rgbColorAnimation:new():create(args)
+	return animate.queue[#animate.queue]
+end
+
 -- Timer that runs animate.update
 
 animate.timer = gears.timer {
@@ -177,6 +182,41 @@ function colorAnimation:update()
 		if self.color.H == self.targetColor.H and
 			self.color.S == self.targetColor.S and
 				self.color.L == self.targetColor.L then
+					self.done = true
+		end
+	end
+end
+
+rgbColorAnimation = {}
+
+function rgbColorAnimation:new()
+  local ins = {}
+  setmetatable(ins, self)
+  self.__index = self
+  return ins
+end
+
+function rgbColorAnimation:create(args)
+	self.element = args.element
+	self.index = args.index or "bg"
+	self.startColor = args.startColor or nil
+	self.targetColor = args.targetColor or rgbToArray("#FFFFFF")
+	self.color = args.color or self.startColor or rgbToArray("#000000")
+	self.amp = args.amplitude or 0.5
+	self.treshold = args.treshold or 0.01
+	self.callback = args.callback or nil
+	self.paused = false
+	self.done = false
+	return self
+end
+
+function rgbColorAnimation:update()
+	if not self.done and not self.paused then
+		lerpRgbColor(self.color, self.targetColor, self.amp, self.treshold)
+		self.element[self.index] = arrayToRgb(self.color)
+		if self.color[1] == self.targetColor[1] and
+			self.color[2] == self.targetColor[2] and
+				self.color[3] == self.targetColor[3] then
 					self.done = true
 		end
 	end

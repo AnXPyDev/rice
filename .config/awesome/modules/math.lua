@@ -57,6 +57,12 @@ function lerpColor(color, target, percentage, treshold)
 	color.L = lerp(color.L, target.L, percentage, treshold)
 end
 
+function lerpRgbColor(color, target, percentage, treshold)
+	color[1] = lerp(color[1], target[1], percentage, treshold)
+	color[2] = lerp(color[2], target[2], percentage, treshold)
+	color[3] = lerp(color[3], target[3], percentage, treshold)
+end
+
 -- Approaches target value by ammount
 
 function approach(x, target, amount)

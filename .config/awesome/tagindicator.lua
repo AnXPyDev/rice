@@ -13,7 +13,7 @@ tagindicator = {}
 function tagindicator:initWidgets()
   for i = 1, #tags.list do
 		if self.config.animate then
-			self.animatedColors[i] = colors.new(self.config.clrNormal)
+			self.animatedColors[i] = rgbToArray(self.config.clrNormal)
 			self.colorAnimations[i] = {}
 		end
     self.tags.widgets[i] = {}
@@ -60,15 +60,13 @@ function tagindicator:update()
     end
 		-- Apply fade between normal and current color to icons when their color is not the current one
 		if self.config.animate then
-			if not (self.colorAnimations[i].targetColor and (color:lower() == self.colorAnimations[i].targetColor:to_rgb():lower())) then
+			if not (self.colorAnimations[i].targetColor and (color:lower() == arrayToRgb(self.colorAnimations[i].targetColor):lower())) then
 				self.colorAnimations[i].done = true
-				self.colorAnimations[i] = animate.addColor({
-					startColor = colors.new(self.config.clrNormal),
-					targetColor = colors.new(color),
+				self.colorAnimations[i] = animate.addRgbColor({
+					targetColor = rgbToArray(color),
 					color = self.animatedColors[i],
 					element = self.tags.widgets[i].background,
-					hue = "target",
-					amplitude = 0.1,
+					amplitude = self.config.colorFadeAmplitude,
 					treshold = 0.01
 				})
 			end
@@ -111,7 +109,8 @@ function tagindicator:setup()
 			{"clrOccupied", "#AAAAAA"},
 			{"shape", gears.shape.rectangle},
 			{"tagShape", gears.shape.rectangle},
-			{"animate", false}
+			{"animate", false},
+			{"colorFadeAmplitude", themeful.animate.colorFadeAmplitude or 0.5}
 		},
 		themeful.tagIndicator or {}, self.config
 	)

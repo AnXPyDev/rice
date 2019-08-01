@@ -20,7 +20,9 @@ function keyboardindicator:setup()
 			{"fg", "#FFFFFF"},
 			{"bg", "#000000"},
 			{"blinkBg", "#AAAAAA"},
-			{"animate", false}
+			{"animate", false},
+			{"blinkUpAmplitude", themeful.animate.blinkUpAmplitude or 0.5},
+			{"blinkDownAmplitude", themeful.animate.blinkDownAmplitude or 0.5}
 		},
 		themeful.keyboardIndicator or {}, self.config
 	)
@@ -30,7 +32,7 @@ function keyboardindicator:setup()
 
 	if self.config.animate then
 		-- Color used for animating background
-		self.animatedColor = colors.new(self.config.bg)
+		self.animatedColor = rgbToArray(self.config.bg)
 		-- Animation that blinks background when clicked on or updated
 		self.colorAnimation = {}
 	end
@@ -71,18 +73,18 @@ function keyboardindicator:update()
 		-- Starts an animation which fades background to blink color and back
 		self.colorAnimation.done = true
 		self.colorAnimation.callback = function() end
-		self.colorAnimation = animate.addColor({
+		self.colorAnimation = animate.addRgbColor({
 			element = self.widget.widget.background,
 			color = self.animatedColor,
-			targetColor = colors.new(self.config.blinkBg),
-			amplitude = 0.3,
+			targetColor = rgbToArray(self.config.blinkBg),
+			amplitude = self.config.blinkUpAmplitude,
 			treshold = 0.01,
 			callback = function()
-				self.colorAnimation = animate.addColor({
+				self.colorAnimation = animate.addRgbColor({
 					element = self.widget.widget.background,
 					color = self.animatedColor,
-					targetColor = colors.new(self.config.bg),
-					amplitude = 0.2,
+					targetColor = rgbToArray(self.config.bg),
+					amplitude = self.config.blinkDownAmplitude,
 					treshold = 0.01
 				})
 			end

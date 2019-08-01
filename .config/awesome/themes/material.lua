@@ -8,13 +8,12 @@ themeful.barSize = dpi(30)
 themeful.margins = margins(dpi(5))
 themeful.outsideMargins = margins(dpi(10))
 
-
 -- Settings for general animations
 
-themeful.aniamtions = {
-	colorAmplitude = 0.3,
-	blinkUpAmplitude = 0.3,
-	blinkDownAmplitude = 0.2,
+themeful.animate = {
+	colorFadeAmplitude = 0.3,
+	blinkUpAmplitude = 0.4,
+	blinkDownAmplitude = 0.2
 }
 
 -- Search Menu
@@ -111,7 +110,8 @@ themeful.batteryIndicator = {
 
 themeful.loadScreen = {
 	imageShape = themeful.shape,
-	imagePath = PATH.icons .. "awesomewm.png"
+	imagePath = PATH.icons .. "awesomewm.png",
+	colorFadeAmplitude = 0.05
 }
 
 themeful.button = {

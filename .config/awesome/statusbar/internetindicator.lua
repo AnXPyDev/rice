@@ -35,17 +35,17 @@ function internetindicator:refresh(output)
 		if not isLastConnected then
 
 			-- Notifies about connection when state changes
+
 			naughty.notify({text = "Back online"})
 
 			if self.config.animate then
 				-- Start animation to fade background color into highlight color
 				self.backgroundAnimation.done = true
-				self.backgroundAnimation = animate.addColor({
+				self.backgroundAnimation = animate.addRgbColor({
 					element = self.widget.widget.background,
 					color = self.backgroundColor,
-					targetColor = colors.new(self.config.bgOnline),
-					hue = "target",
-					amplitude = 0.2,
+					targetColor = rgbToArray(self.config.bgOnline),
+					amplitude = self.config.colorFadeAmplitude,
 					treshold = 0.01
 				})
 			end
@@ -74,12 +74,11 @@ function internetindicator:refresh(output)
 			if self.config.animate then
 				-- Start animation to fade highlight color into background color
 				self.backgroundAnimation.done = true
-				self.backgroundAnimation = animate.addColor({
+				self.backgroundAnimation = animate.addRgbColor({
 					element = self.widget.widget.background,
 					color = self.backgroundColor,
-					targetColor = colors.new(self.config.bg),
-					hue = "color",
-					amplitude = 0.2,
+					targetColor = rgbToArray(self.config.bg),
+					amplitude = self.config.colorFadeAmplitude,
 					treshold = 0.01
 				})
 			end
@@ -126,7 +125,8 @@ function internetindicator:setup()
 			{"fgOnline", "#000000"},
 			{"bg2Online", "#aaaaaa"},
 			{"shape", gears.shape.rectangle},
-			{"animate", false}
+			{"animate", false},
+			{"colorFadeAmplitude", themeful.animate.colorFadeAmplitude or 0.5}
 		},
 		themeful.internetIndicator or {}, self.config
 	)
@@ -156,7 +156,7 @@ function internetindicator:setup()
 		-- Animation that fades background color
 		self.backgroundAnimation = {}
 		-- Background Color used for animating
-		self.backgroundColor = colors.new(self.config.bg)
+		self.backgroundColor = rgbToArray(self.config.bg)
 	end
 
 	self.widget = Showcase:new()

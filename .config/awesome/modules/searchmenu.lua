@@ -81,7 +81,7 @@ function SearchMenu:initElements()
 
 		if self.elements.config.animate then
 			self.elements.colorAnimations[i] = {}
-			self.elements.animatedColors[i] = colors.new(self.elements.config.bg)
+			self.elements.animatedColors[i] = rgbToArray(self.elements.config.bg)
 		end
 		
     local widget = {}
@@ -258,14 +258,13 @@ function SearchMenu:redraw()
       widget.showcaseMargin.widget = element.showcase or nil
 			local newBg = element.bgFunc and element.bgFunc(i, isSelected) or isSelected and self.elements.config.bgHl or self.elements.config.bg
 
-			if self.elements.config.animate and self.elements.animatedColors[i]:to_rgb() ~= newBg then
+			if self.elements.config.animate and arrayToRgb(self.elements.animatedColors[i]) ~= newBg then
 				self.elements.colorAnimations[i].done = true
-				self.elements.colorAnimations[i] = animate.addColor({
+				self.elements.colorAnimations[i] = animate.addRgbColor({
 					element = widget.background,
 					color = self.elements.animatedColors[i],
-					targetColor = colors.new(newBg),
-					hue = newBg == self.elements.config.bg and "target" or "target",
-					amplitude = 0.3
+					targetColor = rgbToArray(newBg),
+					amplitude = self.elements.config.colorFadeAmplitude
 				})
 			else
 				widget.background.bg = newBg
@@ -363,7 +362,8 @@ function SearchMenu:setup(args)
       {"boundedMargins", margins(0)},
       {"boundedHalign", "center"},
       {"boundedValign", "center"},
-			{"animate", false}
+			{"animate", false},
+			{"colorFadeAmplitude", themeful.animate.colorFadeAmplitude or 0.5}
     }, themeful.searchMenu and themeful.searchMenu.elements, self.elements.config
   )
   themer.apply(

@@ -49,3 +49,31 @@ function loadScreensAnimate()
 		screen.loadScreen:animate()
 	end
 end
+
+
+function rgbToArray(rgbString)
+	local finalString = ""
+	if rgbString:sub(1,1) == "#" then
+		finalString = rgbString:sub(2)
+	else
+		finalString = rgbString
+	end
+	
+	local result = {}
+	
+	for i = 0, 2 do
+		result[#result + 1] = tonumber("0x" .. finalString:sub(i * 2 + 1, i * 2 + 2)) / 255
+	end
+	
+	return result
+end
+
+function arrayToRgb(rgbArray)
+	local result = "#"
+
+	for i = 1, 3 do
+		result = result .. string.format("%02x", math.floor(rgbArray[i]*255 + 0.5))
+	end
+
+	return result
+end
