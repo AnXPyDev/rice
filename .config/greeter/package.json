@@ -1,0 +1,14 @@
+{
+  "name": "greeter-theme",
+  "version": "1.0.0",
+  "description": "Theme For LightDM-webkit2-greeter",
+  "main": "src/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "serve": "^11.1.0"
+  }
+}

@@ -107,7 +107,7 @@ function volumecontrol:setup()
   volumeslider.sliders.widgets[1].showcaseOutsideMargin:connect_signal(
     "button::press",
     function()
-      self:toggleMute()
+      self:toggleMute(true)
     end
 								      )
   self.slider:connect_signal("property::value", function()
@@ -163,7 +163,7 @@ function volumecontrol:updateExternal()
 end
 
 -- If slider is invisible, shows animation and makes it visible
-function volumecontrol:show()
+function volumecontrol:show(noRestartTimer)
   if not volumeslider.wibox.widget.visible then
     volumeslider.wibox.widget.visible = true
 		self.directedBox = self.screen.director:add({
@@ -174,7 +174,9 @@ function volumecontrol:show()
 		})
   end
   self:update()
-  self.aliveTimer:again()
+	if not noRestartTimer then
+		self.aliveTimer:again()
+	end
 end
 
 function volumecontrol:hide()
@@ -194,10 +196,9 @@ function volumecontrol:change(sign)
 end
 
 -- Toggles mute
-function volumecontrol:toggleMute()
+function volumecontrol:toggleMute(noRestartTimer)
   awful.spawn.with_shell("pamixer -t")
   self.isMuted = not self.isMuted
-  self:show()
+	self:show(noRestartTimer or nil)
 end
-
 volumecontrol:setup()

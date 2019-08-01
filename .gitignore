@@ -10,3 +10,8 @@
 
 !.config/awesome
 !.config/compton.conf
+
+!.config/greeter
+
+.config/greeter/node_modules
+.config/greeter/package-lock.json
