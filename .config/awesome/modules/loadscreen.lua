@@ -45,7 +45,7 @@ function loadscreen:setup(args)
 	self.imageRadius = 0 -- Radius of the icon clip shape
 	self.imageAngle = 0 -- End angle of the icon clip shape
 	self.image.clip_shape = function(cr, w, h)
-		return gears.shape.transform(gears.shape.pie) : translate(dpi(20), dpi(20)) (cr, dpi(200), dpi(200), 0, self.imageAngle, self.imageRadius)
+		return gears.shape.transform(gears.shape.pie) (cr, w, h, 0, self.imageAngle, self.imageRadius)
 	end
 	self.radiusAnimation = nil
 	self.wibox = wibox {
