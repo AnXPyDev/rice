@@ -58,4 +58,5 @@
 (defun edit/yank-region()
 	(interactive)
 	(kill-region (region-beginning) (region-end))
-	(yank))
+	(yank 2)
+	(modal/enable-normal))

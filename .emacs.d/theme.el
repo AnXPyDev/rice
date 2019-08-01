@@ -9,7 +9,7 @@
   (global-hl-line-mode)
   (when nil
     (set-face-attribute 'default nil
-			:background "#101010"
+			:background "#121212"
 			:foreground "#FFFFFF")
     (set-face-attribute 'mode-line nil
 			:background "#202020")

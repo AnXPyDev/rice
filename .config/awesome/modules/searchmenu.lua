@@ -264,7 +264,7 @@ function SearchMenu:redraw()
 					element = widget.background,
 					color = self.elements.animatedColors[i],
 					targetColor = colors.new(newBg),
-					hue = newBg == self.elements.config.bg and "color" or "target",
+					hue = newBg == self.elements.config.bg and "target" or "target",
 					amplitude = 0.3
 				})
 			else

@@ -17,7 +17,6 @@ PATH = {
   home = os.getenv("HOME") .. "/",
   config = os.getenv("HOME") .. "/.config/awesome/",
   theme = os.getenv("HOME") .. "/.config/awesome/themes/",
-  colorscheme = os.getenv("HOME") .. "/.config/awesome/colorschemes/",
   modules = os.getenv("HOME") .. "/.config/awesome/modules/",
 	statusbar = os.getenv("HOME") .. "/.config/awesome/statusbar/",
 	icons = os.getenv("HOME") .. "/.config/awesome/icons/"
@@ -28,14 +27,16 @@ colorful = {}
 theme = {}
 
 local availableColorshemes = {
-	dark = {},
+	dark = {"anaglyph", "ephermal"},
 	light = {"anaglyph", "vaporwave"}
 }
 
-local colorschemeNames = {"dark"}
+local colorschemeCategory = "dark"
+local colorschemeNames = {"anaglyph", "base"}
 local themeNames = {"material"}
 
-PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. colorschemeNames[#colorschemeNames] .. "/"
+PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. colorschemeCategory .. "/"
+PATH.colorscheme = os.getenv("HOME") .. "/.config/awesome/colorschemes/" .. colorschemeCategory .. "/"
 
 -- Modules
 colors = dofile(PATH.modules .. "colors.lua")

@@ -1,7 +1,7 @@
-colorful.background = "#FFFFFF"
-colorful.foreground = "#121212"
-colorful.primary = "#ef5350"
-colorful.complementary = "#81d4fa"
+colorful.background = "#121212"
+colorful.foreground = "#FFFFFF"
+colorful.primary = "#45a3e5"
+colorful.complementary = "#E21b3c"
 colorful.onBackground = colorful.foreground
 colorful.onForeground = colorful.background
 colorful.onPrimary = colorful.background

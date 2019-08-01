@@ -105,7 +105,7 @@ function Button:setup(args)
 				element = self.background,
 				color = self.animatedColor,
 				targetColor = colors.new(self.config.bg),
-				hue = "color",
+				hue = "target",
 				amplitude = 0.3,
 			})
 		else

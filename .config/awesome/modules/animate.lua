@@ -157,12 +157,10 @@ function colorAnimation:create(args)
 		self.color.S = self.startColor.S
 		self.color.L = self.startColor.L
 	end
-	if args.hue then
-		if args.hue == "color" then
-			self.targetColor.H = self.color.H
-		elseif args.hue == "target" then
-			self.color.H = self.targetColor.H
-		end
+	if self.targetColor.S == 0 then
+		self.targetColor.H = self.color.H
+	elseif self.color.S == 0 then
+		self.color.H = self.targetColor.H
 	end
 	self.amp = args.amplitude or 0.5
 	self.treshold = args.treshold or 0.01
