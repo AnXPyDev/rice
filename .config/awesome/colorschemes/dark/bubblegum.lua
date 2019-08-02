@@ -1,0 +1,9 @@
+colorful.background = "#14171e"
+colorful.foreground = "#d4d4d6"
+colorful.primary = "#62d2db"
+colorful.complementary = "#e55c7a"
+colorful.onBackground = colorful.foreground
+colorful.onForeground = colorful.background
+colorful.onPrimary = colorful.background
+colorful.onComplementary = colorful.foreground
+resourceful["emacs.themeName"] = "kaolin-bubblegum"

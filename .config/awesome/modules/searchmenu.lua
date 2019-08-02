@@ -223,7 +223,7 @@ function SearchMenu:update(text)
   local results = self.elements.names
   if text:len() > 0 and not self.searchDisabled then
 		-- Sorts all the elements by comparison with entered text
-    results = sortByComparison(text, self.elements.names, 0.5)
+    results = sortByComparison(text, self.elements.names, 0.1)
   end
   self.results = results
 	-- Wraps cursor around available positions

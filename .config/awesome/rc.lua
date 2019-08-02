@@ -5,7 +5,6 @@ wibox = require("wibox")
 beautiful = require("beautiful")
 naughty = require("naughty")
 xresources = require("beautiful.xresources")
-stringdistance = require("stringdistance")
 dpi = xresources.apply_dpi
 dpi = function(x)
   return x
@@ -19,28 +18,15 @@ PATH = {
   theme = os.getenv("HOME") .. "/.config/awesome/themes/",
   modules = os.getenv("HOME") .. "/.config/awesome/modules/",
 	statusbar = os.getenv("HOME") .. "/.config/awesome/statusbar/",
-	icons = os.getenv("HOME") .. "/.config/awesome/icons/"
+	icons = os.getenv("HOME") .. "/.config/awesome/icons/",
+	colorscheme = os.getenv("HOME") .. "/.config/awesome/colorschemes/"
 }
 
-themeful = {}
-colorful = {}
-theme = {}
 
-local availableColorshemes = {
-	dark = {"anaglyph", "ephermal"},
-	light = {"anaglyph", "vaporwave"}
-}
-
-local colorschemeCategory = "dark"
-local colorschemeNames = {"anaglyph", "base"}
-local themeNames = {"material"}
-
-PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. colorschemeCategory .. "/"
-PATH.colorscheme = os.getenv("HOME") .. "/.config/awesome/colorschemes/" .. colorschemeCategory .. "/"
 
 -- Modules
 colors = dofile(PATH.modules .. "colors.lua")
-dofile(PATH.modules .. "editdistance.lua")
+dofile(PATH.modules .. "fuzzydistance.lua")
 dofile(PATH.modules .. "sort.lua")
 dofile(PATH.modules .. "math.lua")
 dofile(PATH.modules .. "util.lua")
@@ -52,20 +38,13 @@ dofile(PATH.modules .. "slider.lua")
 dofile(PATH.modules .. "showcase.lua")
 dofile(PATH.modules .. "loadscreen.lua")
 dofile(PATH.modules .. "button.lua")
-dofile(PATH.modules .. "ynprompt.lua")
 
 dofile(PATH.config .. "wallpaper.lua")
 dofile(PATH.config .. "screen.lua")
 
-for i, name in ipairs(themeNames) do
-	dofile(PATH.theme .. name .. ".lua")
-end
+dofile(PATH.config .. "theme.lua")
 
-for i, name in ipairs(colorschemeNames) do
-	dofile(PATH.colorscheme .. name .. ".lua")
-end
-
-beautiful.init(theme)
+PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. wallpaperFolder .. "/"
 
 -- Animate loadscreen for each screen
 
@@ -106,7 +85,7 @@ setWallpaper()
 -- Kill compton and restart it
 awful.spawn.with_shell("killall compton; compton --config ~/.config/compton.conf")
 -- Load Xresources
-awful.spawn.with_shell("xrdb ~/.Xresources")
+awful.spawn.with_shell("xrdb " .. PATH.home .. ".Xresources; " .. "xrdb -merge " .. PATH.home .. ".customXresources")
 
 if awesome.startup_errors then
   naughty.notify({

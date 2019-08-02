@@ -5,7 +5,9 @@
 (defun theme/gui()
   (interactive)
   (package-use 'kaolin-themes)
-  (load-theme 'kaolin-galaxy t)
+	(setq theme-name (intern (x-get-resource "themeName" "emacs")))
+	(unless theme-name (setq theme-name 'kaolin-galaxy))
+  (load-theme theme-name t)
   (global-hl-line-mode)
   (when nil
     (set-face-attribute 'default nil
@@ -23,8 +25,12 @@
 			:background "#CCCCCC"
 			:foreground "#151515")
     )
+
+	(setq font-name (x-get-resource "fontName" "emacs"))
+	(unless font-name (setq font-name "Hack"))
+	
 	(set-face-attribute 'default nil
-											:family "Hack"
+											:family font-name
 											:height 112))
 
 (defun theme/general())

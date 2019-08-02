@@ -10,7 +10,7 @@ function sortByComparison(base, strings, treshold)
   local percentages = {}
 
   for i = 1, #strings do
-    percentages[i] = compareStrings(base, strings[i], true)
+    percentages[i] = fuzzyDistance(base, strings[i], true)
   end
 
   local max = 0

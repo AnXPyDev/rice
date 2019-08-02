@@ -1,7 +1,14 @@
 themeful.radius = dpi(3)
 themeful.shape = function(cr, w, h) return gears.shape.rounded_rect(cr, w, h, themeful.radius) end
-themeful.font = "Roboto Italic " .. tostring(dpi(12))
-themeful.fontMono = "Hack " .. tostring(dpi(12))
+
+themeful.fontName = "Roboto Italic"
+themeful.fontSize = dpi(12)
+themeful.font = themeful.fontName .. " " .. tostring(themeful.fontSize)
+
+themeful.fontMonoName = "Hack"
+themeful.fontMonoSize = dpi(12)
+themeful.fontMono = themeful.fontMonoName .. " " .. tostring(themeful.fontSize)
+
 themeful.gap = dpi(0)
 themeful.gaps = {dpi(0), dpi(8), dpi(12), dpi(32)}
 themeful.barSize = dpi(30)
@@ -148,8 +155,7 @@ themeful.statusButtons = {
 }
 
 theme.useless_gap = themeful.gap
-theme.titlebar_size = themeful.barSize
-theme.corner_radius = themeful.radius
 theme.font = themeful.font
-theme.font_name = "Hack"
-theme.font_size = 12
+
+resourceful["emacs.fontName"] = themeful.fontMonoName
+resourceful["st.font"] = themeful.fontMonoName .. ":pixelsize=" .. tostring(themeful.fontMonoSize) .. ":antialias=true"
