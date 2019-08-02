@@ -143,3 +143,5 @@ theme.titlebar_bg_normal = theme.bg_normal
 theme.titlebar_fg_normal = theme.fg_normal
 theme.titlebar_bg_focus = theme.bg_focus
 theme.titlebar_fg_focus = theme.fg_focus
+
+resourceful["emacs.themeName"] = "kaolin-light"

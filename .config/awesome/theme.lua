@@ -3,9 +3,11 @@ colorful = {}
 theme = {}
 resourceful = {}
 
-wallpaperFolder = "dark"
-local colorschemeNames = {"dark/bubblegum", "dark/base", "resources"}
-local themeNames = {"material"}
+local themeCategory = "dark"
+
+wallpaperFolder = themeCategory
+colorschemeNames = {themeCategory .. "/galaxy", themeCategory .. "/base", "resources"}
+themeNames = {"material"}
 
 for i, name in ipairs(themeNames) do
 	dofile(PATH.theme .. name .. ".lua")

@@ -21,7 +21,7 @@ client.connect_signal("manage", function(c)
     if (c.first_tag.gap == 0 or c.fullscreen) and not c.floating then
       return gears.shape.rectangle(cr, w, h)
     end
-    return gears.shape.rounded_rect(cr, w, h, beautiful.corner_radius)
+    return gears.shape.rounded_rect(cr, w, h, themeful.radius)
   end
 end)
 
