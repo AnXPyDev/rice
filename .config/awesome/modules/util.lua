@@ -37,6 +37,7 @@ function materializeSurface(surface, colors)
 
 	local result = {}
 
+
 	for name, color in pairs(colors) do
 		result[name] = gears.color.recolor_image(gears.surface.duplicate_surface(surface), color)
 	end
@@ -76,4 +77,80 @@ function arrayToRgb(rgbArray)
 	end
 
 	return result
+end
+
+function genColorScheme(bg, fg, others, alternateCount)
+
+  local function isLight(color)
+    return colors.new(color).L > 0.5
+  end
+
+  local function alternates(color, count)
+    if isLight(color) then
+      return gears.table.map(function(color) color:to_rgb() end, colors.new(color):shades(count))
+    else
+      return gears.table.map(function(color) color:to_rgb() end, colors.new(color):tints(count))
+    end
+  end
+
+  local alternateCount = alternateCount or 12
+  local result = {}
+
+  result.background = {
+    base = bg,
+    alternates = alternates(bg, alternateCount)
+  }
+
+  result.foreground = {
+    base = fg,
+    alternates = alternates(fg, alternateCount)
+  }
+
+  result.background.on = result.foreground
+  result.foreground.on = result.background
+
+  local cache = {}
+  
+  local function getOnColor(color)
+    if isLight(color) == isLight(result.background.base) then
+      return result.foreground
+    else
+      return result.background
+    end
+  end
+  
+  for key, color in pairs(others) do
+    result[key] = cache[color] or {
+      base = color,
+      alternates = alternates(color, alternateCount),
+      on = getOnColor(color)
+    }
+    cache[color] = cache[color] or result.key
+  end
+
+  return result
+end
+
+function logTable(tbl, depth, maxDepth)
+  local maxDepth = maxDepth or 5
+  local depth = depth or 0
+  local indent = ""
+  if depth > 0 then
+    indent = string.rep("-", depth - 1) .. ">"
+  end
+
+  if depth > maxDepth then
+    return
+  end
+  
+  for key, element in pairs(tbl) do
+    if type(element) == "table" then
+      print(indent .. " " .. tostring(key) .. ": " )
+      logTable(element, depth + 1, maxDepth)
+    else
+      print(indent .. " " .. tostring(key) .. ": " .. tostring(element))
+    end
+  end
+  
+  local depth = 0
 end
