@@ -51,17 +51,29 @@ themer.apply(
 	themeful.titleBar or {}, titlebarConfig
 )
 
+
+local titlebuttonsConfig = {}
+
+themer.apply(
+  {
+    {"shape", themeful.button.shape},
+    {"closeBgHover", themeful.button.bgHover},
+    {"closeFgHover", themeful.button.fgHover},
+    {"closeBgClick", themeful.button.bgClick},
+    {"tileBgHover", themeful.button.bgHover},
+    {"tileFgHover", themeful.button.fgHover},
+    {"tileBgClick", themeful.button.bgClick},
+    {"outsideMargins", themeful.button.outsideMargins},
+    {"margins", themeful.button.margins}
+  },
+  themeful.titleButtons or {}, titlebuttonsConfig
+)
+
 -- Icons for titlebar buttons
 
-local iconColors = {
-	normal = titlebarConfig.fg,
-	focus = titlebarConfig.fgFocus,
-	highlight = themeful.button.fgHover
-}
-
-local closeIcon = materializeSurface(gears.surface.load(PATH.icons .. "close.png"), iconColors)
-local floatIcon = materializeSurface(gears.surface.load(PATH.icons .. "float.png"), iconColors)
-local tileIcon = materializeSurface(gears.surface.load(PATH.icons .. "tile.png"), iconColors)
+local closeIcon = materializeSurface(gears.surface.load(PATH.icons .. "close.png"), {normal = titlebarConfig.fg, focus = titlebarConfig.fgFocus, highlight = titlebuttonsConfig.closeFgHover})
+local floatIcon = materializeSurface(gears.surface.load(PATH.icons .. "float.png"), {normal = titlebarConfig.fg, focus = titlebarConfig.fgFocus, highlight = titlebuttonsConfig.tileFgHover})
+local tileIcon = materializeSurface(gears.surface.load(PATH.icons .. "tile.png"), {normal = titlebarConfig.fg, focus = titlebarConfig.fgFocus, highlight = titlebuttonsConfig.tileFgHover})
 
 -- Creates titlebars for each client
 
@@ -82,7 +94,7 @@ client.connect_signal("request::titlebars" ,
 		)
 
     awful.titlebar(c, {
-			height = titlebarConfig.height,
+			size = titlebarConfig.height,
 			font = titlebarConfig.font,
 			fg_normal = titlebarConfig.fg,
 			bg_normal = titlebarConfig.bg,
@@ -138,6 +150,9 @@ client.connect_signal("request::titlebars" ,
 							end
 							button.image.image = button.icon.normal
 
+              button.config.bgHover = titlebuttonsConfig.tileBgHover
+              button.config.bgClick = titlebuttonsConfig.tileBgClick
+              
 							-- Same, but when the client state changes
 							c:connect_signal("property::floating", function()
 								if c.floating then
@@ -147,7 +162,9 @@ client.connect_signal("request::titlebars" ,
 									if c.focused then
 										button.icon.normal = button.currentIcon.focused
 									end
-									button.image.image = button.icon.normal
+                  if not button.mouseIn then
+                    button.image.image = button.icon.normal
+                  end
 								else
 									button.state = "float"
 									button:setIcon({normal = floatIcon.normal, highlight = floatIcon.highlight})
@@ -156,7 +173,9 @@ client.connect_signal("request::titlebars" ,
 									if c.focused then
 										button.icon.normal = button.currentIcon.focused
 									end
-									button.image.image = button.icon.normal
+                  if not button.mouseIn then
+                    button.image.image = button.icon.normal
+                  end
 								end
 							end)
 						end,
@@ -195,6 +214,8 @@ client.connect_signal("request::titlebars" ,
 								button.image.image = button.icon.normal
 								button.background.bg = button.config.bg
 							end)
+              button.config.bgHover = titlebuttonsConfig.closeBgHover
+              button.config.bgClick = titlebuttonsConfig.closeBgClick
 							button:setIcon({normal = closeIcon.normal, highlight = closeIcon.highlight})
 							if c.focused then
 								button.icon.normal = button.currentIcon.focused

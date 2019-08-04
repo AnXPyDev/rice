@@ -6,6 +6,9 @@
 	this file might depend on other modules from my config.
 ]]--
 
+
+local launcherConfig = {}
+
 -- Arguments for the SearchMenu instance
 
 local launcherArgs = {

@@ -137,6 +137,15 @@ gears.table.crush(themeful.statusButtons, {
 	fgClick = colorful.onPrimary
 })
 
+gears.table.crush(themeful.titleButtons, {
+  tileBgHover = colorful.primary,
+  tileFgHover = colorful.onPrimary,
+  tileBgClick = colorful.primaryShades[3],
+  closeBgHover = colorful.complementary,
+  closeFgHover = colorful.onComplementary,
+  closeBgClick = colorful.complementaryShades[3]
+})
+
 theme.bg_normal = colorful.background
 theme.fg_normal = colorful.foregroundShades[4]
 theme.bg_focus = colorful.backgroundTints[2]

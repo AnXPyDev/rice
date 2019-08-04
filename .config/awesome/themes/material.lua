@@ -11,13 +11,12 @@ themeful.fontMono = themeful.fontMonoName .. " " .. tostring(themeful.fontSize)
 
 themeful.gap = dpi(0)
 themeful.gaps = {dpi(0), dpi(8), dpi(12), dpi(32)}
-themeful.barSize = dpi(30)
 themeful.margins = margins(dpi(5))
 themeful.outsideMargins = margins(dpi(10))
 
 
 themeful.titleBar = {
-	height = dpi(40),
+	height = dpi(30),
 	font = themeful.font
 }
 
@@ -158,6 +157,12 @@ themeful.keyboardIndicator = {
 
 themeful.statusButtons = {
 	margins = margins(dpi(24))
+}
+
+themeful.titleButtons = {
+  shape = gears.shape.circle,
+  outsideMargins = margins(0),
+  margins = margins(dpi(5))
 }
 
 gears.table.crush(naughty.config, {

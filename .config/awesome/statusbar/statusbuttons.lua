@@ -18,7 +18,14 @@ function statusbuttons:setup()
 			{"bgClick", themeful.button.bgClick},
 			{"fgClick", themeful.button.fgClick},
 			{"defaultBg", themeful.button.defaultBg},
-			{"margins", themeful.button.margins}
+			{"margins", themeful.button.margins},
+      {"rightShape", function(cr, w, h)
+        return gears.shape.partially_rounded_rect(cr, w, h, false, true, true, false, themeful.radius)
+      end},
+      {"leftShape", function(cr, w, h)
+        return gears.shape.partially_rounded_rect(cr, w, h, true, false, false, true, themeful.radius)
+      end},
+      {"shape", gears.shape.rectangle}
 		},
 		themeful.statusButtons or {}, config
 	)
@@ -34,9 +41,7 @@ function statusbuttons:setup()
 		defaultBg = config.defaultBg,
 		margins = config.margins,
 		size = config.size,
-		shape = function(cr, w, h)
-			return gears.shape.partially_rounded_rect(cr, w, h, false, true, true, false, themeful.radius)
-		end,
+		shape = config.rightShape,
 		callback = function()
 			powermenu:showAnimate()
 		end
@@ -52,9 +57,7 @@ function statusbuttons:setup()
 		defaultBg = config.defaultBg,
 		margins = config.margins,
 		size = config.size,
-		shape = function(cr, w, h)
-			return gears.shape.partially_rounded_rect(cr, w, h, true, false, false, true, themeful.radius)
-		end,
+		shape = config.leftShape,
 		callback = function()
 			launcher.showAnimate()
 		end
@@ -69,6 +72,7 @@ function statusbuttons:setup()
 		fgClick = config.fgClick,
 		defaultBg = config.defaultBg,
 		margins = config.margins,
+    shape = config.shape,
 		size = config.size,
 		callback = function()
 			volumecontrol:show()
@@ -84,6 +88,7 @@ function statusbuttons:setup()
 		fgClick = config.fgClick,
 		defaultBg = config.defaultBg,
 		margins = config.margins,
+    shape = config.shape,
 		size = config.size,
 		callback = function()
 			tagindicator:showAnimate()
