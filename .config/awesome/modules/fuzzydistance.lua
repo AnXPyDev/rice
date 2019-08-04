@@ -1,18 +1,18 @@
 function fuzzyDistance(a, b, lowercaseComparison)
-	if lowercaseComparison then
-		a = a:lower()
-		b = b:lower()
-	end
+  if lowercaseComparison then
+    a = a:lower()
+    b = b:lower()
+  end
 
-	local matches = {}
-	local lastFound = 0
-	
-	local charIndex = 1
+  local matches = {}
+  local lastFound = 0
+  
+  local charIndex = 1
 
-	for charIndex = 1, a:len() do
-		local searchResult = b:find(a:sub(charIndex, charIndex), lastFound)
-		if searchResult then
-			matches[#matches + 1] = searchResult - lastFound
+  for charIndex = 1, a:len() do
+    local searchResult = b:find(a:sub(charIndex, charIndex), lastFound)
+    if searchResult then
+      matches[#matches + 1] = searchResult - lastFound
 			lastFound = searchResult
 		end
 	end

@@ -6,6 +6,7 @@
 (load-file (concat user-emacs-directory "modules/edit.el"))
 
 (setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)

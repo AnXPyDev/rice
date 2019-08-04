@@ -37,11 +37,31 @@ client.connect_signal("mouse::enter", function(c)
   c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
+local titlebarConfig = {}
+
+themer.apply(
+	{
+		{"height", dpi(30)},
+		{"font", beautiful.font},
+		{"bg", "#000000"},
+		{"fg", "#FFFFFF"},
+		{"bgFocus", "#FFFFFF"},
+		{"fgFocus", "#000000"}
+	},
+	themeful.titleBar or {}, titlebarConfig
+)
+
 -- Icons for titlebar buttons
 
-local closeIcon = materializeSurface(gears.surface.load(PATH.icons .. "close.png"), {normal = themeful.button.fg, highlight = themeful.button.fgHover})
-local floatIcon = materializeSurface(gears.surface.load(PATH.icons .. "float.png"), {normal = themeful.button.fg, highlight = themeful.button.fgHover})
-local tileIcon = materializeSurface(gears.surface.load(PATH.icons .. "tile.png"), {normal = themeful.button.fg, highlight = themeful.button.fgHover})
+local iconColors = {
+	normal = titlebarConfig.fg,
+	focus = titlebarConfig.fgFocus,
+	highlight = themeful.button.fgHover
+}
+
+local closeIcon = materializeSurface(gears.surface.load(PATH.icons .. "close.png"), iconColors)
+local floatIcon = materializeSurface(gears.surface.load(PATH.icons .. "float.png"), iconColors)
+local tileIcon = materializeSurface(gears.surface.load(PATH.icons .. "tile.png"), iconColors)
 
 -- Creates titlebars for each client
 
@@ -61,7 +81,14 @@ client.connect_signal("request::titlebars" ,
 			end)
 		)
 
-    awful.titlebar(c, {size = beautiful.titlebar_size, position = "top"}) : setup({
+    awful.titlebar(c, {
+			height = titlebarConfig.height,
+			font = titlebarConfig.font,
+			fg_normal = titlebarConfig.fg,
+			bg_normal = titlebarConfig.bg,
+			fg_focus = titlebarConfig.fgFocus,
+			bg_focus = titlebarConfig.bgFocus
+		}) : setup({
 			-- Left
 			{
 				layout = wibox.layout.flex.horizontal,
@@ -85,35 +112,51 @@ client.connect_signal("request::titlebars" ,
 						initCallback = function(button)
 							c:connect_signal("focus", function()
 								button.colorAnimation.done = true
-								button.config.bg = beautiful.bg_focus
+								button.config.bg = titlebarConfig.bgFocus
+								button.icon.normal = button.currentIcon.focus
 								button.background.bg = button.config.bg
+								button.image.image = button.icon.normal
 							end)
 							c:connect_signal("unfocus", function()
 								button.colorAnimation.done = true
-								button.config.bg = beautiful.bg_normal
+								button.config.bg = titlebarConfig.bg
+								button.icon.normal = button.currentIcon.normal
 								button.background.bg = button.config.bg
+								button.image.image = button.icon.normal
 							end)
 							if c.floating then
 								button.state = "tile"
-								button:setIcon(tileIcon)
-								button.image.image = button.icon.normal
+								button.currentIcon = tileIcon
 							else
 								button.state = "float"
-								button:setIcon(floatIcon)
-								button.image.image = button.icon.normal
+								button.currentIcon = floatIcon
 							end
+
+							button:setIcon({normal = button.currentIcon.normal, highlight = button.currentIcon.highlight})
+							if c.focused then
+								button.icon.normal = button.currentIcon.focused
+							end
+							button.image.image = button.icon.normal
+
 							-- Same, but when the client state changes
 							c:connect_signal("property::floating", function()
 								if c.floating then
 									button.state = "tile"
-									button:setIcon(tileIcon)
+									button.currentIcon = tileIcon
+									button:setIcon({normal = button.currentIcon.normal, highlight = button.currentIcon.highlight})
+									if c.focused then
+										button.icon.normal = button.currentIcon.focused
+									end
 									button.image.image = button.icon.normal
-									c.floating = true
 								else
 									button.state = "float"
-									button:setIcon(floatIcon)
+									button:setIcon({normal = floatIcon.normal, highlight = floatIcon.highlight})
+									button.currentIcon = floatIcon
+									button:setIcon({normal = button.currentIcon.normal, highlight = button.currentIcon.highlight})
+									if c.focused then
+										button.icon.normal = button.currentIcon.focused
+									end
 									button.image.image = button.icon.normal
-									c.floating = false
 								end
 							end)
 						end,
@@ -122,15 +165,9 @@ client.connect_signal("request::titlebars" ,
 						callback = function(button)
 							if button.state and button.state == "float" then
 								button.state = "tile"
-								button:setIcon(tileIcon)
-								button.background.bg = button.config.bg
-								button.image.image = button.icon.normal
 								c.floating = true
 							else
 								button.state = "float"
-								button:setIcon(floatIcon)
-								button.background.bg = button.config.bg
-								button.image.image = button.icon.normal
 								c.floating = false
 							end
 						end
@@ -146,15 +183,22 @@ client.connect_signal("request::titlebars" ,
 						initCallback = function(button)
 							c:connect_signal("focus", function()
 								button.colorAnimation.done = true
-								button.config.bg = beautiful.bg_focus
+								button.config.bg = titlebarConfig.bgFocus
+								button.icon.normal = closeIcon.focus
+								button.image.image = button.icon.normal
 								button.background.bg = button.config.bg
 							end)
 							c:connect_signal("unfocus", function()
 								button.colorAnimation.done = true
-								button.config.bg = beautiful.bg_normal
+								button.config.bg = titlebarConfig.bg
+								button.icon.normal = closeIcon.normal
+								button.image.image = button.icon.normal
 								button.background.bg = button.config.bg
 							end)
-							button:setIcon(closeIcon)
+							button:setIcon({normal = closeIcon.normal, highlight = closeIcon.highlight})
+							if c.focused then
+								button.icon.normal = button.currentIcon.focused
+							end
 							button.image.image = button.icon.normal
 						end
 										}

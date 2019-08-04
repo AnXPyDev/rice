@@ -24,6 +24,13 @@ if colorful.onComplementary == colorful.background then
 	colorful.complementaryTints, colorful.complementaryShades = colorful.complementaryShades, colorful.complementaryTints
 end
 
+gears.table.crush(themeful.titleBar, {
+	bgFocus = colorful.backgroundTints[3],
+	fgFocus = colorful.onBackground,
+	bg = colorful.background,
+	fg = colorful.onBackground
+})
+
 gears.table.crush(themeful.searchMenu.prompt, {
 	bg = colorful.backgroundTints[1],
 	fg = colorful.onBackground,

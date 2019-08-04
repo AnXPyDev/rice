@@ -15,6 +15,12 @@ themeful.barSize = dpi(30)
 themeful.margins = margins(dpi(5))
 themeful.outsideMargins = margins(dpi(10))
 
+
+themeful.titleBar = {
+	height = dpi(40),
+	font = themeful.font
+}
+
 -- Settings for general animations
 
 themeful.animate = {
@@ -123,7 +129,7 @@ themeful.loadScreen = {
 
 themeful.button = {
 	margins = margins(dpi(8)),
-	outsideMargins = margins(0),
+	outsideMargins = margins(dpi(0)),
 	shape = gears.shape.rectangle,
 	animateHover = true,
 	animateClick = true
@@ -153,6 +159,10 @@ themeful.keyboardIndicator = {
 themeful.statusButtons = {
 	margins = margins(dpi(24))
 }
+
+gears.table.crush(naughty.config, {
+	padding = dpi(10)
+})
 
 theme.useless_gap = themeful.gap
 theme.font = themeful.font

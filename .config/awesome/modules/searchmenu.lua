@@ -102,11 +102,11 @@ function SearchMenu:initElements()
       widgets[1] = widget.textFinal
       widgets[2] = widget.showcaseFinal
       if self.elements.config.hideText then
-	widgets[1] = nil
+        widgets[1] = nil
       end
     else
       if self.elements.config.hideText then
-	widgets[2] = nil
+        widgets[2] = nil
       end
     end
     widget.bare = wibox.widget(widgets)
@@ -117,14 +117,14 @@ function SearchMenu:initElements()
     widget.final = widget.outsideMargin
     widget.final:connect_signal("mouse::enter", function()
       if i + self.cursor.page * self.elements.config.count[1] * self.elements.config.count[2] > #self.results then
-	return
+        return
       end
       self.cursor.pos = self.cursor.page * self.elements.config.count[1] * self.elements.config.count[2] + i
       self:redraw()
     end)
     widget.final:connect_signal("button::release", function(args)
       if i + self.cursor.page * self.elements.config.count[1] * self.elements.config.count[2] > #self.results then
-	return
+        return
       end
       root.fake_input("key_press", "Return")
       root.fake_input("key_release", "Return")
@@ -135,12 +135,12 @@ function SearchMenu:initElements()
   widget.bare = wibox.widget(
     gears.table.join(
       {
-	layout = wibox.layout {
-	  forced_num_cols = self.elements.config.count[1],
-	  forced_nim_rows = self.elements.config.count[2],
-	  homogenous = false,
-	  layout = wibox.layout.grid
-	}
+        layout = wibox.layout {
+          forced_num_cols = self.elements.config.count[1],
+          forced_nim_rows = self.elements.config.count[2],
+          homogenous = false,
+          layout = wibox.layout.grid
+        }
       },
       gears.table.map(function(widget) return widget.final end, self.elements.widgets)
     )
@@ -253,7 +253,7 @@ function SearchMenu:redraw()
     widget.showcaseMargin.margins = 0
     if i + self.cursor.page * #self.elements.widgets <= #self.results then
       if element.update then
-	element.update(i, isSelected)
+        element.update(i, isSelected)
       end
       widget.showcaseMargin.widget = element.showcase or nil
 			local newBg = element.bgFunc and element.bgFunc(i, isSelected) or isSelected and self.elements.config.bgHl or self.elements.config.bg
@@ -269,14 +269,14 @@ function SearchMenu:redraw()
 			else
 				widget.background.bg = newBg
 			end
-						
+      
 
       widget.background.fg = element.fgFunc and element.fgFunc(i, isSelected) or isSelected and self.elements.config.fgHl or self.elements.config.fg
       gears.table.crush(widget.showcaseMargin, self.elements.config.showcaseMargins)
       if not element.hideText and not self.elements.config.hideText then
-	widget.text.text = element.text or element.name
+        widget.text.text = element.text or element.name
       else
-	widget.text.text = ""
+        widget.text.text = ""
       end
       self.elements.widgets[i].background.visible = true
     end
@@ -306,7 +306,7 @@ function SearchMenu:setup(args)
   )
 
   themer.apply({{"size"}, {"pos"}, {"margins"}, {"shape"}, {"bg"}, {"ontop"}}, args.wibox or {}, self.wibox.config)
-		 
+  
   self.prompt = {
     config = {}
   }
