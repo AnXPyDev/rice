@@ -62,7 +62,7 @@ function internetindicator:refresh(output)
 			self.widget:reset(self.wifiName, self.pie.final)
 		else
 			self.widget:reset("Ethernet", self.image)
-			self.image.image = self.images.ethernet.onPrimary
+			self.image.image = self.images.ethernet.online
 		end
 
 	else
@@ -92,7 +92,7 @@ function internetindicator:refresh(output)
 		self.widget:reset("Offline", self.image)
 		
 		-- Ethernet icon is shown even when offline
-		self.image.image = self.images.ethernet.onBackground
+		self.image.image = self.images.ethernet.normal
 	end
 	
 end
@@ -111,9 +111,7 @@ function internetindicator:setup()
 	self.isConnected = false
 	self.signalStrength = 0
 	self.refreshInterval = 3
-	self.images = {
-		ethernet = materializeSurface(gears.surface.load(PATH.icons .. "ethernet.png")),
-	}
+
 
 	self.config = {}
 
@@ -130,8 +128,11 @@ function internetindicator:setup()
 		},
 		themeful.internetIndicator or {}, self.config
 	)
-	
-	self.image = wibox.widget.imagebox(self.images.ethernet.onBackground)
+	self.images = {
+		ethernet = materializeSurface(gears.surface.load(PATH.icons .. "ethernet.png"), {normal = self.config.fg, online = self.config.fgOnline}),
+	}
+
+	self.image = wibox.widget.imagebox(self.images.ethernet.normal)
 
 	-- Creates two wifi icons, which are stacked over each other, one acting as a background and other indicates quality
 	

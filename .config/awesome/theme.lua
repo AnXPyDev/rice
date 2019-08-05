@@ -19,9 +19,9 @@ end
 
 local xfile = io.open(PATH.home .. ".customXresources", "w")
 
-for key, value in pairs(resourceful) do
-	xfile:write(key .. ": " .. value .. "\n")
-end
+--for key, value in pairs(resourceful) do
+	--xfile:write(key .. ": " .. value .. "\n")
+--end
 
 xfile:close()
 

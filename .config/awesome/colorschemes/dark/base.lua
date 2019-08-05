@@ -65,6 +65,15 @@ gears.table.crush(themeful.slider.sliders, {
   bg = colorful.background
 })
 
+gears.table.crush(themeful.volumeControl, {
+  wiBg = colorful.background,
+  outsideMargins = themeful.outsideMargins,
+  bg = colorful.background,
+  fg = colorful.onBackground,
+  bgHl = colorful.primary,
+  fgHl = colorful.onPrimary
+})
+
 gears.table.crush(themeful.statusBar.wibox, {
 	fg = colorful.onBackground,
   bg = colorful.background

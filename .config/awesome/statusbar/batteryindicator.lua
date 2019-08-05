@@ -36,17 +36,17 @@ function batteryindicator:refresh(output)
 		self.percentage = 100
 		self.animation.paused = true
 		self.progressbar.value = self.percentage / 100
-		self.imageMargin.widget.image = self.images.charged.onBackground
+		self.imageMargin.widget.image = self.images.charged.normal
 	else
 		if self.state == "charging" then
-			self.imageMargin.widget.image = self.images.charging.onBackground
+			self.imageMargin.widget.image = self.images.charging.normal
 			self.animation.paused = false
 		elseif self.state == "depleting" then
-			self.imageMargin.widget.image = self.images.depleting.onBackground
+			self.imageMargin.widget.image = self.images.depleting.normal
 			self.animation.paused = true
 			self.progressbar.value = self.percentage / 100
 		elseif self.state == "charged" then
-			self.imageMargin.widget.image = self.images.charged.onBackground
+			self.imageMargin.widget.image = self.images.charged.normal
 			self.animation.paused = true
 			self.progressbar.value = self.percentage / 100
 		end
@@ -80,11 +80,6 @@ function batteryindicator:setup(args)
 	self.state = "none"
 	self.percentage = 0
 	self.refreshInterval = 3
-	self.images = {
-		depleting = materializeSurface(PATH.icons .. "battery_depleting.png"),
-		charging = materializeSurface(PATH.icons .. "battery_charging.png"),
-		charged = materializeSurface(PATH.icons .. "battery_charged.png")
-	}
 
 	self.config = {}
 
@@ -99,12 +94,18 @@ function batteryindicator:setup(args)
 		},
 		themeful.batteryIndicator or {}, self.config
 	)
-	
+
+	self.images = {
+		depleting = materializeSurface(PATH.icons .. "battery_depleting.png", {normal = self.config.fg}),
+		charging = materializeSurface(PATH.icons .. "battery_charging.png", {normal = self.config.fg}),
+		charged = materializeSurface(PATH.icons .. "battery_charged.png", {normal = self.config.fg})
+	}
+
 	self:makeWidget()
 
 	-- sets the default icon as a placeholder until first refresh happens
 
-	self.imageMargin.widget = wibox.widget.imagebox(self.images.charging.onBackground)
+	self.imageMargin.widget = wibox.widget.imagebox(self.images.charging.normal)
 
 	-- This animation is active when battery is charging, and waves the progressbar between 100% and current percentage, for visual effect
 	

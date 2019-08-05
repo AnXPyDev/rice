@@ -8,11 +8,16 @@
 
 -- Icons used by powermenu
 
+local iconColors = {
+  normal = themeful.searchMenu.elements.fg,
+  highlight = themeful.searchMenu.elements.fgHl
+}
+
 local powermenuIcons = {
-	poweroff = materializeSurface(gears.surface.load(PATH.icons .. "poweroff.png")),
-	reboot = materializeSurface(gears.surface.load(PATH.icons .. "reboot.png")),
-	suspend = materializeSurface(gears.surface.load(PATH.icons .. "suspend.png")),
-	logout = materializeSurface(gears.surface.load(PATH.icons .. "logout.png"))
+	poweroff = materializeSurface(gears.surface.load(PATH.icons .. "poweroff.png"), iconColors),
+	reboot = materializeSurface(gears.surface.load(PATH.icons .. "reboot.png"), iconColors),
+	suspend = materializeSurface(gears.surface.load(PATH.icons .. "suspend.png"), iconColors),
+	logout = materializeSurface(gears.surface.load(PATH.icons .. "logout.png"), iconColors)
 }
 
 -- Images that hold the icons, so they can be changed later
@@ -29,9 +34,9 @@ local powermenuImages = {
 local function makeUpdateFunction(name)
 	return function(i, isSelected)
 		if isSelected then
-			powermenuImages[name].image = powermenuIcons[name].onPrimary
+			powermenuImages[name].image = powermenuIcons[name].highlight
 		else
-			powermenuImages[name].image = powermenuIcons[name].onBackground
+			powermenuImages[name].image = powermenuIcons[name].normal
 		end
 	end
 end

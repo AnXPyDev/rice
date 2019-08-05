@@ -148,7 +148,9 @@ themeful.tagIndicator = {
 }
 
 themeful.volumeControl = {
-	animate = true
+	animate = true,
+  showcaseShape = themeful.shape,
+  margins = margins(0)
 }
 
 themeful.keyboardIndicator = {
