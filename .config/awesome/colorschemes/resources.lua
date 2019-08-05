@@ -1,2 +1,2 @@
-resourceful["st.background"] = colorful.background
-resourceful["st.foreground"] = colorful.foreground
+resourceful["st.background"] = colorful.background.base
+resourceful["st.foreground"] = colorful.foreground.base

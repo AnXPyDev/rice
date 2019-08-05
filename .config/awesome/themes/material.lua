@@ -149,6 +149,7 @@ themeful.tagIndicator = {
 
 themeful.volumeControl = {
 	animate = true,
+  outsideMargins = themeful.outsideMargins,
   showcaseShape = themeful.shape,
   margins = margins(0)
 }
@@ -166,6 +167,8 @@ themeful.titleButtons = {
   outsideMargins = margins(0),
   margins = margins(dpi(5))
 }
+
+themeful.sysGraph = {}
 
 gears.table.crush(naughty.config, {
 	padding = dpi(10)

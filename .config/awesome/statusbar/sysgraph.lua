@@ -31,6 +31,17 @@ end
 
 -- Initializes sysgraph
 function sysgraph:setup()
+  self.config = {}
+
+  themer.apply(
+    {
+      {"fgRam", "#FFFFFF"},
+      {"fgCpu", "#FFFFFF"},
+      {"bg", "#000000"}
+    },
+    themeful.sysGraph or {}, self.config
+  )
+  
 	self.cpugraph = wibox.widget {
 		max_value = 100,
 		step_width = dpi(5),
@@ -39,7 +50,7 @@ function sysgraph:setup()
 		forced_width = 10000,
 		forced_height = 10000,
 		background_color = gears.color.transparent,
-		color = colorful.complementary,
+		color = self.config.fgCpu,
 		widget = wibox.widget.graph
 	}
 	self.ramgraph = wibox.widget {
@@ -50,7 +61,7 @@ function sysgraph:setup()
 		forced_width = 10000,
 		forced_height = 10000,
 		background_color = gears.color.transparent,
-		color = colorful.primary,
+		color = self.config.fgRam,
 		widget = wibox.widget.graph
 	}
 	self.refreshTimer = gears.timer {
@@ -74,7 +85,8 @@ function sysgraph:setup()
 				disableText = true,
 				showcase = self.graph,
 				outsideMargins = margins(0),
-				showcaseMargins = margins(0)
+				showcaseMargins = margins(0),
+        bg = self.config.bg
 			}
 					)
 end

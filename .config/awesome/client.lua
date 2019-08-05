@@ -11,7 +11,7 @@
 client.connect_signal("manage", function(c)
   c.border_width = beautiful.border_width
   c.border_color = beautiful.bg_normal
-
+  c.focused = c.window == awful.client.focus.window
 	--[[
 		This shape function returns a regular rectangle when a client is fullscreen or
 		the tag that it's on has no gaps, for obvious reasons, else returns a rounded rectangle
@@ -29,7 +29,13 @@ end)
 	TODO: A function that blinks client on focus (like flashfocus)
 ]]--
 
-client.connect_signal("focus", function(c) end)
+client.connect_signal("focus", function(c)
+  c.focused = true
+end)
+
+client.connect_signal("unfocus", function(c)
+  c.focusd = false
+end)
 
 -- Focuses client when mouse enters
 
@@ -75,6 +81,83 @@ local closeIcon = materializeSurface(gears.surface.load(PATH.icons .. "close.png
 local floatIcon = materializeSurface(gears.surface.load(PATH.icons .. "float.png"), {normal = titlebarConfig.fg, focus = titlebarConfig.fgFocus, highlight = titlebuttonsConfig.tileFgHover})
 local tileIcon = materializeSurface(gears.surface.load(PATH.icons .. "tile.png"), {normal = titlebarConfig.fg, focus = titlebarConfig.fgFocus, highlight = titlebuttonsConfig.tileFgHover})
 
+
+
+
+local function makeTileButton(c)
+  local floatIcon = materializeSurface(gears.surface.load(PATH.icons .. "float.png"), {normal = titlebarConfig.fg, focus = titlebarConfig.fgFocus, highlight = titlebuttonsConfig.tileFgHover})
+
+  local tileIcon = materializeSurface(gears.surface.load(PATH.icons .. "tile.png"), {normal = titlebarConfig.fg, focus = titlebarConfig.fgFocus, highlight = titlebuttonsConfig.tileFgHover})
+
+  local button = Button:new()
+
+  button:setup(
+    {
+      initCallback = function(button)
+        c:connect_signal("focus", function()
+          button.colorAnimation.done = true
+          button.config.bg = titlebarConfig.bgFocus
+          button.icon.normal = button.currentIcon.focus
+          button.image.image = button.icon.normal
+          button.background.bg = button.config.bg
+        end)
+
+        c:connect_signal("unfocus", function()
+          button.colorAnimation.done = true
+          button.config.bg = titlebarConfig.bg
+          button.icon.normal = button.currentIcon.normal
+          button.image.image = button.icon.normal
+          button.background.bg = button.config.bg
+        end)
+
+        if c.floating then
+          button.state = "tile"
+          button.currentIcon = tileIcon
+        else
+          button.state = "float"
+          button.currentIcon = floatIcon
+        end
+
+        button:setIcon({normal = button.currentIcon.focus, highlight = button.currentIcon.highlight})
+
+        button.config.bgHover = titlebuttonsConfig.tileBgHover
+        button.config.bgClick = titlebuttonsConfig.tileBgClick
+
+        c:connect_signal("property::floating", function()
+          if c.floating then
+            button.state = "tile"
+            button.currentIcon = tileIcon
+          else
+            button.state = "float"
+            button.currentIcon = floatIcon
+          end
+
+          button:setIcon({normal = client.focus.window == c.window and button.currentIcon.focus or button.currentIcon.normal, highlight = button.currentIcon.highlight})
+
+          if not button.mouseIn then
+            button.image.image = button.icon.normal
+          end
+        end)
+        
+      end,
+      callback = function(button)
+        if button.state == "tile" then
+          button.state = "float"
+          c.floating = false
+        else
+          button.state = "tile"
+          c.floating = true
+        end
+      end
+    }
+  )
+  return button.widget
+end
+
+local function makeCloseButton(c)
+end
+
+
 -- Creates titlebars for each client
 
 client.connect_signal("request::titlebars" ,
@@ -118,81 +201,7 @@ client.connect_signal("request::titlebars" ,
 			-- Right (titlebar buttons)
       {
 				-- Creates a tile/float button
-				Button:new()
-					:setup({
-						-- Changes icon based on initial client state
-						initCallback = function(button)
-							c:connect_signal("focus", function()
-								button.colorAnimation.done = true
-								button.config.bg = titlebarConfig.bgFocus
-								button.icon.normal = button.currentIcon.focus
-								button.background.bg = button.config.bg
-								button.image.image = button.icon.normal
-							end)
-							c:connect_signal("unfocus", function()
-								button.colorAnimation.done = true
-								button.config.bg = titlebarConfig.bg
-								button.icon.normal = button.currentIcon.normal
-								button.background.bg = button.config.bg
-								button.image.image = button.icon.normal
-							end)
-							if c.floating then
-								button.state = "tile"
-								button.currentIcon = tileIcon
-							else
-								button.state = "float"
-								button.currentIcon = floatIcon
-							end
-
-							button:setIcon({normal = button.currentIcon.normal, highlight = button.currentIcon.highlight})
-							if c.focused then
-								button.icon.normal = button.currentIcon.focused
-							end
-							button.image.image = button.icon.normal
-
-              button.config.bgHover = titlebuttonsConfig.tileBgHover
-              button.config.bgClick = titlebuttonsConfig.tileBgClick
-              
-							-- Same, but when the client state changes
-							c:connect_signal("property::floating", function()
-								if c.floating then
-									button.state = "tile"
-									button.currentIcon = tileIcon
-									button:setIcon({normal = button.currentIcon.normal, highlight = button.currentIcon.highlight})
-									if c.focused then
-										button.icon.normal = button.currentIcon.focused
-									end
-                  if not button.mouseIn then
-                    button.image.image = button.icon.normal
-                  end
-								else
-									button.state = "float"
-									button:setIcon({normal = floatIcon.normal, highlight = floatIcon.highlight})
-									button.currentIcon = floatIcon
-									button:setIcon({normal = button.currentIcon.normal, highlight = button.currentIcon.highlight})
-									if c.focused then
-										button.icon.normal = button.currentIcon.focused
-									end
-                  if not button.mouseIn then
-                    button.image.image = button.icon.normal
-                  end
-								end
-							end)
-						end,
-
-						-- Makes the client tiled/floating based on current state when clicked on, also changes icon
-						callback = function(button)
-							if button.state and button.state == "float" then
-								button.state = "tile"
-								c.floating = true
-							else
-								button.state = "float"
-								c.floating = false
-							end
-						end
-										}
-								).widget,
-
+        makeTileButton(c),
 				-- Kills client when clicked
 				Button:new()
 					:setup({
