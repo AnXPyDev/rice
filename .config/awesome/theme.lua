@@ -6,7 +6,7 @@ resourceful = {}
 local themeCategory = "dark"
 
 wallpaperFolder = themeCategory
-colorschemeNames = {themeCategory .. "/bubblegum", themeCategory .. "/base", "resources"}
+colorschemeNames = {themeCategory .. "/lovelace", themeCategory .. "/base", "resources"}
 themeNames = {"material"}
 
 for i, name in ipairs(themeNames) do

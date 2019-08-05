@@ -61,18 +61,18 @@ function launcher.showAnimate()
     animate.add({
       object = launcher.wibox.widget,
       start = {
-	launcherArgs.wibox.pos[1],
-	launcherArgs.wibox.pos[2] - (launcherArgs.wibox.size[2])
+        launcherArgs.wibox.pos[1],
+        screens.primary.geometry.y - (launcherArgs.wibox.size[2])
       },
       target = {
-	launcherArgs.wibox.pos[1],
-	launcherArgs.wibox.pos[2]
+        launcherArgs.wibox.pos[1],
+        launcherArgs.wibox.pos[2]
       },
       type = "interpolate",
       magnitude = 0.3,
       amount = 5,
       callback = function()
-	launcher.animationRunning = false
+        launcher.animationRunning = false
       end
     })
   end

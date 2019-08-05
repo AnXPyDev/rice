@@ -6,7 +6,7 @@ gears.table.crush(themeful.titleBar, {
 })
 
 gears.table.crush(themeful.searchMenu.prompt, {
-	bg = colorful.background.alternates[3],
+	bg = colorful.background.alternates[2],
 	fg = colorful.background.on.base,
 })
 
@@ -27,16 +27,15 @@ gears.table.crush(themeful.slider.wibox, {
 })
 
 gears.table.crush(themeful.slider.sliders, {
-  sliderArgs = {
-    bar_shape = gears.shape.rounded_bar,
-    handle_shape = themeful.shape,
-    bar_color = colorful.background.alternates[4],
-    handle_color = colorful.primary.base,
-    bar_height = dpi(5)
-  },
+
   sliderBg = colorful.background.base,
   showcaseBg = colorful.primary.base,
   bg = colorful.background.base
+})
+
+gears.table.crush(themeful.slider.sliders.sliderArgs, {
+  bar_color = colorful.background.alternates[4],
+  handle_color = colorful.primary.base
 })
 
 gears.table.crush(themeful.volumeControl, {
@@ -120,9 +119,9 @@ gears.table.crush(themeful.statusButtons, {
 })
 
 gears.table.crush(themeful.titleButtons, {
-  tileBgHover = colorful.secondary.base,
-  tileFgHover = colorful.secondary.on.base,
-  tileBgClick = colorful.secondary.alternates[3],
+  tileBgHover = colorful.primary.base,
+  tileFgHover = colorful.primary.on.base,
+  tileBgClick = colorful.primary.alternates[3],
   closeBgHover = colorful.alert.base,
   closeFgHover = colorful.alert.on.base,
   closeBgClick = colorful.alert.alternates[3]

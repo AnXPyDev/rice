@@ -1,15 +1,16 @@
 colorful = genColorScheme(
-  "#121212",
-  "#ffffff",
+  "#1d1f28",
+  "#fdfdfd",
   {
-    red = "#e21b3c",
-    lightblue = "#45c3e5"
+    red = "#f37f97",
+    lightblue = "#5adecd",
+    purple = "#c574dd"
   },
   25
 )
 
 colorful.primary = colorful.lightblue
-colorful.secondary = colorful.red
+colorful.secondary = colorful.purple
 colorful.alert = colorful.red
 
 resourceful["emacs.themeName"] = "kaolin-galaxy"

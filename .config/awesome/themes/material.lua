@@ -69,7 +69,11 @@ themeful.slider.wibox = {
 }
 
 themeful.slider.sliders = {
-  sliderArgs = {},
+  sliderArgs = {
+    bar_shape = gears.shape.rounded_bar,
+    handle_shape = themeful.shape,
+    bar_height = dpi(5)
+  },
   direction = "horizontal",
   sliderMargins = themeful.outsideMargins,
   sliderShape = themeful.shape,
