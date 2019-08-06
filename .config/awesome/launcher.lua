@@ -9,31 +9,64 @@
 
 local launcherConfig = {}
 
--- Arguments for the SearchMenu instance
+themer.apply(
+  {
+    {"promptHeight", dpi(60)},
+    {"elementSize", {dpi(130), dpi(120)}},
+    {"elementCount", {5,2}},
+    {"boundedMargins", margins(0)},
+    {"elementBg", "#000000"},
+    {"elementFg", "#FFFFFF"},
+    {"elementBgHl", "#FFFFFF"},
+    {"elementFgHl", "#000000"},
+    {"wiboxBg", "#000000"},
+    {"promptBg", "#FFFFFF"},
+    {"promptFg", "#000000"},
+    {"promptOutsideMargins", margins(0)},
+    {"elementOutsideMargins", margins(0)},
+    {"elementMargins", margins(dpi(10))},
+    {"elementShowcaseMargins", margins(dpi(5))},
+    {"elementShape", gears.shape.rectangle},
+    {"halign", "center"},
+    {"valign", "center"},
+    {"showcasePosition", "top"}
+  },
+  themeful.launcher or {}, launcherConfig
+)
+
+-- Argument for the SearchMenu instance
 
 local launcherArgs = {
   screen = screens.primary,
   wibox = {
-    size = {dpi(690), dpi(280 + 60)}
+    size = {},
+    bg = launcherConfig.wiboxBg
   },
   prompt = {
     size = {
-      nil, dpi(60)
+      nil, launcherConfig.promptHeight
     },
     halign = "left",
+    bg = launcherConfig.promptBg,
+    fg = launcherConfig.promptFg,
+    outsideMargins = launcherConfig.promptOutsideMargins
   },
   elements = {
-    size = {
-      dpi(130), dpi(120)
-    },
-		outsideMargins = margins(dpi(5)),
-		margins = margins(dpi(10)),
-		boundedMargins = margins(dpi(20)),
-    showcaseMargins = margins(dpi(20), nil, dpi(5)),
+    bg = launcherConfig.elementBg,
+    fg = launcherConfig.elementFg,
+    bgHl = launcherConfig.elementBgHl,
+    fgHl = launcherConfig.elementFgHl,
+    size = launcherConfig.elementSize,
+		outsideMargins = launcherConfig.elementOutsideMargins,
+		margins = launcherConfig.elementMargins,
+		boundedMargins = launcherConfig.boundedMargins,
+    showcaseMargins = launcherConfig.elementShowcaseMargins,
 		hideText = false,
-    halign = "center",
-    valign = "center",
-    showcasePosition = "top",
+    halign = launcherConfig.halign,
+    valign = launcherConfig.valign,
+    showcasePosition = launcherConfig.showcasePosition,
+    shape = launcherConfig.elementShape,
+    
     list = {
       {name = "Emacs", callback = function() awful.spawn("emacs") end, showcase = wibox.widget.imagebox(PATH.icons .. "emacs.png")},
       {name = "Firefox", callback = function() awful.spawn("firefox") end, showcase = wibox.widget.imagebox(PATH.icons .. "firefox.png")},
@@ -46,6 +79,10 @@ local launcherArgs = {
     }
   }
 }
+
+
+launcherArgs.wibox.size[1] = launcherConfig.elementCount[1] * launcherArgs.elements.size[1] + launcherArgs.elements.boundedMargins.left + launcherArgs.elements.boundedMargins.right
+launcherArgs.wibox.size[2] = launcherArgs.prompt.size[2] + launcherConfig.elementCount[2] * launcherArgs.elements.size[2] + launcherArgs.elements.boundedMargins.top + launcherArgs.elements.boundedMargins.bottom
 
 launcherArgs.wibox.pos = {screens.primary.geometry.x + (screens.primary.geometry.width - launcherArgs.wibox.size[1]) / 2, screens.primary.geometry.y + (screens.primary.geometry.height - launcherArgs.wibox.size[2]) / 2}
 

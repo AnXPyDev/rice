@@ -132,3 +132,13 @@ gears.table.crush(themeful.sysGraph, {
   fgCpu = colorful.secondary.base,
   fgRam = colorful.primary.base
 })
+
+gears.table.crush(themeful.launcher, {
+  wiboxBg = colorful.background.base,
+  promptBg = colorful.primary.base,
+  promptFg = colorful.primary.on.base,
+  elementBg = colorful.background.base,
+  elementFg = colorful.background.on.base,
+  elementBgHl = colorful.primary.base,
+  elementFgHl = colorful.primary.on.base
+})

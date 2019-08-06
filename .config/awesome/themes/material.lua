@@ -174,6 +174,17 @@ themeful.titleButtons = {
 
 themeful.sysGraph = {}
 
+themeful.launcher = {
+  promptHeight = dpi(60),
+  elementSize = {dpi(130), dpi(110)},
+  elementCount = {5, 2},
+  elementMargins = margins(dpi(10)),
+  elementOutsideMargins = margins(dpi(5)),
+  boundedMargins = margins(dpi(20)),
+  elementShape = themeful.shape,
+  elementShowcaseMargins = margins(dpi(25), nil, 0, dpi(5))
+}
+
 gears.table.crush(naughty.config, {
 	padding = dpi(10)
 })

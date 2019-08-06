@@ -133,14 +133,12 @@ gears.table.crush(themeful.sysGraph, {
   fgRam = colorful.primary.base
 })
 
-theme.bg_normal = colorful.background.base
-theme.fg_normal = colorful.foreground.alternates[4]
-theme.bg_focus = colorful.background.alternates[2]
-theme.fg_focus = colorful.foreground.base
-
-
-theme.titlebar_bg_normal = theme.bg_normal
-theme.titlebar_fg_normal = theme.fg_normal
-theme.titlebar_bg_focus = theme.bg_focus
-theme.titlebar_fg_focus = theme.fg_focus
-
+gears.table.crush(themeful.launcher, {
+  wiboxBg = colorful.background.base,
+  promptBg = colorful.background.alternates[3],
+  promptFg = colorful.background.on.base,
+  elementBg = colorful.background.base,
+  elementFg = colorful.background.on.base,
+  elementBgHl = colorful.background.alternates[3],
+  elementFgHl = colorful.background.on.base
+})
