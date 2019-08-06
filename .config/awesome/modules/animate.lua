@@ -19,11 +19,16 @@ function animate.update()
 		-- Deletes animations if they finished
     if animate.queue[i].done then
 			if animate.queue[i].callback then
-				animate.queue[i].callback()
+				pcall(animate.queue[i].callback)
 			end
       table.remove(animate.queue, i)
     else
-      animate.queue[i]:update()
+      if not pcall(function()
+        animate.queue[i]:update()
+      end) then
+        print("animation " .. tostring(i) .. " failed, destroying it on next loop")
+        animate.queue[i].done = true
+      end
 			i = i + 1
     end
   end

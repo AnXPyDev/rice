@@ -1,8 +1,8 @@
 themeful.radius = dpi(3)
 themeful.shape = function(cr, w, h) return gears.shape.rounded_rect(cr, w, h, themeful.radius) end
 
-themeful.fontName = "Roboto Italic"
-themeful.fontSize = dpi(12)
+themeful.fontName = "Roboto"
+themeful.fontSize = dpi(13)
 themeful.font = themeful.fontName .. " " .. tostring(themeful.fontSize)
 
 themeful.fontMonoName = "Hack"

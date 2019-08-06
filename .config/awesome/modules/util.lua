@@ -82,7 +82,7 @@ end
 function genColorScheme(bg, fg, others, alternateCount)
 
   local function isLight(color)
-    return colors.new(color).L > 0.5
+    return colors.new(color).L > 0.4
   end
 
   local function alternates(color, count)

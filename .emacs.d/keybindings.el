@@ -30,8 +30,7 @@
  "R" 'edit/set-region-line
  "J" 'edit/copy-whole-line
  "k" 'delete-char
- "K" 'edit/kill-whole-word
- "C-k" 'kill-whole-line
+ "K" 'kill-whole-line
  "l" 'yank
  "L" 'edit/yank-line
  "f" 'swiper
@@ -61,6 +60,7 @@
  "g" nil
  "g o" 'isearch-forward
  "g b" 'isearch-backward
+ ";" 'comment-or-uncomment-region
  "s" nil
  "m" (lambda() (interactive) (modal/region-mode 0) (modal/multiple-cursors-mode 1))
  "s (" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))

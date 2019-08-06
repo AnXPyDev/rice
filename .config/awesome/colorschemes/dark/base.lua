@@ -6,15 +6,15 @@ gears.table.crush(themeful.titleBar, {
 })
 
 gears.table.crush(themeful.searchMenu.prompt, {
-	bg = colorful.background.alternates[2],
+	bg = colorful.background.alternates[4],
 	fg = colorful.background.on.base,
 })
 
 gears.table.crush(themeful.searchMenu.elements, {
 	bg = colorful.background.base,
 	fg = colorful.background.on.base,
-	bgHl = colorful.primary.alternates[4],
-	fgHl = colorful.primary.on.base
+	bgHl = colorful.background.alternates[4],
+	fgHl = colorful.background.on.base
 })
 
 gears.table.crush(themeful.searchMenu.wibox, {
@@ -119,9 +119,9 @@ gears.table.crush(themeful.statusButtons, {
 })
 
 gears.table.crush(themeful.titleButtons, {
-  tileBgHover = colorful.primary.base,
-  tileFgHover = colorful.primary.on.base,
-  tileBgClick = colorful.primary.alternates[3],
+  tileBgHover = colorful.background.alternates[6],
+  tileFgHover = colorful.background.on.base,
+  tileBgClick = colorful.background.alternates[9],
   closeBgHover = colorful.alert.base,
   closeFgHover = colorful.alert.on.base,
   closeBgClick = colorful.alert.alternates[3]

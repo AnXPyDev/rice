@@ -10,7 +10,7 @@
 
 local iconColors = {
   normal = themeful.searchMenu.elements.fg,
-  highlight = themeful.searchMenu.elements.fgHl
+  highlight = colorful.primary.on.base
 }
 
 local powermenuIcons = {
@@ -47,7 +47,7 @@ local powermenuArgs = {
   searchDisabled = false,
   screen = screens.primary,
   wibox = {
-    size = {dpi(100), dpi(90) * 4 + dpi(10)},
+    size = {dpi(90), dpi(90) * 4},
     pos = {
       screens.primary.geometry.x + (screens.primary.geometry.width - dpi(100)) - dpi(10),
       screens.primary.geometry.y + ((screens.primary.geometry.height - dpi(300)) / 2)
@@ -58,15 +58,16 @@ local powermenuArgs = {
     size = {0,0}
   },
   elements = {
-		boundedMargins = margins(dpi(5)),
+		boundedMargins = margins(0),
     size = {dpi(90), dpi(90)},
     halign = "center",
     valign = "center",
 		showcasePosition = "top",
     hideText = true,
-		margins = margins(dpi(20)),
-		outsideMargins = margins(dpi(5)),
+		margins = margins(dpi(30)),
+		outsideMargins = margins(0),
 		showcaseMargins = margins(0),
+    bgHl = colorful.primary.base,
     list = {
       {name = "Power Off", callback = function() awful.spawn.with_shell("poweroff") end, showcase = powermenuImages.poweroff, update = makeUpdateFunction("poweroff")},
       {name = "Reboot", callback = function() awful.spawn.with_shell("reboot") end, showcase = powermenuImages.reboot, update = makeUpdateFunction("reboot")},

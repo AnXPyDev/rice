@@ -14,7 +14,7 @@ local launcherConfig = {}
 local launcherArgs = {
   screen = screens.primary,
   wibox = {
-    size = {dpi(540), dpi(280 + 60)}
+    size = {dpi(690), dpi(280 + 60)}
   },
   prompt = {
     size = {
@@ -24,11 +24,12 @@ local launcherArgs = {
   },
   elements = {
     size = {
-      dpi(100), dpi(120)
+      dpi(130), dpi(120)
     },
 		outsideMargins = margins(dpi(5)),
 		margins = margins(dpi(10)),
 		boundedMargins = margins(dpi(20)),
+    showcaseMargins = margins(dpi(20), nil, dpi(5)),
 		hideText = false,
     halign = "center",
     valign = "center",
@@ -41,7 +42,7 @@ local launcherArgs = {
       {name = "Minecraft", callback = function() awful.spawn.with_shell("java -jar ~/launcher.jar") end, showcase = wibox.widget.imagebox(PATH.icons .. "minecraft.png")},
       {name = "Team Speak", callback = function() awful.spawn("teamspeak3") end, showcase = wibox.widget.imagebox(PATH.icons .. "teamspeak3.png")},
       {name = "Steam", callback = function() awful.spawn("steam") end, showcase = wibox.widget.imagebox(PATH.icons .. "steam.png")},
-      {name = "Libre Office", callback = function() awful.spawn("libreoffice") end, showcase = wibox.widget.imagebox(PATH.icons .. "libre_office.png")}
+      {name = "Libre Office", callback = function() awful.spawn("libreoffice") end, showcase = wibox.widget.imagebox(PATH.icons .. "libreoffice.png")}
     }
   }
 }

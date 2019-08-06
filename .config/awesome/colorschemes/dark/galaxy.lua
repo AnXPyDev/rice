@@ -11,7 +11,7 @@ colorful = genColorScheme(
   25
 )
 
-colorful.primary = colorful.purple
+colorful.primary = colorful.lightblue
 colorful.secondary = colorful.green
 colorful.alert = colorful.red
 
