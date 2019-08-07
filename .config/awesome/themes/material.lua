@@ -93,11 +93,11 @@ themeful.slider.sliders = {
 themeful.statusBar = {}
 
 themeful.statusBar.wibox = {
-	shape = themeful.shape,
+	shape = gears.shape.rectangle,
 	outsideMargins = themeful.outsideMargins,
 	margins = margins(dpi(10)),
-	offset = dpi(10),
-	size = {dpi(300), screens.primary.geometry.height - 2 * dpi(10)}
+	offset = 0,
+	size = {dpi(300), screens.primary.geometry.height}
 }
 
 themeful.statusBar.widgets = {
@@ -176,13 +176,18 @@ themeful.sysGraph = {}
 
 themeful.launcher = {
   promptHeight = dpi(60),
-  elementSize = {dpi(130), dpi(110)},
-  elementCount = {5, 2},
+  promptOutsideMargins = margins(dpi(10)),
+  elementSize = {dpi(300), dpi(50)},
+  wiboxSize = {nil, screens.primary.geometry.height},
+  elementCount = {1, 5},
   elementMargins = margins(dpi(10)),
   elementOutsideMargins = margins(dpi(5)),
-  boundedMargins = margins(dpi(20)),
+  boundedMargins = margins(dpi(10)),
   elementShape = themeful.shape,
-  elementShowcaseMargins = margins(dpi(25), nil, 0, dpi(5))
+  elementShowcaseMargins = margins(0, dpi(10), 0),
+  showcasePosition = "left",
+  halign = "left",
+  wiboxShape = gears.shape.rectangle
 }
 
 gears.table.crush(naughty.config, {

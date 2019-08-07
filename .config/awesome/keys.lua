@@ -13,7 +13,7 @@ keys.mod = "Mod4"
 
 -- Global keys, most of these are self-documenting
 keys.global = gears.table.join(
-  awful.key({keys.mod}, "d", function() launcher.showAnimate() end),
+  awful.key({keys.mod}, "d", function() launcher:showAnimate() end),
   awful.key({keys.mod}, "q", function() powermenu:showAnimate() end),
   awful.key({keys.mod}, "w", function() statusbar:show() end),
   awful.key({keys.mod}, "t", function() nextKbdLayout() end),

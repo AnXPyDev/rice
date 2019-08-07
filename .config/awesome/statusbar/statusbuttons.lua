@@ -59,7 +59,7 @@ function statusbuttons:setup()
 		size = config.size,
 		shape = config.leftShape,
 		callback = function()
-			launcher.showAnimate()
+			launcher:showAnimate()
 		end
 	})
 	self.volumeButton = Button:new():setup({

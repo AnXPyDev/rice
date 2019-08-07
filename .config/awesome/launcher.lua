@@ -12,6 +12,7 @@ local launcherConfig = {}
 themer.apply(
   {
     {"promptHeight", dpi(60)},
+    {"wiboxSize", {nil,nil}},
     {"elementSize", {dpi(130), dpi(120)}},
     {"elementCount", {5,2}},
     {"boundedMargins", margins(0)},
@@ -20,6 +21,7 @@ themer.apply(
     {"elementBgHl", "#FFFFFF"},
     {"elementFgHl", "#000000"},
     {"wiboxBg", "#000000"},
+    {"wiboxShape", gears.shape.rectangle},
     {"promptBg", "#FFFFFF"},
     {"promptFg", "#000000"},
     {"promptOutsideMargins", margins(0)},
@@ -40,7 +42,8 @@ local launcherArgs = {
   screen = screens.primary,
   wibox = {
     size = {},
-    bg = launcherConfig.wiboxBg
+    bg = launcherConfig.wiboxBg,
+    shape = launcherConfig.wiboxShape
   },
   prompt = {
     size = {
@@ -81,8 +84,8 @@ local launcherArgs = {
 }
 
 
-launcherArgs.wibox.size[1] = launcherConfig.elementCount[1] * launcherArgs.elements.size[1] + launcherArgs.elements.boundedMargins.left + launcherArgs.elements.boundedMargins.right
-launcherArgs.wibox.size[2] = launcherArgs.prompt.size[2] + launcherConfig.elementCount[2] * launcherArgs.elements.size[2] + launcherArgs.elements.boundedMargins.top + launcherArgs.elements.boundedMargins.bottom
+launcherArgs.wibox.size[1] = launcherConfig.wiboxSize[1] or launcherConfig.elementCount[1] * launcherArgs.elements.size[1] + launcherArgs.elements.boundedMargins.left + launcherArgs.elements.boundedMargins.right
+launcherArgs.wibox.size[2] = launcherConfig.wiboxSize[2] or launcherArgs.prompt.size[2] + launcherConfig.elementCount[2] * launcherArgs.elements.size[2] + launcherArgs.elements.boundedMargins.top + launcherArgs.elements.boundedMargins.bottom
 
 launcherArgs.wibox.pos = {screens.primary.geometry.x + (screens.primary.geometry.width - launcherArgs.wibox.size[1]) / 2, screens.primary.geometry.y + (screens.primary.geometry.height - launcherArgs.wibox.size[2]) / 2}
 
@@ -93,27 +96,41 @@ launcher = SearchMenu:new():setup(launcherArgs)
 launcher.animationRunning = false
 
 -- Animates launcher when shown (Slides from top)
-function launcher.showAnimate()
-  if not launcher.animationRunning and not launcher.wibox.widget.visible then
-    launcher.animationRunning = true
-    animate.add({
-      object = launcher.wibox.widget,
-      start = {
-        launcherArgs.wibox.pos[1],
-        screens.primary.geometry.y - (launcherArgs.wibox.size[2])
-      },
-      target = {
-        launcherArgs.wibox.pos[1],
-        launcherArgs.wibox.pos[2]
-      },
-      type = "interpolate",
-      magnitude = 0.3,
-      amount = 5,
-      callback = function()
-        launcher.animationRunning = false
-      end
+function launcher:showAnimate()
+  -- if not launcher.animationRunning and not launcher.wibox.widget.visible then
+  --   launcher.animationRunning = true
+  --   animate.add({
+  --     object = launcher.wibox.widget,
+  --     start = {
+  --       launcherArgs.wibox.pos[1],
+  --       screens.primary.geometry.y - (launcherArgs.wibox.size[2])
+  --     },
+  --     target = {
+  --       launcherArgs.wibox.pos[1],
+  --       launcherArgs.wibox.pos[2]
+  --     },
+  --     type = "interpolate",
+  --     magnitude = 0.3,
+  --     amount = 5,
+  --     callback = function()
+  --       launcher.animationRunning = false
+  --     end
+  --   })
+  -- end
+  -- launcher:show()
+  if not self.wibox.widget.visible then
+    self.directedBox = self.screen.director:add({
+      side = "right",
+      padding = margins(0),
+      wibox = self.wibox.widget,
+      priority = 1
     })
+    self:show()
   end
-  launcher:show()
+  self.wibox.widget.visible = true
 end
 
+function launcher:hide()
+  self.wibox.widget.visible = false
+  self.screen.director:remove(self.directedBox)
+end
