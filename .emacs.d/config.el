@@ -34,7 +34,6 @@
 (defadvice text-scale-set (after text-scale-after activate)
   (set-window-margins (selected-window) 1 1))
 
-
 (package-use 'general :require t)
 
 (package-use 'which-key :require t)
