@@ -82,7 +82,7 @@ end
 function genColorScheme(bg, fg, others, alternateCount)
 
   local function isLight(color)
-    return colors.new(color).L > 0.4
+    return colors.new(color).L > 0.5
   end
 
   local function alternates(color, count)
@@ -142,42 +142,10 @@ function logTable(tbl, depth, maxDepth)
 
   for key, element in pairs(tbl) do
     if type(element) == "table" then
-      print(indent .. " \"" .. tostring(key) .. "\": " )
       logTable(element, depth + 1, maxDepth)
     else
-      print(indent .. " \"" .. tostring(key) .. "\": " .. tostring(element))
     end
   end
   
   local depth = 0
-end
-
-function loadColorScheme(file)
-
-  local alternateCount = 10
-  local background = ""
-  local foreground = ""
-  local others = {}
-  
-  schemeFile = io.open(file, "r")
-
-  for line in io.lines(file) do
-    if line:match(" = ") then
-      local split = gears.string.split(line, " = ")
-      if split[1] == "alternateCount" then
-        alternateCount = tonumber(split[2])
-      elseif split[1] == "background" then
-        background = split[2]
-      elseif split[1] == "foreground" then
-        foreground = split[2]
-      else
-        others[split[1]] = split[2]
-      end
-    end
-  end
-
-  schemeFile:close()
-
-  return genColorScheme(background, foreground, others, alternateCount)
-    
 end

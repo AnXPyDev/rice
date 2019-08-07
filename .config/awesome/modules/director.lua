@@ -107,8 +107,6 @@ function directedBox:setup(args)
 		self.size[2] + self.padding.top + self.padding.bottom
 	}
 
-	print(self.size[1] - self.paddedSize[1])
-	print(self.size[2] - self.paddedSize[2])
 
 	self.pos = {0,0}
 

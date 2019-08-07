@@ -29,11 +29,6 @@ client.connect_signal("focus", function(c)
 end)
 
 client.connect_signal("manage", function(c)
-  c.border_width = beautiful.border_width
-  c.border_color = beautiful.bg_normal
-  c.focused = c.window == awful.client.focus.window
-  c.blinkAnimation = {}
-  c:emit_signal("focused")
 	--[[
 		This shape function returns a regular rectangle when a client is fullscreen or
 		the tag that it's on has no gaps, for obvious reasons, else returns a rounded rectangle

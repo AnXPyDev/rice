@@ -139,6 +139,6 @@ gears.table.crush(themeful.launcher, {
   promptFg = colorful.background.on.base,
   elementBg = colorful.background.base,
   elementFg = colorful.background.on.base,
-  elementBgHl = colorful.background.alternates[3],
+  elementBgHl = colorful.background.base,
   elementFgHl = colorful.background.on.base
 })

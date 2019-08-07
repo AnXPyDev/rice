@@ -9,8 +9,8 @@ themeful.fontMonoName = "Hack"
 themeful.fontMonoSize = dpi(12)
 themeful.fontMono = themeful.fontMonoName .. " " .. tostring(themeful.fontSize)
 
-themeful.gap = dpi(0)
-themeful.gaps = {dpi(0), dpi(8), dpi(12), dpi(32)}
+themeful.gap = dpi(12)
+themeful.gaps = {dpi(0), dpi(12), dpi(24), dpi(48), dpi(64)}
 themeful.margins = margins(dpi(5))
 themeful.outsideMargins = margins(dpi(10))
 

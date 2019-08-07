@@ -45,9 +45,6 @@ function statusbar:initWidgets()
 		newBottom[#newBottom + 1] = widget
 	end
 
-	print(#newTop)
-	print(#newBottom)
-
 	newTop.layout = wibox.layout.fixed.vertical
 	newBottom.layout = wibox.layout.fixed.vertical
 
