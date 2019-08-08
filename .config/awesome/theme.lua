@@ -3,19 +3,15 @@ colorful = {}
 theme = {}
 resourceful = {}
 
-resourceFiles = {PATH.resources .. "palenight"}
+resourceFiles = {}
+themeFunctions = {}
 
 os.execute("xrdb " .. PATH.home .. ".Xresources")
-
-for i, val in ipairs(resourceFiles) do
-  os.execute("xrdb -merge " .. val)
-end
-
 
 local themeCategory = "dark"
 
 wallpaperFolder = themeCategory
-colorschemeNames = {themeCategory .. "/palenight", themeCategory .. "/base"}
+colorschemeNames = {themeCategory .. "/material", themeCategory .. "/base"}
 themeNames = {"material"}
 
 for i, name in ipairs(themeNames) do
@@ -24,6 +20,14 @@ end
 
 for i, name in ipairs(colorschemeNames) do
 	dofile(PATH.colorscheme .. name .. ".lua")
+end
+
+for i, val in ipairs(resourceFiles) do
+  os.execute("xrdb -merge " .. val)
+end
+
+for i, fn in ipairs(themeFunctions) do
+  fn()
 end
 
 local xfile = io.open(PATH.home .. ".customXresources", "w")
