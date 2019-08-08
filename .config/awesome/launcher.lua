@@ -31,7 +31,9 @@ themer.apply(
     {"elementShape", gears.shape.rectangle},
     {"halign", "center"},
     {"valign", "center"},
-    {"showcasePosition", "top"}
+    {"showcasePosition", "top"},
+    {"boundedValign", "center"},
+    {"boundedHalign", "center"}
   },
   themeful.launcher or {}, launcherConfig
 )
@@ -69,7 +71,9 @@ local launcherArgs = {
     valign = launcherConfig.valign,
     showcasePosition = launcherConfig.showcasePosition,
     shape = launcherConfig.elementShape,
-    
+    boundedValign = launcherConfig.boundedValign,
+    boundedHalign = launcherConfig.boundedHalign,
+
     list = {
       {name = "Emacs", callback = function() awful.spawn("emacs") end, showcase = wibox.widget.imagebox(PATH.icons .. "emacs.png")},
       {name = "Firefox", callback = function() awful.spawn("firefox") end, showcase = wibox.widget.imagebox(PATH.icons .. "firefox.png")},

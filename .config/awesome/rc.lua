@@ -19,7 +19,8 @@ PATH = {
   modules = os.getenv("HOME") .. "/.config/awesome/modules/",
 	statusbar = os.getenv("HOME") .. "/.config/awesome/statusbar/",
 	icons = os.getenv("HOME") .. "/.config/awesome/icons/",
-	colorscheme = os.getenv("HOME") .. "/.config/awesome/colorschemes/"
+	colorscheme = os.getenv("HOME") .. "/.config/awesome/colorschemes/",
+  resources = os.getenv("HOME") .. "/.resources/"
 }
 
 
@@ -81,11 +82,10 @@ dofile(PATH.config .. "wibar.lua")
 
 setWallpaper()
 
-
 -- Kill compton and restart it
-awful.spawn.with_shell("killall compton; compton --config ~/.config/compton.conf")
--- Load Xresources
-awful.spawn.with_shell("xrdb " .. PATH.home .. ".Xresources; " .. "xrdb -merge " .. PATH.home .. ".customXresources")
+os.execute("killall -9 compton")
+awful.spawn.with_shell("compton --config ~/.config/compton.conf")
+
 
 if awesome.startup_errors then
   naughty.notify({

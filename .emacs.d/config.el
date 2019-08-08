@@ -66,9 +66,6 @@
 
 (global-company-mode)
 
-(package-use 'centered-cursor-mode :require t)
-(global-centered-cursor-mode)
-
 (package-use 'projectile :require t)
 
 (package-use 'ivy :require t)
@@ -103,6 +100,10 @@
 
 (package-use 'undo-tree :require t)
 (global-undo-tree-mode)
+
+(package-use 'minor-mode-hack :require t)
+
+(package-use 'avy :require t)
 
 (load-file (concat user-emacs-directory "eshell.el"))
 (load-file (concat user-emacs-directory "theme.el"))

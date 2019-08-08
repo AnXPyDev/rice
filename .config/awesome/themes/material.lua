@@ -176,18 +176,19 @@ themeful.sysGraph = {}
 
 themeful.launcher = {
   promptHeight = dpi(60),
-  promptOutsideMargins = margins(dpi(10)),
+  promptOutsideMargins = margins(dpi(10), nil, nil, dpi(5)),
   elementSize = {dpi(300), dpi(50)},
   wiboxSize = {nil, screens.primary.geometry.height},
   elementCount = {1, 5},
   elementMargins = margins(dpi(10)),
   elementOutsideMargins = margins(dpi(5)),
-  boundedMargins = margins(dpi(10)),
+  boundedMargins = margins(dpi(5)),
   elementShape = themeful.shape,
   elementShowcaseMargins = margins(0, dpi(10), 0),
   showcasePosition = "left",
   halign = "left",
-  wiboxShape = gears.shape.rectangle
+  wiboxShape = gears.shape.rectangle,
+  boundedValign = "top"
 }
 
 gears.table.crush(naughty.config, {

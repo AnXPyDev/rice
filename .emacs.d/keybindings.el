@@ -8,9 +8,9 @@
 (general-define-key
  :keymaps 'modal/normal-bare-map
  "p" 'previous-line
- "P" 'ccm-scroll-down
+ "P" 'scroll-down-command
  "n" 'next-line
- "N" 'ccm-scroll-up
+ "N" 'scroll-up-command
  "b" 'backward-char
  "B" 'backward-word
  "o" 'forward-char
@@ -42,7 +42,9 @@
  "W" (lambda() (interactive) (edit/open-line-above) (modal/enable-insert))
  "g" nil
  "g o" 'isearch-forward
- "g b" 'isearch-backward)
+ "g b" 'isearch-backward
+ "g c" 'avy-goto-char
+ "g l" 'avy-goto-line)
 
 (setq modal/region-map (make-composed-keymap (list (copy-keymap modal/emacs-map) (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
 
@@ -62,7 +64,7 @@
  "g b" 'isearch-backward
  ";" 'comment-or-uncomment-region
  "s" nil
- "m" (lambda() (interactive) (modal/region-mode 0) (modal/multiple-cursors-mode 1))
+ "m" (lambda() (interactive) (modal/multiple-cursors-mode 1))
  "s (" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))
  "s )" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))
  "s {" (lambda() (interactive) (surround-region "{" "}") (modal/enable-normal))
@@ -96,7 +98,7 @@
 				"RET" 'eshell-toggle
 				"<return>" 'eshell-toggle)))
 
-(setq modal/multiple-cursors-map (make-sparse-keymap))
+(setq modal/multiple-cursors-map (make-normal-sparse-keymap))
 
 (general-define-key
  :keymaps 'modal/multiple-cursors-map
@@ -104,7 +106,10 @@
  "p" 'mc/mark-pop
  "a" 'mc/mark-all-like-this
  "r" 'mc/mark-in-region
- "M-q" (lambda() (interactive) (pop-mark) (modal/multiple-cursors-mode 0) (modal/enable-normal))
- "C-g" (lambda() (interactive) (pop-mark) (modal/multiple-cursors-mode 0) (modal/enable-normal)))
+ "q" (lambda() (interactive) (modal/multiple-cursors-mode 0))
+ "M-q" (lambda() (interactive) (modal/multiple-cursors-mode 0))
+ "C-g" (lambda() (interactive) (modal/multiple-cursors-mode 0)))
 
 (define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map) 
+
+(raise-minor-mode-map-alist 'modal/multiple-cursors-mode)
