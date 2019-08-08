@@ -23,10 +23,12 @@ function animate.update()
 			end
       table.remove(animate.queue, i)
     else
-      if not pcall(function()
+      local result, err = pcall(function()
         animate.queue[i]:update()
-      end) then
+      end)
+      if not result then
         print("animation " .. tostring(i) .. " failed, destroying it on next loop")
+        print(err)
         animate.queue[i].done = true
       end
 			i = i + 1
@@ -53,6 +55,11 @@ end
 
 function animate.addRgbColor(args)
   animate.queue[#animate.queue + 1] = rgbColorAnimation:new():create(args)
+	return animate.queue[#animate.queue]
+end
+
+function animate.addRgbGradient(args)
+  animate.queue[#animate.queue + 1] = rgbGradientAnimation:new():create(args)
 	return animate.queue[#animate.queue]
 end
 
@@ -223,6 +230,75 @@ function rgbColorAnimation:update()
 			self.color[2] == self.targetColor[2] and
 				self.color[3] == self.targetColor[3] then
 					self.done = true
+		end
+	end
+end
+
+rgbGradientAnimation = {}
+
+function rgbGradientAnimation:new()
+  local ins = {}
+  setmetatable(ins, self)
+  self.__index = self
+  return ins
+end
+
+function rgbGradientAnimation:create(args)
+	self.element = args.element
+	self.index = args.index or "bg"
+
+  self.template = args.template
+  
+  self.startColors = {}
+
+  self.startColors[1] = args.startColors and args.startColors[1] or nil
+  self.startColors[2] = args.startColors and args.startColors[2] or nil
+
+	self.targetColors = {}
+
+  self.targetColors[1] = args.targetColors and args.targetColors[1] or rgbToArray("#FFFFFF")
+  self.targetColors[2] = args.targetColors and args.targetColors[2] or rgbToArray("#FFFFFF")
+
+	self.colors = {}
+
+  self.colors[1] = args.colors and args.colors[1] or rgbToArray("#000000")
+  self.colors[2] = args.colors and args.colors[2] or rgbToArray("#000000")
+
+  if self.startColors[1] then
+    gears.table.crush(self.colors[1], self.startColors[1])
+  end
+
+  if self.startColors[2] then
+    gears.table.crush(self.colors[2], self.startColors[2])
+  end
+
+	self.amp = args.amplitude or 0.5
+	self.treshold = args.treshold or 0.01
+	self.callback = args.callback or nil
+	self.paused = false
+	self.done = false
+	return self
+end
+
+function rgbGradientAnimation:update()
+	if not self.done and not self.paused then
+		lerpRgbColor(self.colors[1], self.targetColors[1], self.amp, self.treshold)
+    lerpRgbColor(self.colors[2], self.targetColors[2], self.amp, self.treshold)
+
+		self.element[self.index] = gears.color.create_linear_pattern(
+      gears.table.join(
+        self.template,
+        {
+          stops = {
+            {0, arrayToRgb(self.colors[1])},
+            {1, arrayToRgb(self.colors[2])}
+          }
+        }
+      )
+    )
+
+		if tableEq(self.colors[1], self.targetColors[1]) and tableEq(self.colors[2], self.targetColors[2]) then
+      self.done = true
 		end
 	end
 end

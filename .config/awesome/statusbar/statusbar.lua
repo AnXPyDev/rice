@@ -11,6 +11,7 @@ statusbar = {}
 -- Initializes widgets
 
 function statusbar:initWidgets()
+
 	local top = {
     timeindicator.widget.final,
 		internetindicator.widget.widget.final,

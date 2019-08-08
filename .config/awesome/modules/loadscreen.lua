@@ -22,8 +22,10 @@ function loadscreen:setup(args)
 
 	themer.apply(
 		{
-			{"startBg", "#000000"},
-			{"targetBg", "#FFFFFF"},
+			{{"startBg", 1}, "#000000"},
+			{{"startBg", 2}, "#000000"},
+			{{"targetBg", 1}, "#FFFFFF"},
+			{{"targetBg", 2}, "#FFFFFF"},
 			{"imagePath", PATH.icons .. "awesomewm.png"},
 			{"imageShape", gears.shape.rectangle},
 			{"imageColor", "#AAAAAA"},
@@ -88,9 +90,14 @@ end
 function loadscreen:stage1()
 	self.wibox.opacity = 1
 	self.wibox.visible = true
-	animate.addRgbColor({
-		startColor = rgbToArray(self.config.startBg),
-		targetColor = rgbToArray(self.config.targetBg),
+	animate.addRgbGradient({
+		startColors = gears.table.map(rgbToArray, self.config.startBg),
+		targetColors = gears.table.map(rgbToArray, self.config.targetBg),
+
+    template = {
+      from = {0,0},
+      to = {self.screen.geometry.width, 0}
+    },
 		element = self.wibox,
 		index = "bg",
 		amplitude = self.config.colorFadeAmplitude,

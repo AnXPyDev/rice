@@ -142,10 +142,27 @@ function logTable(tbl, depth, maxDepth)
 
   for key, element in pairs(tbl) do
     if type(element) == "table" then
+      print(indent .. " " .. tostring(key) .. ":")
       logTable(element, depth + 1, maxDepth)
     else
+      print(indent .. " " .. tostring(key) .. ": " .. tostring(element))
     end
   end
-  
-  local depth = 0
+end
+
+function tableEq(tbl1, tbl2)
+  for key, val in pairs(tbl1) do
+    if tbl2[key] ~= val then
+      return false
+    end
+  end
+  return true
+end
+
+function tableRepeat(val, n)
+  local result = {}
+  for i = 1, n do
+    result[#result + 1] = val
+  end
+  return result
 end

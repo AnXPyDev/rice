@@ -77,10 +77,11 @@ gears.table.crush(themeful.batteryIndicator, {
 })
 
 gears.table.crush(themeful.loadScreen, {
-	startBg = "#000000",
-	targetBg = colorful.background.base,
+	startBg = tableRepeat("#000000", 2),
+	targetBg = {colorful.primary.base, colorful.secondary.base},
 	imageColor = colorful.primary.base,
-	imageBg = colorful.background.alternates[2]
+	imageBg = colorful.background.alternates[2],
+  colorFadeAmplitude = 0.05
 })
 
 gears.table.crush(themeful.button, {
