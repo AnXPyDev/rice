@@ -98,6 +98,9 @@ local function makeTileButton(c)
 
   button:setup(
     {
+      margins = titlebuttonsConfig.margins,
+      shape = titlebuttonsConfig.shape,
+      outsideMargins = titlebuttonsConfig.outsideMargins,
       initCallback = function(button)
         c:connect_signal("focus", function()
           button.colorAnimation.done = true
@@ -210,6 +213,9 @@ client.connect_signal("request::titlebars" ,
 				-- Kills client when clicked
 				Button:new()
 					:setup({
+            margins = titlebuttonsConfig.margins,
+            shape = titlebuttonsConfig.shape,
+            outsideMargins = titlebuttonsConfig.outsideMargins,
 						callback = function(button)
 							c:kill()
 						end,

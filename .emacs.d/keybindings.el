@@ -76,6 +76,8 @@
 
 (setq modal/insert-map (copy-keymap modal/emacs-map))
 
+(general-define-key
+ "C-x =" 'macro-make-function)
 
 (general-define-key
  :keymaps 'company-active-map

@@ -5,6 +5,7 @@
 (load-file (concat user-emacs-directory "modules/modal.el"))
 (load-file (concat user-emacs-directory "modules/edit.el"))
 
+
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
@@ -32,7 +33,6 @@
   (set-window-margins (selected-window) 1 1))
 (defadvice text-scale-set (after text-scale-after activate)
   (set-window-margins (selected-window) 1 1))
-
 
 (package-use 'general :require t)
 
@@ -77,8 +77,6 @@
 (package-use 'highlight-parentheses :require t)
 (global-highlight-parentheses-mode)
 
-(package-use 'hydra :require t)
-
 (package-use 'all-the-icons :require t)
 (package-use 'all-the-icons-dired :require t)
 
@@ -101,9 +99,14 @@
 (package-use 'undo-tree :require t)
 (global-undo-tree-mode)
 
+
 (package-use 'minor-mode-hack :require t)
 
 (package-use 'avy :require t)
+
+(package-use 'elmacro :require t)
+
+(load-file (concat user-emacs-directory "macro.el"))
 
 (load-file (concat user-emacs-directory "eshell.el"))
 (load-file (concat user-emacs-directory "theme.el"))

@@ -167,9 +167,9 @@ themeful.statusButtons = {
 }
 
 themeful.titleButtons = {
-  shape = gears.shape.circle,
+  shape = gears.shape.rectangle,
   outsideMargins = margins(0),
-  margins = margins(dpi(5))
+  margins = margins(dpi(8))
 }
 
 themeful.sysGraph = {}
@@ -177,12 +177,12 @@ themeful.sysGraph = {}
 themeful.launcher = {
   promptHeight = dpi(60),
   promptOutsideMargins = margins(dpi(10), nil, nil, dpi(5)),
-  elementSize = {dpi(300), dpi(50)},
+  elementSize = {dpi(250), dpi(60)},
   wiboxSize = {nil, screens.primary.geometry.height},
   elementCount = {1, 5},
   elementMargins = margins(dpi(10)),
-  elementOutsideMargins = margins(dpi(5)),
-  boundedMargins = margins(dpi(5)),
+  elementOutsideMargins = margins(0, nil, dpi(5)),
+  boundedMargins = margins(dpi(10), nil, 0),
   elementShape = themeful.shape,
   elementShowcaseMargins = margins(0, dpi(10), 0),
   showcasePosition = "left",
