@@ -81,7 +81,7 @@ function SearchMenu:initElements()
 
 		if self.elements.config.animate then
 			self.elements.colorAnimations[i] = {}
-			self.elements.animatedColors[i] = rgbToArray(self.elements.config.bg)
+			self.elements.animatedColors[i] = gears.table.map(rgbToArray, self.elements.config.bg)
 		end
 		
     local widget = {}
@@ -187,7 +187,7 @@ function SearchMenu:refreshTheme()
   self.prompt.widget.place.halign = self.prompt.config.halign
   self.prompt.widget.place.valign = self.prompt.config.valign
   gears.table.crush(self.prompt.widget.margin, self.prompt.config.margins)
-  self.prompt.widget.background.bg = self.prompt.config.bg
+  self.prompt.widget.background.bg = gears.color.create_linear_pattern(colorsToPattern(self.prompt.config.bg, self.prompt.config.patternTemplate))
   self.prompt.widget.background.fg = self.prompt.config.fg
   self.prompt.widget.background.shape = self.prompt.config.shape
   gears.table.crush(self.prompt.widget.outsideMargin, self.prompt.config.outsideMargins)
@@ -200,7 +200,7 @@ function SearchMenu:refreshTheme()
     widget.place.valign = self.elements.config.valign
     widget.textPlace.valign = self.elements.config.valign
     gears.table.crush(widget.margin, self.elements.config.margins)
-    widget.background.bg = self.elements.config.bg
+    widget.background.bg = gears.color.create_linear_pattern(colorsToPattern(self.elements.config.bg, self.elements.config.patternTemplate))
     widget.background.fg = self.elements.config.fg
     widget.background.shape = self.elements.config.shape
     gears.table.crush(widget.showcaseMargin, self.elements.config.showcaseMargins)
@@ -258,16 +258,17 @@ function SearchMenu:redraw()
       widget.showcaseMargin.widget = element.showcase or nil
 			local newBg = element.bgFunc and element.bgFunc(i, isSelected) or isSelected and self.elements.config.bgHl or self.elements.config.bg
 
-			if self.elements.config.animate and arrayToRgb(self.elements.animatedColors[i]) ~= newBg then
+			if self.elements.config.animate and not tableEq(self.elements.animatedColors[i], rgbToArray(newBg)) then
 				self.elements.colorAnimations[i].done = true
-				self.elements.colorAnimations[i] = animate.addRgbColor({
+				self.elements.colorAnimations[i] = animate.addRgbGradient({
 					element = widget.background,
-					color = self.elements.animatedColors[i],
-					targetColor = rgbToArray(newBg),
+					colors = self.elements.animatedColors[i],
+					targetColors = rgbToArray(newBg),
+          template = self.elements.config.patternTemplate,
 					amplitude = self.elements.config.colorFadeAmplitude
 				})
 			else
-				widget.background.bg = newBg
+				widget.background.bg = gears.color.create_linear_pattern(colorsToPattern(newBg, self.elements.config.patternTemplate))
 			end
       
 
@@ -300,12 +301,13 @@ function SearchMenu:setup(args)
       {"pos", function() return {self.screen.geometry.x + (self.screen.geometry.width - self.wibox.config.size[1]) / 2, self.screen.geometry.y + (args.wibox and args.wibox.offset or 0)} end, true},
       {"margins", margins(0)},
       {"shape", gears.shape.rectangle},
-      {"bg", "#000000"},
+      {{"bg", 1}, "#000000"},
+      {{"bg", 2}, "#000000"},
       {"ontop", true}
     }, themeful.searchMenu and themeful.searchMenu.wibox or {}, self.wibox.config
   )
 
-  themer.apply({{"size"}, {"pos"}, {"margins"}, {"shape"}, {"bg"}, {"ontop"}}, args.wibox or {}, self.wibox.config)
+  themer.apply({{"size"}, {"pos"}, {"margins"}, {"shape"}, {{"bg", 1}}, {{"bg", 2}}, {"ontop"}}, args.wibox or {}, self.wibox.config)
   
   self.prompt = {
     config = {}
@@ -314,7 +316,8 @@ function SearchMenu:setup(args)
   themer.apply(
     {
       {"hide", false},
-      {"bg", "#101010"},
+      {{"bg", 1}, "#101010"},
+      {{"bg", 2}, "#101010"},
       {"fg", "#FFFFFF"},
       {"margins", margins(0)},
       {"outsideMargins", margins(0)},
@@ -334,7 +337,7 @@ function SearchMenu:setup(args)
   )
 
 
-  themer.apply({{"hide"}, {"bg"}, {"fg"}, {"margins"}, {"outsideMargins"}, {"halign"}, {"valign"}, {"font"}, {"text"}, {"shape"}, {"fontSize"}, {"size"}}, args.prompt or {}, self.prompt.config)
+  themer.apply({{"hide"}, {{"bg", 1}}, {{"bg", 2}}, {"fg"}, {"margins"}, {"outsideMargins"}, {"halign"}, {"valign"}, {"font"}, {"text"}, {"shape"}, {"fontSize"}, {"size"}}, args.prompt or {}, self.prompt.config)
 
   self.elements = {
     config = {},
@@ -345,8 +348,10 @@ function SearchMenu:setup(args)
 
   themer.apply(
     {
-      {"bg", "#000000"},
-      {"bgHl", "#FFFFFF"},
+      {{"bg", 1}, "#000000"},
+      {{"bg", 2}, "#000000"},
+      {{"bgHl", 1}, "#FFFFFF"},
+      {{"bgHl", 2}, "#FFFFFF"},
       {"fgHl", "#000000"},
       {"fg", "#FFFFFF"},
       {"hideText", false},
@@ -368,7 +373,7 @@ function SearchMenu:setup(args)
   )
   themer.apply(
     {
-      {"bg"}, {"bgHl"}, {"fgHl"}, {"fg"}, {"hideText"}, {"margins"}, {"outsideMargins"}, {"showcaseMargins"}, {"halign"}, {"valign"}, {"font"}, {"shape"}, {"showcasePosition"}, {"fontSize"}, {"boundedMargins"}, {"boundedHalign"}, {"boundedValign"}, {"animate"}
+      {{"bg", 1}}, {{"bg", 2}}, {{"bgHl", 1}}, {{"bgHl", 2}}, {"fgHl"}, {"fg"}, {"hideText"}, {"margins"}, {"outsideMargins"}, {"showcaseMargins"}, {"halign"}, {"valign"}, {"font"}, {"shape"}, {"showcasePosition"}, {"fontSize"}, {"boundedMargins"}, {"boundedHalign"}, {"boundedValign"}, {"animate"}
     }, args.elements, self.elements.config
   )
 	
@@ -380,6 +385,30 @@ function SearchMenu:setup(args)
 	self.elements.config.count = {
     math.floor((self.wibox.config.size[1] - (self.elements.config.boundedMargins.left + self.elements.config.boundedMargins.right)) / self.elements.config.size[1]),
     math.floor(((self.wibox.config.size[2] - self.prompt.config.size[2]) - (self.elements.config.boundedMargins.top + self.elements.config.boundedMargins.bottom)) / self.elements.config.size[2])
+  }
+
+  self.elements.config.patternTemplate = {
+    from = {0,0},
+    to = {
+      self.elements.config.size[1] - extractMargin(self.elements.config.outsideMargins),
+      0
+    }
+  }
+
+  self.prompt.config.patternTemplate = {
+    from = {0,0},
+    to = {
+      self.prompt.config.size[1] or self.wibox.config.size[1] - extractMargin(self.prompt.config.outsideMargins),
+      0
+    }
+  }
+
+  self.wibox.config.patternTemplate = {
+    from = {0,0},
+    to = {
+      self.wibox.config.size[1],
+      0
+    }
   }
 
   self.cursor = {
@@ -427,7 +456,7 @@ function SearchMenu:setup(args)
     y = self.wibox.config.pos[2],
     width = self.wibox.config.size[1],
     height = self.wibox.config.size[2],
-    bg = self.wibox.config.bg,
+    bg = gears.color.create_linear_pattern(colorsToPattern(self.wibox.config.bg, self.wibox.config.patternTemplate)),
     fg = self.wibox.config.fg,
     shape = self.wibox.config.shape,
     widget = self.widget

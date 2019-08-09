@@ -53,6 +53,9 @@ end
 
 
 function rgbToArray(rgbString)
+  if type(rgbString) == "table" then
+    return gears.table.map(rgbToArray, rgbString)
+  end
 	local finalString = ""
 	if rgbString:sub(1,1) == "#" then
 		finalString = rgbString:sub(2)
@@ -153,7 +156,13 @@ end
 function tableEq(tbl1, tbl2)
   for key, val in pairs(tbl1) do
     if tbl2[key] ~= val then
-      return false
+      if type(tbl2[key]) == "table" and type(val) == "table" then
+        if not tableEq(tbl2[key], val) then
+          return false
+        end
+      else
+        return false
+      end
     end
   end
   return true
