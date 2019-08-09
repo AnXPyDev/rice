@@ -169,7 +169,8 @@ themeful.statusButtons = {
 themeful.titleButtons = {
   shape = gears.shape.rectangle,
   outsideMargins = margins(0),
-  margins = margins(dpi(8))
+  margins = margins(dpi(8)),
+  size = tableRepeat(themeful.titleBar.height, 2)
 }
 
 themeful.sysGraph = {}

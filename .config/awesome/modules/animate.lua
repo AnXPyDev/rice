@@ -286,15 +286,7 @@ function rgbGradientAnimation:update()
     lerpRgbColor(self.colors[2], self.targetColors[2], self.amp, self.treshold)
 
 		self.element[self.index] = gears.color.create_linear_pattern(
-      gears.table.join(
-        self.template,
-        {
-          stops = {
-            {0, arrayToRgb(self.colors[1])},
-            {1, arrayToRgb(self.colors[2])}
-          }
-        }
-      )
+      colorsToPattern(gears.table.map(arrayToRgb, self.colors), self.template)
     )
 
 		if tableEq(self.colors[1], self.targetColors[1]) and tableEq(self.colors[2], self.targetColors[2]) then

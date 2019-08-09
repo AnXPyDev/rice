@@ -78,18 +78,17 @@ gears.table.crush(themeful.batteryIndicator, {
 
 gears.table.crush(themeful.loadScreen, {
 	startBg = tableRepeat("#000000", 2),
-	targetBg = {colorful.primary.base, colorful.secondary.base},
+	targetBg = tableRepeat(colorful.background.base, 2),
 	imageColor = colorful.primary.base,
-	imageBg = colorful.background.alternates[2],
-  colorFadeAmplitude = 0.05
+	imageBg = colorful.background.alternates[2]
 })
 
 gears.table.crush(themeful.button, {
-	bg = colorful.background.alternates[2],
+	bg = tableRepeat(colorful.background.alternates[2], 2),
 	fg = colorful.background.on.base,
-	bgHover = colorful.primary.base,
+	bgHover = {colorful.primary.base, colorful.primary.alternates[6]},
 	fgHover = colorful.primary.on.base,
-	bgClick = colorful.primary.alternates[3],
+	bgClick = tableRepeat(colorful.primary.alternates[3], 2),
 	fgClick = colorful.primary.on.base,
 })
 
@@ -113,19 +112,18 @@ gears.table.crush(themeful.keyboardIndicator, {
 })
 
 gears.table.crush(themeful.statusButtons, {
-	bgHover = colorful.primary.base,
 	fgHover = colorful.primary.on.base,
-	bgClick = colorful.primary.alternates[3],
+	bgClick = tableRepeat(colorful.primary.alternates[3], 2),
 	fgClick = colorful.primary.on.base
 })
 
 gears.table.crush(themeful.titleButtons, {
-  tileBgHover = colorful.background.alternates[6],
+  tileBgHover = tableRepeat(colorful.background.alternates[6], 2),
   tileFgHover = colorful.background.on.base,
-  tileBgClick = colorful.background.alternates[9],
-  closeBgHover = colorful.alert.base,
+  tileBgClick = tableRepeat(colorful.background.alternates[9], 2),
+  closeBgHover = {colorful.alert.base, colorful.alert.alternates[3]},
   closeFgHover = colorful.alert.on.base,
-  closeBgClick = colorful.alert.alternates[3]
+  closeBgClick = tableRepeat(colorful.alert.alternates[3], 2)
 })
 
 gears.table.crush(themeful.sysGraph, {

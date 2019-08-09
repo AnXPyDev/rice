@@ -27,11 +27,14 @@ function Button:setup(args)
 	
 	themer.apply(
 		{
-			{"bg", "#000000"},
+			{{"bg", 1}, "#000000"},
+			{{"bg", 2}, "#000000"},
 			{"fg", "#FFFFFF"},
-			{"bgHover", "#AAAAAA"},
+			{{"bgHover", 1}, "#AAAAAA"},
+			{{"bgHover", 2}, "#AAAAAA"},
 			{"fgHover", "#000000"},
-			{"bgClick", "#FFFFFF"},
+			{{"bgClick", 1}, "#FFFFFF"},
+			{{"bgClick", 2}, "#FFFFFF"},
 			{"fgClick", "#000000"},
 			{"margins", margins(0)},
 			{"outsideMargins", margins(0)},
@@ -40,24 +43,35 @@ function Button:setup(args)
 			{"animateHover", false},
 			{"animateClick", false},
 			{{"size", 1}},
-			{{"size", 2}}
+			{{"size", 2}},
+      {"colorFadeAmplitude", themeful.animate.colorFadeAmplitude},
+      {"blinkUpAmplitude", themeful.animate.blinkUpAmplitude},
+      {"blinkDownAmplitude", themeful.animate.blinkDownAmplitude}
 		},
 		themeful.button or {}, self.config
 	)
 	
 	themer.apply(
 		{
-			{"bg"}, {"fg"},	{"bgHover"},	{"fgHover"}, {"bgClick"},	{"fgClick"}, {"margins"}, {"icon"}, {"shape"}, {"outsideMargins"}, {{"size", 1}}, {{"size", 2}}, {"animateHover"}, {"animateClick"}
+			{{"bg", 1}}, {{"bg", 2}}, {"fg"},	{{"bgHover", 1}}, {{"bgHover", 2}},	{"fgHover"}, {{"bgClick", 1}}, {{"bgClick", 2}},	{"fgClick"}, {"margins"}, {"icon"}, {"shape"}, {"outsideMargins"}, {{"size", 1}}, {{"size", 2}}, {"animateHover"}, {"animateClick"}, {"colorFadeAmplitude"}, {"blinkUpAmplitude"}, {"blinkDownAmplitude"}
 
 		},
 		args or {}, self.config
 	)
 
+  self.patternTemplate = {
+    from = {0,0},
+    to = {self.config.size[1] - extractMargin(self.config.outsideMargins), 0}
+  }
+
 	if self.config.animateHover or self.config.animateClick then
 		self.colorAnimation = {}
-		self.animatedColor = rgbToArray(self.config.bg)
+		self.animatedColor = gears.table.map(rgbToArray, self.config.bg)
 	end
-	
+
+  --self.config.animateHover = false
+  --self.config.aniamteClick = false
+  
 	self:makeIcon()
 	self.image = wibox.widget.imagebox()
 	self.margins = wibox.container.margin(self.image)
@@ -65,7 +79,7 @@ function Button:setup(args)
 	self.background = wibox.container.background(self.place)
 	self.image.image = self.icon.normal
 	gears.table.crush(self.margins, self.config.margins)
-	self.background.bg = self.config.bg
+	self.background.bg = gears.color.create_linear_pattern(colorsToPattern(self.config.bg, self.patternTemplate))
 	self.background.shape = self.config.shape
 	self.outsideMargins = wibox.container.margin(self.background)
 	gears.table.crush(self.outsideMargins, self.config.outsideMargins)
@@ -76,21 +90,21 @@ function Button:setup(args)
 	self.final.forced_height = self.config.size[2] or nil
 
 	self.mouseIn = false
-	
+
 	self.final:connect_signal("mouse::enter", function()
 		self.mouseIn = true
 		self.image.image = self.icon.highlight
 		if self.config.animateHover then
 			self.colorAnimation.done = true
-			self.colorAnimation = animate.addRgbColor({
+			self.colorAnimation = animate.addRgbGradient({
 				element = self.background,
-				color = self.animatedColor,
-				targetColor = rgbToArray(self.config.bgHover),
-				hue = "target",
-				amplitude = 0.3,
+				colors = self.animatedColor,
+				targetColors = gears.table.map(rgbToArray, self.config.bgHover),
+        template = self.patternTemplate,
+				amplitude = self.config.colorFadeAmplitude
 			})
 		else
-			self.background.bg = self.config.bgHover
+			self.background.bg = gears.color.create_linear_pattern(colorsToPattern(self.config.bgHover, self.patternTemplate))
 		end
 		self.background.fg = self.config.fgHover
 		self.updateCallback(true, self)
@@ -101,14 +115,15 @@ function Button:setup(args)
 		self.image.image = self.icon.normal
 		if self.config.animateHover then
 			self.colorAnimation.done = true
-			self.colorAnimation = animate.addRgbColor({
+			self.colorAnimation = animate.addRgbGradient({
 				element = self.background,
-				color = self.animatedColor,
-				targetColor = rgbToArray(self.config.bg),
-				amplitude = 0.3,
+				colors = self.animatedColor,
+				targetColors = gears.table.map(rgbToArray, self.config.bg),
+        template = self.patternTemplate,
+				amplitude = self.config.colorFadeAmplitude
 			})
 		else
-			self.background.bg = self.config.bg
+			self.background.bg = gears.color.create_linear_pattern(colorsToPattern(self.config.bg, self.patternTemplate))
 		end
 		self.background.fg = self.config.fg
 		self.updateCallback(false, self)
@@ -117,11 +132,12 @@ function Button:setup(args)
 	self.final:connect_signal("button::press", function()
 		if self.config.animateClick then
 			self.colorAnimation.done = true
-			self.colorAnimation = animate.addRgbColor({
+			self.colorAnimation = animate.addRgbGradient({
 				element = self.background,
-				color = self.animatedColor,
-				targetColor = rgbToArray(self.config.bgClick),
-				amplitude = 0.3,
+				colors = self.animatedColor,
+				targetColors = gears.table.map(rgbToArray, self.config.bgClick),
+        template = self.patternTemplate,
+				amplitude = self.config.blinkUpAmplitude,
 				callback = function()
 					if self.mouseIn then
 						self.final:emit_signal("mouse::enter")
@@ -131,7 +147,7 @@ function Button:setup(args)
 				end
 			})
 		else
-			self.background.bg = self.config.bg
+			self.background.bg = gears.color.create_linear_pattern(colorsToPattern(self.config.bg, self.patternTemplate))
 		end
 		self.callback(self)
 	end)

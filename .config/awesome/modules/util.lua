@@ -166,3 +166,22 @@ function tableRepeat(val, n)
   end
   return result
 end
+
+function extractMargin(margins, orientation)
+  if orientation == "vertical" then
+    return margins.top + margins.bottom
+  else
+    return margins.left + margins.right
+  end
+end
+
+function colorsToPattern(colorTable, template)
+  local stops = {}
+
+  stops[1] = {0, colorTable[1]}
+  stops[2] = {1, colorTable[2]}
+  -- for i, val in ipairs(colorTable) do
+  --   stops[#stops + 1] = {(1 / #colorTable) * (i - 1), val}
+  -- end
+  return gears.table.join(template, {stops = stops})
+end

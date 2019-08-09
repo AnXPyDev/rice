@@ -75,7 +75,8 @@ themer.apply(
     {"tileFgHover", themeful.button.fgHover},
     {"tileBgClick", themeful.button.bgClick},
     {"outsideMargins", themeful.button.outsideMargins},
-    {"margins", themeful.button.margins}
+    {"margins", themeful.button.margins},
+    {"size", tableRepeat(dpi(30), 2)}
   },
   themeful.titleButtons or {}, titlebuttonsConfig
 )
@@ -98,24 +99,25 @@ local function makeTileButton(c)
 
   button:setup(
     {
+      size = titlebuttonsConfig.size,
       margins = titlebuttonsConfig.margins,
       shape = titlebuttonsConfig.shape,
       outsideMargins = titlebuttonsConfig.outsideMargins,
       initCallback = function(button)
         c:connect_signal("focus", function()
           button.colorAnimation.done = true
-          button.config.bg = titlebarConfig.bgFocus
+          button.config.bg = tableRepeat(titlebarConfig.bgFocus, 2)
           button.icon.normal = button.currentIcon.focus
           button.image.image = button.icon.normal
-          button.background.bg = button.config.bg
+          button.background.bg = gears.color.create_linear_pattern(colorsToPattern(button.config.bg, button.patternTemplate))
         end)
 
         c:connect_signal("unfocus", function()
           button.colorAnimation.done = true
-          button.config.bg = titlebarConfig.bg
+          button.config.bg = tableRepeat(titlebarConfig.bg, 2)
           button.icon.normal = button.currentIcon.normal
           button.image.image = button.icon.normal
-          button.background.bg = button.config.bg
+          button.background.bg = gears.color.create_linear_pattern(colorsToPattern(button.config.bg, button.patternTemplate))
         end)
 
         if c.floating then
@@ -213,6 +215,7 @@ client.connect_signal("request::titlebars" ,
 				-- Kills client when clicked
 				Button:new()
 					:setup({
+            size = titlebuttonsConfig.size,
             margins = titlebuttonsConfig.margins,
             shape = titlebuttonsConfig.shape,
             outsideMargins = titlebuttonsConfig.outsideMargins,
@@ -222,17 +225,17 @@ client.connect_signal("request::titlebars" ,
 						initCallback = function(button)
 							c:connect_signal("focus", function()
 								button.colorAnimation.done = true
-								button.config.bg = titlebarConfig.bgFocus
+								button.config.bg = tableRepeat(titlebarConfig.bgFocus, 2)
 								button.icon.normal = closeIcon.focus
 								button.image.image = button.icon.normal
-								button.background.bg = button.config.bg
+								button.background.bg = gears.color.create_linear_pattern(colorsToPattern(button.config.bg, button.patternTemplate))
 							end)
 							c:connect_signal("unfocus", function()
 								button.colorAnimation.done = true
-								button.config.bg = titlebarConfig.bg
+								button.config.bg = tableRepeat(titlebarConfig.bg, 2)
 								button.icon.normal = closeIcon.normal
 								button.image.image = button.icon.normal
-								button.background.bg = button.config.bg
+								button.background.bg = gears.color.create_linear_pattern(colorsToPattern(button.config.bg, button.patternTemplate))
 							end)
               button.config.bgHover = titlebuttonsConfig.closeBgHover
               button.config.bgClick = titlebuttonsConfig.closeBgClick
