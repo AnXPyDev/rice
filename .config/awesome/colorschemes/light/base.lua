@@ -1,24 +1,24 @@
 gears.table.crush(themeful.titleBar, {
-	bgFocus = colorful.primary.base,
-	fgFocus = colorful.primary.on.base,
-  bg = colorful.background.alternates[3],
+	bgFocus = colorful.background.base,
+	fgFocus = colorful.background.on.base,
+	bg = colorful.background.alternates[3],
 	fg = colorful.background.on.base
 })
 
 gears.table.crush(themeful.searchMenu.prompt, {
-	bg = colorful.primary.base,
-	fg = colorful.primary.on.base,
+	bg = tableRepeat(colorful.background.alternates[4], 2),
+	fg = colorful.background.on.base,
 })
 
 gears.table.crush(themeful.searchMenu.elements, {
-	bg = colorful.background.base,
+	bg = tableRepeat(colorful.background.base, 2),
 	fg = colorful.background.on.base,
-	bgHl = colorful.primary.base,
-	fgHl = colorful.primary.on.base
+	bgHl = tableRepeat(colorful.background.alternates[4], 2),
+	fgHl = colorful.background.on.base
 })
 
 gears.table.crush(themeful.searchMenu.wibox, {
-	bg = colorful.background.base,
+	bg = tableRepeat(colorful.background.base, 2),
 	fg = colorful.background.on.base
 })
 
@@ -52,7 +52,7 @@ gears.table.crush(themeful.statusBar.wibox, {
 })
 
 gears.table.crush(themeful.statusBar.widgets, {
-  bg = colorful.background,
+  bg = colorful.background.base,
 	fg = colorful.background.on.base
 })
 
@@ -62,9 +62,9 @@ gears.table.crush(themeful.showcase, {
 })
 
 gears.table.crush(themeful.internetIndicator, {
-	bg = themeful.showcase.bg,
+	bg = tableRepeat(themeful.showcase.bg, 2),
 	fg = themeful.showcase.fg,
-	bgOnline = colorful.primary.base,
+	bgOnline = {colorful.primary.base, colorful.primary.alternates[4]},
 	fgOnline = colorful.primary.on.base,
 	bg2Online = colorful.primary.alternates[6]
 })
@@ -77,18 +77,18 @@ gears.table.crush(themeful.batteryIndicator, {
 })
 
 gears.table.crush(themeful.loadScreen, {
-	startBg = "#000000",
-	targetBg = colorful.background.alternates[3],
+	startBg = tableRepeat("#000000", 2),
+	targetBg = tableRepeat(colorful.background.alternates[3], 2),
 	imageColor = colorful.primary.base,
 	imageBg = colorful.background.base
 })
 
 gears.table.crush(themeful.button, {
-	bg = colorful.background.alternates[2],
+	bg = tableRepeat(colorful.background.base, 2),
 	fg = colorful.background.on.base,
-	bgHover = colorful.primary.base,
+	bgHover = {colorful.primary.base, colorful.primary.alternates[6]},
 	fgHover = colorful.primary.on.base,
-	bgClick = colorful.primary.alternates[3],
+	bgClick = tableRepeat(colorful.primary.alternates[3], 2),
 	fgClick = colorful.primary.on.base,
 })
 
@@ -98,33 +98,32 @@ gears.table.crush(themeful.timeIndicator, {
 })
 
 gears.table.crush(themeful.tagIndicator, {
-	bg = colorful.background.base,
+	bg = tableRepeat(colorful.background.base, 2),
 	fg = colorful.background.on.base,
-	clrNormal = colorful.background.alternates[4],
-	clrFocused = colorful.primary.base,
-	clrOccupied = colorful.secondary.base
+	clrNormal = tableRepeat(colorful.background.alternates[4], 2),
+	clrFocused = {colorful.primary.base, colorful.primary.alternates[4]},
+	clrOccupied = {colorful.secondary.base, colorful.secondary.alternates[4]}
 })
 
 gears.table.crush(themeful.keyboardIndicator, {
-	bg = colorful.secondary.base,
+	bg = {colorful.secondary.base, colorful.secondary.alternates[4]},
 	fg = colorful.secondary.on.base,
-	blinkBg = colorful.secondary.alternates[3]
+	blinkBg = {colorful.secondary.alternates[4], colorful.secondary.alternates[8]}
 })
 
 gears.table.crush(themeful.statusButtons, {
-	bgHover = colorful.primary.base,
 	fgHover = colorful.primary.on.base,
-	bgClick = colorful.primary.alternates[3],
+	bgClick = tableRepeat(colorful.primary.alternates[3], 2),
 	fgClick = colorful.primary.on.base
 })
 
 gears.table.crush(themeful.titleButtons, {
-  tileBgHover = colorful.secondary.base,
-  tileFgHover = colorful.secondary.on.base,
-  tileBgClick = colorful.secondary.alternates[3],
-  closeBgHover = colorful.alert.base,
+  tileBgHover = tableRepeat(colorful.background.alternates[6], 2),
+  tileFgHover = colorful.background.on.base,
+  tileBgClick = tableRepeat(colorful.background.alternates[9], 2),
+  closeBgHover = {colorful.alert.base, colorful.alert.alternates[3]},
   closeFgHover = colorful.alert.on.base,
-  closeBgClick = colorful.alert.alternates[3]
+  closeBgClick = tableRepeat(colorful.alert.alternates[3], 2)
 })
 
 gears.table.crush(themeful.sysGraph, {
@@ -134,11 +133,19 @@ gears.table.crush(themeful.sysGraph, {
 })
 
 gears.table.crush(themeful.launcher, {
-  wiboxBg = colorful.background.base,
-  promptBg = colorful.primary.base,
-  promptFg = colorful.primary.on.base,
-  elementBg = colorful.background.base,
+  wiboxBg = tableRepeat(colorful.background.base, 2),
+  promptBg = {colorful.primary.base, colorful.primary.alternates[3]},
+  promptFg = colorful.background.on.base,
+  elementBg = tableRepeat(colorful.background.base, 2),
   elementFg = colorful.background.on.base,
-  elementBgHl = colorful.primary.base,
+  elementBgHl = {colorful.secondary.base, colorful.secondary.alternates[3]},
+  elementFgHl = colorful.secondary.on.base
+})
+
+gears.table.crush(themeful.powerMenu, {
+  wiboxBg = tableRepeat(colorful.background.base, 2),
+  elementBg = tableRepeat(colorful.background.base, 2),
+  elementFg = colorful.background.on.base,
+	elementBgHl = {colorful.primary.base, colorful.primary.alternates[6]},
   elementFgHl = colorful.primary.on.base
 })

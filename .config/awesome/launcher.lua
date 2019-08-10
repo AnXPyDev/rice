@@ -29,6 +29,7 @@ themer.apply(
     {{"promptBg", 2}, "#FFFFFF"},
     {"promptFg", "#000000"},
     {"promptOutsideMargins", margins(0)},
+    {"promptShape", gears.shape.rectangle},
     {"elementOutsideMargins", margins(0)},
     {"elementMargins", margins(dpi(10))},
     {"elementShowcaseMargins", margins(dpi(5))},
@@ -59,7 +60,8 @@ local launcherArgs = {
     halign = "left",
     bg = launcherConfig.promptBg,
     fg = launcherConfig.promptFg,
-    outsideMargins = launcherConfig.promptOutsideMargins
+    outsideMargins = launcherConfig.promptOutsideMargins,
+    shape = launcherConfig.promptShape
   },
   elements = {
     bg = launcherConfig.elementBg,

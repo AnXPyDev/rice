@@ -8,7 +8,7 @@ themeFunctions = {}
 
 os.execute("xrdb " .. PATH.home .. ".Xresources")
 
-local themeCategory = "dark"
+local themeCategory = "light"
 
 wallpaperFolder = themeCategory
 colorschemeNames = {themeCategory .. "/anaglyph", themeCategory .. "/base"}

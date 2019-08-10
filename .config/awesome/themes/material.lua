@@ -178,6 +178,7 @@ themeful.sysGraph = {}
 themeful.launcher = {
   promptHeight = dpi(60),
   promptOutsideMargins = margins(dpi(10), nil, nil, dpi(5)),
+  promptShape = themeful.shape,
   elementSize = {dpi(250), dpi(60)},
   wiboxSize = {nil, screens.primary.geometry.height},
   elementCount = {1, 5},
