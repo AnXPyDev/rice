@@ -56,17 +56,20 @@ function rgbToArray(rgbString)
   if type(rgbString) == "table" then
     return gears.table.map(rgbToArray, rgbString)
   end
-	local finalString = ""
-	if rgbString:sub(1,1) == "#" then
-		finalString = rgbString:sub(2)
-	else
-		finalString = rgbString
-	end
-	
+
+  local rgbString = rgbString or "#00000000"
+
+  if rgbString:sub(1,1) == "#" then rgbString = rgbString:sub(2) end
+
 	local result = {}
 	
-	for i = 0, 2 do
-		result[#result + 1] = tonumber("0x" .. finalString:sub(i * 2 + 1, i * 2 + 2)) / 255
+	for i = 0, 3 do
+    local sub = rgbString:sub(i * 2 + 1, i * 2 + 2)
+    if sub and sub:len() == 2 then
+      result[i + 1] = tonumber("0x" .. sub) / 255
+    else
+      result[i + 1] = 1
+    end
 	end
 	
 	return result
@@ -75,7 +78,7 @@ end
 function arrayToRgb(rgbArray)
 	local result = "#"
 
-	for i = 1, 3 do
+	for i = 1, 4 do
 		result = result .. string.format("%02x", math.floor(rgbArray[i]*255 + 0.5))
 	end
 
@@ -193,4 +196,10 @@ function colorsToPattern(colorTable, template)
   --   stops[#stops + 1] = {(1 / #colorTable) * (i - 1), val}
   -- end
   return gears.table.join(template, {stops = stops})
+end
+
+function setChannel(rgbString, channel, val)
+  local temp = rgbToArray(rgbString)
+  temp[channel] = val
+  return arrayToRgb(temp)
 end

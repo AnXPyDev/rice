@@ -18,9 +18,11 @@ function keyboardindicator:setup()
 	themer.apply(
 		{
 			{"fg", "#FFFFFF"},
-			{"bg", "#000000"},
-			{"blinkBg", "#AAAAAA"},
-			{"animate", false},
+			{{"bg", 1}, "#000000"},
+			{{"bg", 2}, "#555555"},
+			{{"blinkBg", 1}, "#AAAAAA"},
+			{{"blinkBg", 2}, "#AAAAAA"},
+      {"animate", false},
 			{"blinkUpAmplitude", themeful.animate.blinkUpAmplitude or 0.5},
 			{"blinkDownAmplitude", themeful.animate.blinkDownAmplitude or 0.5}
 		},
@@ -36,6 +38,11 @@ function keyboardindicator:setup()
 		-- Animation that blinks background when clicked on or updated
 		self.colorAnimation = {}
 	end
+
+  self.config.patternTemplate = {
+    from = {0,0},
+    to = {themeful.statusBar.wibox.size[1] - extractMargin(themeful.statusBar.wibox.margins), 0}
+  }
 	
 	self.widget = Showcase:new()
 		:setup(
@@ -43,7 +50,7 @@ function keyboardindicator:setup()
 				text = "bruh",
 				showcase = self.image,
 				halign = "left",
-				bg = self.config.bg,
+				bg = gears.color.create_linear_pattern(colorsToPattern(self.config.bg, self.config.patternTemplate)),
 				fg = self.config.fg,
 				showcasePosition = "left",
 				size = {nil, dpi(40)},
@@ -73,18 +80,20 @@ function keyboardindicator:update()
 		-- Starts an animation which fades background to blink color and back
 		self.colorAnimation.done = true
 		self.colorAnimation.callback = function() end
-		self.colorAnimation = animate.addRgbColor({
+		self.colorAnimation = animate.addRgbGradient({
 			element = self.widget.widget.background,
-			color = self.animatedColor,
-			targetColor = rgbToArray(self.config.blinkBg),
+			colors = self.animatedColor,
+			targetColors = rgbToArray(self.config.blinkBg),
 			amplitude = self.config.blinkUpAmplitude,
+      template = self.config.patternTemplate,
 			treshold = 0.01,
 			callback = function()
-				self.colorAnimation = animate.addRgbColor({
+				self.colorAnimation = animate.addRgbGradient({
 					element = self.widget.widget.background,
-					color = self.animatedColor,
-					targetColor = rgbToArray(self.config.bg),
+					colors = self.animatedColor,
+					targetColors = rgbToArray(self.config.bg),
 					amplitude = self.config.blinkDownAmplitude,
+          template = self.config.patternTemplate,
 					treshold = 0.01
 				})
 			end

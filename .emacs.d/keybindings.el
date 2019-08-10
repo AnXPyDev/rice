@@ -112,6 +112,7 @@
  "M-q" (lambda() (interactive) (modal/multiple-cursors-mode 0))
  "C-g" (lambda() (interactive) (modal/multiple-cursors-mode 0)))
 
-(define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map) 
+(define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map
+  (if modal/multiple-cursors-mode
+      (raise-minor-mode-map-alist 'modal/multiple-cursors-mode)))
 
-(raise-minor-mode-map-alist 'modal/multiple-cursors-mode)

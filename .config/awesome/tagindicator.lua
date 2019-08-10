@@ -19,7 +19,7 @@ function tagindicator:initWidgets()
     self.tags.widgets[i] = {}
     self.tags.widgets[i].background = wibox.container.background(
       wibox.widget.textbox(),
-      self.config.clrNormal,
+      gears.color.create_linear_pattern(colorsToPattern(self.config.clrNormal, self.config.tagPatternTemplate)),
       self.config.tagShape
     )
     self.tags.widgets[i].margin = wibox.container.margin(self.tags.widgets[i].background)
@@ -60,18 +60,19 @@ function tagindicator:update()
     end
 		-- Apply fade between normal and current color to icons when their color is not the current one
 		if self.config.animate then
-			if not (self.colorAnimations[i].targetColor and (color:lower() == arrayToRgb(self.colorAnimations[i].targetColor):lower())) then
+			if not (self.colorAnimations[i].targetColor and tableEq(rgbToArray(color), self.animatedColors[i])) then
 				self.colorAnimations[i].done = true
-				self.colorAnimations[i] = animate.addRgbColor({
-					targetColor = rgbToArray(color),
-					color = self.animatedColors[i],
+				self.colorAnimations[i] = animate.addRgbGradient({
+					targetColors = rgbToArray(color),
+					colors = self.animatedColors[i],
 					element = self.tags.widgets[i].background,
+          template = self.config.tagPatternTemplate,
 					amplitude = self.config.colorFadeAmplitude,
 					treshold = 0.01
 				})
 			end
 		else
-			self.tags.widgets[i].background.bg = color
+			self.tags.widgets[i].background.bg = gears.color.create_linear_pattern(colorsToPattern(color, self.config.tagPatternTemplate))
 		end
   end
 end
@@ -101,12 +102,16 @@ function tagindicator:setup()
 			{"margins", margins(0)},
 			{"outsideMargins", margins(0)},
 			{"tagSize", {dpi(40), dpi(40)}},
-			{"size", function()	return {#tags.list * self.config.tagSize[1], self.config.tagSize[2]} end, true},
+			{"size", function()	return {#tags.list * self.config.tagSize[1] + extractMargin(self.config.outsideMargins), self.config.tagSize[2] + extractMargin(self.config.outsideMargins, "vertical")} end, true},
 			{"pos", function() return {self.screen.geometry.x + (self.screen.geometry.width - self.config.size[1]) / 2, self.screen.geometry.y + dpi(10)} end, true},
-			{"bg", "#000000"},
-			{"clrNormal", "#000000"},
-			{"clrFocused", "#FFFFFF"},
-			{"clrOccupied", "#AAAAAA"},
+			{{"bg", 1}, "#000000"},
+			{{"bg", 2}, "#000000"},
+			{{"clrNormal", 1}, "#000000"},
+			{{"clrNormal", 2}, "#000000"},
+			{{"clrFocused", 1}, "#FFFFFF"},
+			{{"clrFocused", 2}, "#FFFFFF"},
+			{{"clrOccupied", 1}, "#AAAAAA"},
+			{{"clrOccupied", 2}, "#AAAAAA"},
 			{"shape", gears.shape.rectangle},
 			{"tagShape", gears.shape.rectangle},
 			{"animate", false},
@@ -114,6 +119,22 @@ function tagindicator:setup()
 		},
 		themeful.tagIndicator or {}, self.config
 	)
+
+  self.config.tagPatternTemplate = {
+    from = {0, 0},
+    to = {
+      self.config.tagSize[1] - extractMargin(self.config.margins),
+      0
+    }
+  }
+
+  self.config.wiboxPatternTemplate = {
+    from = {0, 0},
+    to = {
+      self.config.size[1],
+      0
+    }
+  }
 
 	if self.config.animate then
 		self.colorAnimations = {}
@@ -139,7 +160,7 @@ function tagindicator:setup()
     y = self.config.pos[2],
     width = self.config.size[1],
     height = self.config.size[2],
-    bg = self.config.bg,
+    bg = gears.color.create_linear_pattern(colorsToPattern(self.config.bg, self.config.wiboxPatternTemplate)),
     ontop = true,
     shape = self.config.shape,
     widget = self.widget.final

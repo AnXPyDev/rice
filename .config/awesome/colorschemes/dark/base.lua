@@ -98,17 +98,17 @@ gears.table.crush(themeful.timeIndicator, {
 })
 
 gears.table.crush(themeful.tagIndicator, {
-	bg = colorful.background.base,
+	bg = tableRepeat(colorful.background.base, 2),
 	fg = colorful.background.on.base,
-	clrNormal = colorful.background.alternates[4],
-	clrFocused = colorful.primary.base,
-	clrOccupied = colorful.secondary.base
+	clrNormal = tableRepeat(colorful.background.alternates[4], 2),
+	clrFocused = {colorful.primary.base, colorful.primary.alternates[4]},
+	clrOccupied = {colorful.secondary.base, colorful.secondary.alternates[4]}
 })
 
 gears.table.crush(themeful.keyboardIndicator, {
-	bg = colorful.secondary.base,
+	bg = {colorful.secondary.base, colorful.secondary.alternates[4]},
 	fg = colorful.secondary.on.base,
-	blinkBg = colorful.secondary.alternates[3]
+	blinkBg = {colorful.secondary.alternates[4], colorful.secondary.alternates[8]}
 })
 
 gears.table.crush(themeful.statusButtons, {
@@ -133,11 +133,11 @@ gears.table.crush(themeful.sysGraph, {
 })
 
 gears.table.crush(themeful.launcher, {
-  wiboxBg = colorful.background.base,
-  promptBg = colorful.background.alternates[3],
+  wiboxBg = {colorful.background.base, colorful.background.alternates[0]},
+  promptBg = {colorful.background.alternates[3], colorful.background.alternates[3]},
   promptFg = colorful.background.on.base,
   elementBg = colorful.background.base,
   elementFg = colorful.background.on.base,
-  elementBgHl = {colorful.primary.base, colorful.background.base},
-  elementFgHl = colorful.primary.on.base
+  elementBgHl = {colorful.background.alternates[3], colorful.background.alternates[3]},
+  elementFgHl = colorful.background.on.base
 })
