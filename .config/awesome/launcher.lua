@@ -16,13 +16,17 @@ themer.apply(
     {"elementSize", {dpi(130), dpi(120)}},
     {"elementCount", {5,2}},
     {"boundedMargins", margins(0)},
-    {"elementBg", "#000000"},
+    {{"elementBg", 1}, "#000000"},
+    {{"elementBg", 2}, "#000000"},
     {"elementFg", "#FFFFFF"},
-    {"elementBgHl", "#FFFFFF"},
+    {{"elementBgHl", 1}, "#FFFFFF"},
+    {{"elementBgHl", 2}, "#FFFFFF"},
     {"elementFgHl", "#000000"},
-    {"wiboxBg", "#000000"},
+    {{"wiboxBg", 1}, "#000000"},
+    {{"wiboxBg", 2}, "#000000"},
     {"wiboxShape", gears.shape.rectangle},
-    {"promptBg", "#FFFFFF"},
+    {{"promptBg", 1}, "#FFFFFF"},
+    {{"promptBg", 2}, "#FFFFFF"},
     {"promptFg", "#000000"},
     {"promptOutsideMargins", margins(0)},
     {"elementOutsideMargins", margins(0)},
@@ -33,7 +37,8 @@ themer.apply(
     {"valign", "center"},
     {"showcasePosition", "top"},
     {"boundedValign", "center"},
-    {"boundedHalign", "center"}
+    {"boundedHalign", "center"},
+    {"animate", false}
   },
   themeful.launcher or {}, launcherConfig
 )
@@ -73,6 +78,7 @@ local launcherArgs = {
     shape = launcherConfig.elementShape,
     boundedValign = launcherConfig.boundedValign,
     boundedHalign = launcherConfig.boundedHalign,
+    animate = launcherConfig.animate,
 
     list = {
       {name = "Emacs", callback = function() awful.spawn("emacs") end, showcase = wibox.widget.imagebox(PATH.icons .. "emacs.png")},

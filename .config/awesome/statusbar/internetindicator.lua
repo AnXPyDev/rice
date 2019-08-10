@@ -30,31 +30,17 @@ function internetindicator:refresh(output)
 	self.isWifi = lines[2] == "true"
 	self.signalStrength = tonumber(lines[3]) / 100
 	self.isConnected = lines[4] == "true"
+
+  local newColor = self.config.bg
+  
 	if self.isConnected then
 
+    newColor = self.config.bgOnline
+    
 		if not isLastConnected then
-
-			-- Notifies about connection when state changes
-
 			naughty.notify({text = "Back online"})
-
-			if self.config.animate then
-				-- Start animation to fade background color into highlight color
-				self.backgroundAnimation.done = true
-				self.backgroundAnimation = animate.addRgbColor({
-					element = self.widget.widget.background,
-					color = self.backgroundColor,
-					targetColor = rgbToArray(self.config.bgOnline),
-					amplitude = self.config.colorFadeAmplitude,
-					treshold = 0.01
-				})
-			end
-		end
-
-		if not self.config.animate then
-			self.widget.widget.background.bg = self.config.bgOnline
-		end
-
+    end
+    
 		self.widget.widget.background.fg = self.config.fgOnline
 
 		-- Sets text and showcase of widget
@@ -67,25 +53,7 @@ function internetindicator:refresh(output)
 
 	else
 		if isLastConnected then
-
-			-- Notifies about connection when state changes
-			naughty.notify({text = "Gone offline"})
-
-			if self.config.animate then
-				-- Start animation to fade highlight color into background color
-				self.backgroundAnimation.done = true
-				self.backgroundAnimation = animate.addRgbColor({
-					element = self.widget.widget.background,
-					color = self.backgroundColor,
-					targetColor = rgbToArray(self.config.bg),
-					amplitude = self.config.colorFadeAmplitude,
-					treshold = 0.01
-				})
-			end
-		end
-
-		if not self.config.animate then
-			self.widget.widget.background.bg = self.config.bg
+      newColor = self.config.bg
 		end
 
 		self.widget.widget.background.fg = self.config.fg
@@ -94,7 +62,19 @@ function internetindicator:refresh(output)
 		-- Ethernet icon is shown even when offline
 		self.image.image = self.images.ethernet.normal
 	end
-	
+
+  if not tableEq(self.animatedColor, rgbToArray(newColor)) then
+    self.colorAnimation.done = true
+    self.colorAnimation = animate.addRgbGradient({
+      element = self.widget.widget.background,
+      colors = self.animatedColor,
+      targetColors = rgbToArray(newColor),
+      template = self.config.patternTemplate,
+      amplitude = self.config.colorFadeAmplitude,
+      treshold = 0.01
+    })
+  end
+  
 end
 
 -- A shape that looks like the classic wifi indicator from phones, a pie like shape that can scale based on wifi qulity
@@ -117,8 +97,10 @@ function internetindicator:setup()
 
 	themer.apply(
 		{
-			{"bg", "#000000"},
-			{"bgOnline", "#FFFFFF"},
+			{{"bg", 1}, "#000000"},
+			{{"bg", 2}, "#000000"},
+			{{"bgOnline", 1}, "#FFFFFF"},
+			{{"bgOnline", 2}, "#FFFFFF"},
 			{"fg", "#FFFFFF"},
 			{"fgOnline", "#000000"},
 			{"bg2Online", "#aaaaaa"},
@@ -132,6 +114,14 @@ function internetindicator:setup()
 		ethernet = materializeSurface(gears.surface.load(PATH.icons .. "ethernet.png"), {normal = self.config.fg, online = self.config.fgOnline}),
 	}
 
+  self.config.patternTemplate = {
+    from = {0,0},
+    to = {
+      themeful.statusBar.wibox.size[1] - extractMargin(themeful.statusBar.wibox.margins),
+      0
+    }
+  }
+  
 	self.image = wibox.widget.imagebox(self.images.ethernet.normal)
 
 	-- Creates two wifi icons, which are stacked over each other, one acting as a background and other indicates quality
@@ -155,9 +145,9 @@ function internetindicator:setup()
 
 	if self.config.animate then
 		-- Animation that fades background color
-		self.backgroundAnimation = {}
+		self.colorAnimation = {}
 		-- Background Color used for animating
-		self.backgroundColor = rgbToArray(self.config.bg)
+		self.animatedColor = rgbToArray(self.config.bg)
 	end
 
 	self.widget = Showcase:new()
@@ -165,7 +155,7 @@ function internetindicator:setup()
 			{
 				text = "Offline",
 				showcase = self.image,
-				bg = beautiful.bg_focus,
+				bg = gears.color.create_linear_pattern(colorsToPattern(self.config.bg, self.config.patternTemplate)),
 				halign = "left",
 				size = {nil, dpi(40)},
 				showcaseMargins = margins(0, dpi(10), 0),

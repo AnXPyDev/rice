@@ -381,11 +381,17 @@ function SearchMenu:setup(args)
   self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]
   self.elements.config.size[2] = args.elements and args.elements.size and args.elements.size[2] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[2] or self.elements.config.fontSize * 1.5 + self.elements.config.margins.top + self.elements.config.margins.bottom + self.elements.config.outsideMargins.top + self.elements.config.outsideMargins.bottom
 
+  if self.prompt.config.hide then
+    self.prompt.config.size = {0,0}
+  end
+  
 	-- Calculates ammount of widgets that fit into the wibox
 	self.elements.config.count = {
     math.floor((self.wibox.config.size[1] - (self.elements.config.boundedMargins.left + self.elements.config.boundedMargins.right)) / self.elements.config.size[1]),
     math.floor(((self.wibox.config.size[2] - self.prompt.config.size[2]) - (self.elements.config.boundedMargins.top + self.elements.config.boundedMargins.bottom)) / self.elements.config.size[2])
   }
+
+  logTable(self.elements.config.count)
 
   self.elements.config.patternTemplate = {
     from = {0,0},
@@ -445,7 +451,7 @@ function SearchMenu:setup(args)
   self.results = {}
   self.selectedElement = nil
   self:initPrompt()
-  self:generateElements(args.elements.list)  self.elements.config.size[1] = args.elements and args.elements.size and args.elements.size[1] or beautiful.searchMenu.elements.size and beautiful.searchMenu.elements.size[1] or self.wibox.config.size[1]
+  self:generateElements(args.elements.list)
   self:initElements()
   self:initWidget()
   self:refreshTheme()

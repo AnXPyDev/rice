@@ -6,11 +6,44 @@
 	this file might depend on other modules from my config.
 ]]--
 
+
+local powermenuConfig = {}
+themer.apply(
+  {
+    {"wiboxSize", {nil,nil}},
+    {"elementSize", {dpi(130), dpi(120)}},
+    {"elementCount", {5,2}},
+    {"boundedMargins", margins(0)},
+    {{"elementBg", 1}, "#000000"},
+    {{"elementBg", 2}, "#000000"},
+    {"elementFg", "#FFFFFF"},
+    {{"elementBgHl", 1}, "#FFFFFF"},
+    {{"elementBgHl", 2}, "#FFFFFF"},
+    {"elementFgHl", "#000000"},
+    {{"wiboxBg", 1}, "#000000"},
+    {{"wiboxBg", 2}, "#000000"},
+    {"wiboxShape", gears.shape.rectangle},
+    {"elementOutsideMargins", margins(0)},
+    {"elementMargins", margins(dpi(10))},
+    {"elementShowcaseMargins", margins(dpi(5))},
+    {"elementShape", gears.shape.rectangle},
+    {"halign", "center"},
+    {"valign", "center"},
+    {"showcasePosition", "top"},
+    {"boundedValign", "center"},
+    {"boundedHalign", "center"},
+    {"animate", false}
+  },
+  themeful.powerMenu or {}, powermenuConfig
+)
+
+logTable(powermenuConfig)
+
 -- Icons used by powermenu
 
 local iconColors = {
-  normal = themeful.searchMenu.elements.fg,
-  highlight = colorful.primary.on.base
+  normal = powermenuConfig.elementFg,
+  highlight = powermenuConfig.elementFgHl
 }
 
 local powermenuIcons = {
@@ -44,30 +77,34 @@ end
 -- Arguments for SearchMenu
 
 local powermenuArgs = {
-  searchDisabled = false,
   screen = screens.primary,
   wibox = {
-    size = {dpi(90), dpi(90) * 4},
-    pos = {
-      screens.primary.geometry.x + (screens.primary.geometry.width - dpi(100)) - dpi(10),
-      screens.primary.geometry.y + ((screens.primary.geometry.height - dpi(300)) / 2)
-    },
+    size = {},
+    bg = powermenuConfig.wiboxBg,
+    shape = powermenuConfig.wiboxShape
   },
   prompt = {
-    hide = true,
-    size = {0,0}
+    hide = true
   },
   elements = {
-		boundedMargins = margins(0),
-    size = {dpi(90), dpi(90)},
-    halign = "center",
-    valign = "center",
-		showcasePosition = "top",
-    hideText = true,
-		margins = margins(dpi(30)),
-		outsideMargins = margins(0),
-		showcaseMargins = margins(0),
-    bgHl = colorful.primary.base,
+    bg = powermenuConfig.elementBg,
+    fg = powermenuConfig.elementFg,
+    bgHl = powermenuConfig.elementBgHl,
+    fgHl = powermenuConfig.elementFgHl,
+    size = powermenuConfig.elementSize,
+		outsideMargins = powermenuConfig.elementOutsideMargins,
+		margins = powermenuConfig.elementMargins,
+		boundedMargins = powermenuConfig.boundedMargins,
+    showcaseMargins = powermenuConfig.elementShowcaseMargins,
+		hideText = true,
+    halign = powermenuConfig.halign,
+    valign = powermenuConfig.valign,
+    showcasePosition = powermenuConfig.showcasePosition,
+    shape = powermenuConfig.elementShape,
+    boundedValign = powermenuConfig.boundedValign,
+    boundedHalign = powermenuConfig.boundedHalign,
+    animate = powermenuConfig.animate,
+
     list = {
       {name = "Power Off", callback = function() awful.spawn.with_shell("poweroff") end, showcase = powermenuImages.poweroff, update = makeUpdateFunction("poweroff")},
       {name = "Reboot", callback = function() awful.spawn.with_shell("reboot") end, showcase = powermenuImages.reboot, update = makeUpdateFunction("reboot")},
@@ -76,6 +113,14 @@ local powermenuArgs = {
     }
   }
 }
+
+
+powermenuArgs.wibox.size[1] = powermenuConfig.wiboxSize[1] or powermenuConfig.elementCount[1] * powermenuArgs.elements.size[1] + powermenuArgs.elements.boundedMargins.left + powermenuArgs.elements.boundedMargins.right
+powermenuArgs.wibox.size[2] = powermenuConfig.wiboxSize[2] or powermenuConfig.elementCount[2] * powermenuArgs.elements.size[2] + powermenuArgs.elements.boundedMargins.top + powermenuArgs.elements.boundedMargins.bottom
+
+logTable(powermenuArgs)
+
+--powermenuArgs.wibox.pos = {screens.primary.geometry.x + (screens.primary.geometry.width - powermenuArgs.wibox.size[1]) / 2, screens.primary.geometry.y + (screens.primary.geometry.height - powermenuArgs.wibox.size[2]) / 2}
 
 -- Creates powermenu
 powermenu = SearchMenu:new():setup(powermenuArgs)

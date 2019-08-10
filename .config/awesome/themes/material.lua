@@ -189,9 +189,24 @@ themeful.launcher = {
   showcasePosition = "left",
   halign = "left",
   wiboxShape = gears.shape.rectangle,
-  boundedValign = "top"
+  boundedValign = "top",
+  animate = false
 }
 
+themeful.powerMenu = {
+  elementSize = {dpi(90), dpi(90)},
+  elementCount = {1, 4},
+  elementMargins = margins(dpi(10)),
+  elementOutsideMargins = margins(0),
+  boundedMargins = margins(0),
+  elementShape = gears.shape.rectangle,
+  elementShowcaseMargins = margins(dpi(18)),
+  showcasePosition = "left",
+  halign = "left",
+  wiboxShape = themeful.shape,
+  boundedValign = "top",
+  animate = false
+}
 gears.table.crush(naughty.config, {
 	padding = dpi(10)
 })

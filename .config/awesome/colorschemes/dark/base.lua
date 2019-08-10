@@ -62,9 +62,9 @@ gears.table.crush(themeful.showcase, {
 })
 
 gears.table.crush(themeful.internetIndicator, {
-	bg = themeful.showcase.bg,
+	bg = tableRepeat(themeful.showcase.bg, 2),
 	fg = themeful.showcase.fg,
-	bgOnline = colorful.primary.base,
+	bgOnline = {colorful.primary.base, colorful.primary.alternates[4]},
 	fgOnline = colorful.primary.on.base,
 	bg2Online = colorful.primary.alternates[6]
 })
@@ -133,11 +133,19 @@ gears.table.crush(themeful.sysGraph, {
 })
 
 gears.table.crush(themeful.launcher, {
-  wiboxBg = {colorful.background.base, colorful.background.alternates[0]},
+  wiboxBg = tableRepeat(colorful.background.base, 2),
   promptBg = {colorful.background.alternates[3], colorful.background.alternates[3]},
   promptFg = colorful.background.on.base,
-  elementBg = colorful.background.base,
+  elementBg = tableRepeat(colorful.background.base, 2),
   elementFg = colorful.background.on.base,
   elementBgHl = {colorful.background.alternates[3], colorful.background.alternates[3]},
   elementFgHl = colorful.background.on.base
+})
+
+gears.table.crush(themeful.powerMenu, {
+  wiboxBg = tableRepeat(colorful.background.base, 2),
+  elementBg = tableRepeat(colorful.background.base, 2),
+  elementFg = colorful.background.on.base,
+	elementBgHl = {colorful.primary.base, colorful.primary.alternates[6]},
+  elementFgHl = colorful.primary.on.base
 })
