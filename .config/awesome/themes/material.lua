@@ -96,8 +96,8 @@ themeful.statusBar.wibox = {
 	shape = gears.shape.rectangle,
 	outsideMargins = themeful.outsideMargins,
 	margins = margins(dpi(10)),
-	offset = 0,
-	size = {dpi(300), screens.primary.geometry.height}
+	offset = dpi(10),
+	size = {dpi(300), screens.primary.geometry.height - 2*dpi(10)}
 }
 
 themeful.statusBar.widgets = {

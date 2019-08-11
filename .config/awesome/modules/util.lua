@@ -85,7 +85,7 @@ function arrayToRgb(rgbArray)
 	return result
 end
 
-function genColorScheme(bg, fg, others, alternateCount)
+function genColorScheme(scheme, alternateCount)
 
   local function isLight(color)
     return colors.new(color).L > 0.5
@@ -102,21 +102,26 @@ function genColorScheme(bg, fg, others, alternateCount)
   local alternateCount = alternateCount or 12
   local result = {}
 
+  
+  
   result.background = {
-    base = bg,
-    alternates = alternates(bg, alternateCount)
+    base = scheme.background,
+    alternates = alternates(scheme.background, alternateCount)
   }
 
   result.foreground = {
-    base = fg,
-    alternates = alternates(fg, alternateCount)
+    base = scheme.foreground,
+    alternates = alternates(scheme.foreground, alternateCount)
   }
 
   result.background.on = result.foreground
   result.foreground.on = result.background
 
   local cache = {}
-  
+
+  cache[result.background.base] = result.background
+  cache[result.foreground.base] = result.foreground
+
   local function getOnColor(color)
     if isLight(color) == isLight(result.background.base) then
       return result.foreground
@@ -125,7 +130,7 @@ function genColorScheme(bg, fg, others, alternateCount)
     end
   end
   
-  for key, color in pairs(others) do
+  for key, color in pairs(scheme) do
     result[key] = cache[color] or {
       base = color,
       alternates = alternates(color, alternateCount),
@@ -149,6 +154,7 @@ function logTable(tbl, depth, maxDepth)
   for key, element in pairs(tbl) do
     if type(element) == "table" then
       print(indent .. " " .. tostring(key) .. ":")
+      logTable(element, depth + 1, maxDepth)
     else
       print(indent .. " " .. tostring(key) .. ": " .. tostring(element))
     end
@@ -201,4 +207,35 @@ function setChannel(rgbString, channel, val)
   local temp = rgbToArray(rgbString)
   temp[channel] = val
   return arrayToRgb(temp)
+end
+
+function getXrdbColors(translationTable)
+  local translationTable = translationTable or
+    {
+      "black",
+      "red",
+      "green",
+      "yellow",
+      "blue",
+      "purple",
+      "cyan",
+      "white",
+      "blackAlt",
+      "redAlt",
+      "greenAlt",
+      "yellowAlt",
+      "blueAlt",
+      "purpleAlt",
+      "cyanAlt",
+      "whiteAlt"
+    }
+
+  local xres = xresources.get_current_theme()
+
+  for i, key in ipairs(translationTable) do
+    xres[key] = xres["color" .. tostring(i - 1)] or "#FFFFFF"
+  end
+
+  return xres
+  
 end

@@ -16,9 +16,9 @@ colorful.primary = colorful.blue
 colorful.secondary = colorful.red
 colorful.alert = colorful.red
 
-resourceful["emacs.themeName"] = "xresources"
+resourceful["emacs.themeName"] = "kaolin-galaxy"
 
-resourceFiles[#resourceFiles + 1] = PATH.resources .. "testing"
+resourceFiles[#resourceFiles + 1] = PATH.resources .. "skyfall"
 
 local function schemeExtension()
 
