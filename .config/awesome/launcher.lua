@@ -109,36 +109,36 @@ launcher.animationRunning = false
 
 -- Animates launcher when shown (Slides from top)
 function launcher:showAnimate()
-  -- if not launcher.animationRunning and not launcher.wibox.widget.visible then
-  --   launcher.animationRunning = true
-  --   animate.add({
-  --     object = launcher.wibox.widget,
-  --     start = {
-  --       launcherArgs.wibox.pos[1],
-  --       screens.primary.geometry.y - (launcherArgs.wibox.size[2])
-  --     },
-  --     target = {
-  --       launcherArgs.wibox.pos[1],
-  --       launcherArgs.wibox.pos[2]
-  --     },
-  --     type = "interpolate",
-  --     magnitude = 0.3,
-  --     amount = 5,
-  --     callback = function()
-  --       launcher.animationRunning = false
-  --     end
-  --   })
-  -- end
-  -- launcher:show()
-  if not self.wibox.widget.visible then
-    self.directedBox = self.screen.director:add({
-      side = "right",
-      padding = margins(0),
-      wibox = self.wibox.widget,
-      priority = 1
+  if not launcher.animationRunning and not launcher.wibox.widget.visible then
+    launcher.animationRunning = true
+    animate.add({
+      object = launcher.wibox.widget,
+      start = {
+        launcherArgs.wibox.pos[1],
+        screens.primary.geometry.y - (launcherArgs.wibox.size[2])
+      },
+      target = {
+        launcherArgs.wibox.pos[1],
+        launcherArgs.wibox.pos[2]
+      },
+      type = "interpolate",
+      magnitude = 0.3,
+      amount = 5,
+      callback = function()
+        launcher.animationRunning = false
+      end
     })
-    self:show()
   end
+  launcher:show()
+  -- if not self.wibox.widget.visible then
+  --   self.directedBox = self.screen.director:add({
+  --     side = "right",
+  --     padding = margins(0),
+  --     wibox = self.wibox.widget,
+  --     priority = 1
+  --   })
+  --   self:show()
+  -- end
   self.wibox.widget.visible = true
 end
 

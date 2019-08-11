@@ -1,4 +1,4 @@
-function fuzzyDistance(a, b, lowercaseComparison)
+function fuzzyCharDistance(a, b, lowercaseComparison)
   if lowercaseComparison then
     a = a:lower()
     b = b:lower()
@@ -30,5 +30,24 @@ function fuzzyDistance(a, b, lowercaseComparison)
 	averageDistance = averageDistance / #matches
 
 	return (#matches / a:len()) * (1 / averageDistance)
+	
+end
+
+function fuzzyWordCompare(a, b, lowercaseComparison)
+  if lowercaseComparison then
+    a = a:lower()
+    b = b:lower()
+  end
+
+  local firstFound, lastFound = 0, 0
+
+  local wordList = gears.string.split(a, " ")
+
+  for k, word in pairs(wordList) do
+    firstFound, lastFound = b:find(word, lastFound + 1)
+    if not firstFound or nil then return false end
+  end
+
+  return true
 	
 end

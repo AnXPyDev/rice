@@ -177,20 +177,22 @@ themeful.sysGraph = {}
 
 themeful.launcher = {
   promptHeight = dpi(60),
-  promptOutsideMargins = margins(dpi(10), nil, nil, dpi(5)),
+  promptOutsideMargins = margins(0),
   promptShape = themeful.shape,
-  elementSize = {dpi(250), dpi(60)},
-  wiboxSize = {nil, screens.primary.geometry.height},
-  elementCount = {1, 5},
+  elementSize = {dpi(100), dpi(120)},
+  wiboxSize = {nil, nil},
+  elementCount = {5, 2},
   elementMargins = margins(dpi(10)),
-  elementOutsideMargins = margins(0, nil, dpi(5)),
-  boundedMargins = margins(dpi(10), nil, 0),
+  elementOutsideMargins = margins(dpi(5)),
+  boundedMargins = margins(dpi(20)),
   elementShape = themeful.shape,
-  elementShowcaseMargins = margins(0, dpi(10), 0),
-  showcasePosition = "left",
-  halign = "left",
-  wiboxShape = gears.shape.rectangle,
-  boundedValign = "top",
+  elementShowcaseMargins = margins(dpi(8), nil, 0, dpi(8)),
+  showcasePosition = "top",
+  showcaseHalign = "center",
+  halign = "center",
+  wiboxShape = themeful.shape,
+  boundedValign = "center",
+  boundedHalign = "center",
   animate = false
 }
 

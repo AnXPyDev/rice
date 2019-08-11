@@ -149,7 +149,6 @@ function logTable(tbl, depth, maxDepth)
   for key, element in pairs(tbl) do
     if type(element) == "table" then
       print(indent .. " " .. tostring(key) .. ":")
-      logTable(element, depth + 1, maxDepth)
     else
       print(indent .. " " .. tostring(key) .. ": " .. tostring(element))
     end

@@ -37,8 +37,6 @@ themer.apply(
   themeful.powerMenu or {}, powermenuConfig
 )
 
-logTable(powermenuConfig)
-
 -- Icons used by powermenu
 
 local iconColors = {
@@ -118,7 +116,6 @@ local powermenuArgs = {
 powermenuArgs.wibox.size[1] = powermenuConfig.wiboxSize[1] or powermenuConfig.elementCount[1] * powermenuArgs.elements.size[1] + powermenuArgs.elements.boundedMargins.left + powermenuArgs.elements.boundedMargins.right
 powermenuArgs.wibox.size[2] = powermenuConfig.wiboxSize[2] or powermenuConfig.elementCount[2] * powermenuArgs.elements.size[2] + powermenuArgs.elements.boundedMargins.top + powermenuArgs.elements.boundedMargins.bottom
 
-logTable(powermenuArgs)
 
 --powermenuArgs.wibox.pos = {screens.primary.geometry.x + (screens.primary.geometry.width - powermenuArgs.wibox.size[1]) / 2, screens.primary.geometry.y + (screens.primary.geometry.height - powermenuArgs.wibox.size[2]) / 2}
 

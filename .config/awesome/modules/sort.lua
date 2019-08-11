@@ -5,12 +5,12 @@ function inTable(tbl, item)
   return false
 end
 
-function sortByComparison(base, strings, treshold)
+function sortByCharComparison(base, strings, treshold)
   local result = {}
   local percentages = {}
 
   for i = 1, #strings do
-    percentages[i] = fuzzyDistance(base, strings[i], true)
+    percentages[i] = fuzzyCharDistance(base, strings[i], true)
   end
 
   local max = 0
@@ -33,4 +33,16 @@ function sortByComparison(base, strings, treshold)
   end
 
   return result
+end
+
+function sortByWordComparison(base, strings)
+  local result = {}
+  for i = 1, #strings do
+    if fuzzyWordCompare(base, strings[i], true) then
+      result[#result + 1] = strings[i]
+    end
+  end
+
+  return result
+  
 end

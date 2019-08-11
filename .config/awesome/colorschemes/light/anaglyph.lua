@@ -12,6 +12,4 @@ colorful.primary = colorful.lightblue
 colorful.secondary = colorful.red
 colorful.alert = colorful.red
 
-logTable(colorful, 0, 2)
-
 resourceful["emacs.themeName"] = "kaolin-light"

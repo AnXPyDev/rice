@@ -1,25 +1,27 @@
 colorful = genColorScheme(
-  "#282f37",
-  "#f1fcf9",
+  "#111622",
+  "#cecccf",
   {
-    red = "#e49186",
-    green = "#74dd91",
-    blue = "#75dbe1"
+    red = "#e06c75",
+    green = "#99c794",
+    blue = "#6699cc",
+    yellow = "#fac863",
+    purple = "#c594c5",
+    cyan = "#5fb3b3"
   },
   25
 )
 
-colorful.primary = colorful.green
+colorful.primary = colorful.blue
 colorful.secondary = colorful.red
 colorful.alert = colorful.red
 
-resourceful["emacs.themeName"] = "kaolin-galaxy"
+resourceful["emacs.themeName"] = "xresources"
 
-resourceFiles[#resourceFiles + 1] = PATH.resources .. "skyfall"
+resourceFiles[#resourceFiles + 1] = PATH.resources .. "testing"
 
 local function schemeExtension()
-  themeful.internetIndicator.bgOnline = colorful.red.base
-  themeful.internetIndicator.bg2Online = colorful.red.alternates[4]
+
 end
 
 themeFunctions[#themeFunctions + 1] = schemeExtension
