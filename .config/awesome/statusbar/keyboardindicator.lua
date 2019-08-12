@@ -55,7 +55,7 @@ function keyboardindicator:setup()
 				showcasePosition = "left",
 				size = {nil, dpi(40)},
 				outsideMargins = margins(0),
-				showcaseMargins = margins(0, dpi(10), 0)
+				showcaseMargins = margins(nil, dpi(10), 0)
 			}
 					)
 

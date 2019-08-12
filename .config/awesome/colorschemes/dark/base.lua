@@ -86,9 +86,9 @@ gears.table.crush(themeful.loadScreen, {
 gears.table.crush(themeful.button, {
 	bg = tableRepeat(colorful.background.alternates[2], 2),
 	fg = colorful.background.on.base,
-	bgHover = {colorful.primary.base, colorful.primary.alternates[6]},
+	bgHover = {colorful.primary.base, colorful.primary.alternates[3]},
 	fgHover = colorful.primary.on.base,
-	bgClick = tableRepeat(colorful.primary.alternates[3], 2),
+	bgClick = {colorful.primary.alternates[3], colorful.primary.alternates[6]},
 	fgClick = colorful.primary.on.base,
 })
 
