@@ -4,8 +4,7 @@ gears = require("gears")
 wibox = require("wibox")
 beautiful = require("beautiful")
 naughty = require("naughty")
-xresources = require("beautiful.xresources")
-dpi = xresources.apply_dpi
+
 dpi = function(x)
   return x
 end

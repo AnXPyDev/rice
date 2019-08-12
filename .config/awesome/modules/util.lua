@@ -230,7 +230,7 @@ function getXrdbColors(translationTable)
       "whiteAlt"
     }
 
-  local xres = xresources.get_current_theme()
+  local xres = require("beautiful.xresources").get_current_theme()
 
   for i, key in ipairs(translationTable) do
     xres[key] = xres["color" .. tostring(i - 1)] or "#FFFFFF"

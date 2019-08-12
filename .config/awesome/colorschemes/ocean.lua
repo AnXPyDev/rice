@@ -11,10 +11,13 @@ resourceful["emacs.themeName"] = "kaolin-galaxy"
 local function schemeExtension()
   themeful.internetIndicator.bgOnline = {colorful.blue.base, colorful.cyan.base}
   themeful.internetIndicator.bg2Online = colorful.blue.alternates[4]
+  themeful.internetIndicator.fgOnline = colorful.blue.on.base
 
   themeful.keyboardIndicator.bg = {colorful.red.base, colorful.redAlt.base}
   themeful.keyboardIndicator.blinkBg = {colorful.red.alternates[4], colorful.redAlt.alternates[4]}
- 
+
+
+  
 end
 
 themeFunctions[#themeFunctions + 1] = schemeExtension

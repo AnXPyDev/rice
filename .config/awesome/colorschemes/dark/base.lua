@@ -88,7 +88,7 @@ gears.table.crush(themeful.button, {
 	fg = colorful.background.on.base,
 	bgHover = {colorful.primary.base, colorful.primary.alternates[3]},
 	fgHover = colorful.primary.on.base,
-	bgClick = {colorful.primary.alternates[3], colorful.primary.alternates[6]},
+	bgClick = {colorful.primary.alternates[3], colorful.primary.alternates[4]},
 	fgClick = colorful.primary.on.base,
 })
 
@@ -146,6 +146,6 @@ gears.table.crush(themeful.powerMenu, {
   wiboxBg = tableRepeat(colorful.background.base, 2),
   elementBg = tableRepeat(colorful.background.base, 2),
   elementFg = colorful.background.on.base,
-	elementBgHl = {colorful.primary.base, colorful.primary.alternates[6]},
+	elementBgHl = {colorful.primary.base, colorful.primary.alternates[4]},
   elementFgHl = colorful.primary.on.base
 })
