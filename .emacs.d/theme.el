@@ -7,7 +7,7 @@
   (package-use 'kaolin-themes)
   (setq x-theme-name (x-get-resource "themeName" "emacs"))
   (if x-theme-name
-      (load-theme (intern x-theme-name))
+      (load-theme (intern x-theme-name) t)
     (load-theme 'kaolin-galaxy t))
   (global-hl-line-mode)
   (when nil
