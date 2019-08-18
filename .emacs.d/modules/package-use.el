@@ -1,12 +1,5 @@
 (require 'package)
 
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-
-(unless (file-directory-p (concat user-emacs-directory "elpa"))
-  (package-refresh-contents))
-
-(package-initialize)
-
 (defun package-request(name)
   (unless (package-installed-p name)
     (package-install name)))

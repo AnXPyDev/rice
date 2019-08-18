@@ -1,10 +1,16 @@
-
 (load-file (concat user-emacs-directory "modules/package-use.el"))
 (load-file (concat user-emacs-directory "modules/make-normal-sparse-keymap.el"))
 (load-file (concat user-emacs-directory "modules/surround.el"))
 (load-file (concat user-emacs-directory "modules/modal.el"))
 (load-file (concat user-emacs-directory "modules/edit.el"))
 
+(package-initialize)
+
+(setq package-archives '(("melpa" . "http://melpa.org/packages/")
+                         ("elpa" . "http://elpa.gnu.org/packages/")))
+
+(unless (file-directory-p (concat user-emacs-directory "elpa"))
+  (package-refresh-contents))
 
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
@@ -61,8 +67,8 @@
   '(add-to-list 'company-backends 'company-irony))
 (eval-after-load 'company
   '(add-to-list 'company-backends 'company-c-headers))
-(add-hook 'lua-mode-hook (lambda()
-			   (setq-local company-backends '(comapny-lua))))
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-lua))
 
 (global-company-mode)
 
@@ -105,6 +111,8 @@
 (package-use 'avy :require t)
 
 (package-use 'elmacro :require t)
+
+(package-use 'exwm :require t)
 
 (load-file (concat user-emacs-directory "macro.el"))
 

@@ -5,9 +5,10 @@
 (defun theme/gui()
   (interactive)
   (package-use 'kaolin-themes)
-	(setq theme-name (intern (x-get-resource "themeName" "emacs")))
-	(unless theme-name (setq theme-name 'kaolin-galaxy))
-  (load-theme theme-name t)
+  (setq x-theme-name (x-get-resource "themeName" "emacs"))
+  (if x-theme-name
+      (load-theme (intern x-theme-name))
+    (load-theme 'kaolin-galaxy t))
   (global-hl-line-mode)
   (when nil
     (set-face-attribute 'default nil
