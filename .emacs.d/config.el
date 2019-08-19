@@ -50,8 +50,9 @@
 (package-use 'lua-mode :require t)
 (setq lua-indent-level 2)
 (load-file (concat user-emacs-directory "modules/lua-indent.el"))
-
 (package-use 'company-lua :require t)
+
+(package-use 'moonscript :require t)
 
 (package-use 'irony :require t)
 (package-use 'company-irony :require t)

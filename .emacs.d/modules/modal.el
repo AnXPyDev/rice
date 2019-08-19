@@ -52,7 +52,10 @@
 
 (define-minor-mode modal-mode "Mode that enbles modes on buffer" t "<Modal>" nil
 	(when modal-mode
-		(if (not (or (minibufferp) (string-equal major-mode "eshell-mode") (string-equal major-mode "dired-mode")))
+		(if (not (or (minibufferp)
+                 (string-equal major-mode "eshell-mode")
+                 (string-equal major-mode "dired-mode")
+                 (string-equal major-mode "ibuffer-mode")))
 				(modal/enable-normal)
 			(modal/enable-emacs))))
 
