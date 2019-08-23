@@ -44,7 +44,9 @@
  "g o" 'isearch-forward
  "g b" 'isearch-backward
  "g c" 'avy-goto-char
- "g l" 'avy-goto-line)
+ "g l" 'avy-goto-line
+ "m" 'edit/insert-mark
+ "M" 'edit/goto-mark)
 
 (setq modal/region-map (make-composed-keymap (list (copy-keymap modal/emacs-map) (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
 

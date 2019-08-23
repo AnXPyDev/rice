@@ -60,3 +60,14 @@
 	(kill-region (region-beginning) (region-end))
 	(yank 2)
 	(modal/enable-normal))
+
+(defun edit/insert-mark()
+  (interactive)
+  (insert "<++>"))
+
+(defun edit/goto-mark()
+  (interactive)
+  (search-forward "<++>")
+  (search-backward "<")
+  (delete-char  4)
+  (modal/enable-insert))
