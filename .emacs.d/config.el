@@ -115,6 +115,9 @@
 
 (package-use 'exwm :require t)
 
+(package-use 'multiple-cursors
+             :require t)
+
 (load-file (concat user-emacs-directory "macro.el"))
 
 (load-file (concat user-emacs-directory "eshell.el"))

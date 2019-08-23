@@ -17,7 +17,7 @@ PATH = {
   theme = os.getenv("HOME") .. "/.config/awesome/themes/",
   modules = os.getenv("HOME") .. "/.config/awesome/modules/",
 	statusbar = os.getenv("HOME") .. "/.config/awesome/statusbar/",
-	icons = os.getenv("HOME") .. "/.config/awesome/icons/",
+	icons = os.getenv("HOME") .. "/.icons/",
 	colorscheme = os.getenv("HOME") .. "/.config/awesome/colorschemes/",
   resources = os.getenv("HOME") .. "/.resources/"
 }
@@ -44,7 +44,7 @@ dofile(PATH.config .. "screen.lua")
 
 dofile(PATH.config .. "theme.lua")
 
-PATH.wallpapers = os.getenv("HOME") .. "/.config/awesome/wallpapers/" .. wallpaperFolder .. "/"
+PATH.wallpapers = os.getenv("HOME") .. "/.wallpapers/" .. wallpaperFolder .. "/"
 
 -- Animate loadscreen for each screen
 

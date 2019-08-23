@@ -1,0 +1,35 @@
+rofi.opacity:                        100
+rofi.width:                          50
+rofi.lines:                          12
+rofi.columns:                        1
+rofi.font:                           Monospace 12
+rofi.fg:                             #ffffff
+rofi.bg:                             #212121
+rofi.fg-active:                      #212121
+rofi.fg-urgent:                      #34405a
+rofi.hlfg-active:                    #5e73a0
+rofi.hlfg-urgent:                    #5e73a0
+rofi.bg-active:                      #212121
+rofi.bg-urgent:                      #212121
+rofi.hlbg-active:                    #5d729f
+rofi.hlbg-urgent:                    #5d729f
+rofi.bgalt:                          #212121
+rofi.hlfg:                           #212121
+rofi.hlbg:                           #ffffff
+rofi.bc:                             #789ee1
+! State:           'bg',     'fg',     'bgalt',  'hlbg',   'hlfg'
+rofi.color-normal: #212121,  #FFFFFF,  #212121,  #FFFFFF,  #212121
+
+!                  'background', 'border'
+rofi.color-window: #212121,      #404552
+rofi.bw:                             0
+rofi.location:                       0
+rofi.padding:                        20
+rofi.levenshtein-sort:               true
+rofi.case-sensitive:                 false
+rofi.fuzzy:                          false
+rofi.line-margin:                    2
+rofi.separator-style:                solid
+rofi.hide-scrollbar:                 true
+rofi.markup-rows:                    false
+rofi.scrollbar-width:                8
