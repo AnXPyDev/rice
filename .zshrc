@@ -21,9 +21,10 @@ function startwm {
         file=awesome
     fi
     cd
-    cp ~/.xinitrcs/$file ~/.xinitrc
-    startx
+    startx ~/.xinitrcs/$file
     cd -
 }
 
-export PROMPT='%n@%M:[%d] > '
+alias awexephyr="startx .xinitrcs/awesome -- /usr/bin/Xephyr -screen 1280x720"
+
+export PROMPT='%n@%M:[%~] > '
