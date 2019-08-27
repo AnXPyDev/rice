@@ -180,5 +180,5 @@ for_window [class="^.*"] border pixel 2
 
 gaps inner 12
 
-exec --no-startup-id xrdb ~/.Xresources
-exec sh ~/.scripts/randomWallpaper.sh
+exec_always --no-startup-id xrdb ~/.Xresources
+exec_always --no-startup-id sh ~/.scripts/randomWallpaper.sh

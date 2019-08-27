@@ -1,1 +1,0 @@
--- Jk, always visible bars are for fags

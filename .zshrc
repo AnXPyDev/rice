@@ -14,17 +14,17 @@ antigen bundle zsh-users/zsh-completions
 antigen apply
 
 function startwm {
-    file=emacs
-    if [ "$1" = "i3" ]; then
-        file=i3
-    elif [ "$1" = "awesome" ]; then
-        file=awesome
-    fi
     cd
-    startx ~/.xinitrcs/$file
+    cp .xinitrcs/$1 .xinitrc
+    startx
     cd -
 }
 
-alias awexephyr="startx .xinitrcs/awesome -- /usr/bin/Xephyr -screen 1280x720"
+function startxephyr {
+    cd
+    cp .xinitrcs/$1 .xinitrc
+    startx -- /usr/bin/Xephyr -screen 1280x720
+    cd -
+}
 
 export PROMPT='%n@%M:[%~] > '

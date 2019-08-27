@@ -1,0 +1,2 @@
+mkdir ~/.cache/awesome/ 2> /dev/null
+awesome -c ~/.config/awesome-cord/rc.lua > ~/.cache/awesome/stdout 2> ~/.cache/awesome/stderr
