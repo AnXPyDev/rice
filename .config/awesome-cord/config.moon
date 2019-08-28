@@ -17,11 +17,14 @@ test_layout = wibox.layout.manual
   
 sheet\add_style(nil, "back"
   cord.wim.style({
-    background_color: cord.util.color("#FFFFFF"),
-    color: cord.util.color("#000000")
+    background_color: cord.util.pattern({{cord.util.color("#ffffff")}, {cord.util.color("#212121")}}),
+    color: cord.util.color("#000000"),
     size: cord.math.vector(300, 300),
     padding: cord.util.margin(10),
-    layout: test_layout
+    margin: cord.util.margin(10),
+    layout: cord.wim.layout.fit,
+    pattern_beginning: cord.math.vector(0, 0, "percentage"),
+    pattern_ending: cord.math.vector(0, 1, "percentage")
   })
 )
 
@@ -29,8 +32,8 @@ sheet\add_style(nil, "front"
   cord.wim.style({
     background_color: cord.util.color("#000000"),
     color: cord.util.color("#FFFFFF")
-    size: cord.math.vector(0.6, 0.4, "percentage"),
-    padding:cord.util.margin(10)
+    size: cord.math.vector(0.5, 0.5, "percentage"),
+    padding:cord.util.margin(5)
   })
 )
 
@@ -38,8 +41,8 @@ sheet\add_style(nil, "front2"
   cord.wim.style({
     background_color: cord.util.color("#000000"),
     color: cord.util.color("#FFFFFF")
-    size: cord.math.vector(0.4, 0.6, "percentage"),
-    padding:cord.util.margin(5)
+    size: cord.math.vector(0.4, 0.4, "percentage"),
+    padding:cord.util.margin(5),
   })
 )
 
@@ -48,8 +51,6 @@ node_front = cord.wim.node(nil, "front", sheet, {})
 node_front2 = cord.wim.node(nil, "front2", sheet, {})
 node_back = cord.wim.node(nil, "back", sheet, {node_front, node_front2})
 
-
-  
 widget = wibox.widget({
   layout: wibox.layout.manual,
   node_back.widget
@@ -65,9 +66,5 @@ box = wibox({
   widget: widget,
   bg: "#212121"
 })
-
-cord.log(node_front)
-cord.log(node_front\get_size!)
-cord.log(node_back\get_content_size!)
 
 return {}
