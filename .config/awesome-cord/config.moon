@@ -17,14 +17,14 @@ test_layout = wibox.layout.manual
   
 sheet\add_style(nil, "back"
   cord.wim.style({
-    background_color: cord.util.pattern({{cord.util.color("#ffffff")}, {cord.util.color("#212121")}}),
+    background_color: cord.util.pattern({{cord.util.color("#ff2123")}, {cord.util.color("ff4445")}}),
     color: cord.util.color("#000000"),
-    size: cord.math.vector(300, 300),
+    size: cord.math.vector(300, 100),
     padding: cord.util.margin(10),
-    margin: cord.util.margin(10),
+    margin: cord.util.margin(0),
     layout: cord.wim.layout.fit,
     pattern_beginning: cord.math.vector(0, 0, "percentage"),
-    pattern_ending: cord.math.vector(0, 1, "percentage")
+    pattern_ending: cord.math.vector(1, 0, "percentage")
   })
 )
 
