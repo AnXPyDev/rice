@@ -17,33 +17,36 @@ test_layout = wibox.layout.manual
 
 sheet\add_style(nil, "back"
   cord.wim.style({
-    background_color: cord.util.pattern({{cord.util.color("#ff2123")}, {cord.util.color("ff4445")}}),
+    background_color: cord.util.pattern({{cord.util.color("#ff2123")}, {cord.util.color("#ff4445")}}),
     background_shape: cord.util.shape.rectangle(3),
     color: cord.util.color("#000000"),
-    size: cord.math.vector(300, 100),
+    size: cord.math.vector(300, 300),
     padding: cord.util.margin(10),
-    margin: cord.util.margin(0),
+    margin: cord.util.margin(20),
     layout: cord.wim.layout.fit,
     pattern_beginning: cord.math.vector(0, 0, "percentage"),
-    pattern_ending: cord.math.vector(1, 0, "percentage")
+    pattern_ending: cord.math.vector(1, 1, "percentage")
   })
 )
 
 sheet\add_style(nil, "front"
   cord.wim.style({
     background_color: cord.util.color("#000000"),
+    background_shape: cord.util.shape.rectangle(3),
     color: cord.util.color("#FFFFFF")
-    size: cord.math.vector(0.5, 0.5, "percentage"),
-    padding:cord.util.margin(5)
+    size: cord.math.vector(1, cord.math.value(20, 0, "pixel"), "percentage"),
+    padding: cord.util.margin(5),
+    pos: cord.math.vector(0)
   })
 )
 
 sheet\add_style(nil, "front2"
   cord.wim.style({
     background_color: cord.util.color("#000000"),
+    background_shape: cord.util.shape.rectangle(3),
     color: cord.util.color("#FFFFFF")
-    size: cord.math.vector(0.4, 0.4, "percentage"),
-    padding:cord.util.margin(5),
+    size: cord.math.vector(1, 0.5, "percentage"),
+    padding: cord.util.margin(5),
   })
 )
 
