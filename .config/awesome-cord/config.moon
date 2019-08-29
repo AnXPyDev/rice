@@ -14,10 +14,11 @@ awful.screen.connect_for_each_screen((s) ->
 sheet = cord.wim.stylesheet()
 
 test_layout = wibox.layout.manual
-  
+
 sheet\add_style(nil, "back"
   cord.wim.style({
-    background_color: cord.util.pattern({{cord.util.color("#ffffff")}, {cord.util.color("#212121")}}),
+    background_color: cord.util.pattern({{cord.util.color("#ffffff")}, {cord.util.color("#000000")}}),
+    background_shape: cord.util.shape.rectangle(3),
     color: cord.util.color("#000000"),
     size: cord.math.vector(300, 300),
     padding: cord.util.margin(10),
