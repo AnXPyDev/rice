@@ -13,8 +13,6 @@ awful.screen.connect_for_each_screen((s) ->
 
 sheet = cord.wim.stylesheet()
 
-test_layout = wibox.layout.manual
-
 animator = cord.wim.animator(60)
 
 class position_animation extends cord.wim.animation
@@ -70,7 +68,7 @@ sheet\add_style(nil, "back"
     size: cord.math.vector(300, 300),
     padding: cord.util.margin(10),
     margin: cord.util.margin(5),
-    layout: cord.wim.layouts.fit.vertical(),
+    layout: cord.wim.layout.manual(),
     pattern_beginning: cord.math.vector(0, 0, "percentage"),
     pattern_ending: cord.math.vector(1, 1, "percentage")
   })
@@ -116,9 +114,8 @@ sheet\add_style(nil, "front3"
 node_front = cord.wim.node(nil, "front", sheet, {})
 node_front2 = cord.wim.node(nil, "front2", sheet, {})
 node_front3 = cord.wim.node(nil, "front3", sheet, {})
-node_back = cord.wim.node(nil, "back", sheet, {node_front, node_front2, node_front3})
+node_back = cord.wim.node(nil, "back", sheet, {node_front, node_front2, node_front3, wibox.widget.textbox("dndias")})
 
-node_front\connect_signal("mouse_enter", () -> print("mouse_enter node_front"))
   
 node_back\set_visible(true)
 
