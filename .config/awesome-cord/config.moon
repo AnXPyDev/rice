@@ -13,101 +13,57 @@ awful.screen.connect_for_each_screen((s) ->
 
 sheet = cord.wim.stylesheet()
 
-animator = cord.wim.animator(60)
-
-class position_animation extends cord.wim.animation
-  new: (node, start, target) =>
-    super!
-    @node = node
-    if @node.position_animation
-      @node.position_animation.done = true
-    @node.position_animation = self
-    @current = start\copy!
-    @target = target
-    @node\set_pos(@current)
-    animator\add(self)
-  tick: =>
-    @current.x = cord.math.lerp(@current.x, @target.x, 0.2, 0.1)
-    @current.y = cord.math.lerp(@current.y, @target.y, 0.2, 0.1)
-    @node\set_pos(@current)
-    if @current.x == @target.x and @current.y == @target.y
-      @done = true
-      return true
-    return false
-
-class expand_animation extends cord.wim.animation
-  new: (node, target) =>
-    super!
-    @node = node
-    if @node.expand_animation
-      @node.expand_animation.done = true
-    @current = @node.expand_animation.current or @node.style\get("padding")\copy!
-    @node.expand_animation = self
-    @target = cord.util.margin(0)
-    @node\set_pos(@current)
-    animator\add(self)
-  tick: =>
-    @current.left = cord.math.lerp(@current.left, @target.left, 0.2, 0.1)
-    @current.right = cord.math.lerp(@current.right, @target.right, 0.2, 0.1)
-    @current.top = cord.math.lerp(@current.top, @target.top, 0.2, 0.1)
-    @current.bottom = cord.math.lerp(@current.bottom, @target.bottom, 0.2, 0.1)
-    @current\apply(@node.containers.padding)
-    if @current.left == @target.left and
-      @current.top == @target.top and
-      @current.bottom == @target.bottom and
-      @current.right == @target.right then
-      @done = true
-      return true
-    return false
-
 sheet\add_style(nil, "back"
   cord.wim.style({
-    background_color: cord.util.pattern({{cord.util.color("#ff2123")}, {cord.util.color("#ff4445")}}),
+    background_color: cord.util.pattern({{cord.util.color("#ff0000")}, {cord.util.color("#ff2020")}}),
     background_shape: cord.util.shape.rectangle(3),
     color: cord.util.color("#000000"),
     size: cord.math.vector(300, 300),
     padding: cord.util.margin(10),
     margin: cord.util.margin(5),
-    layout: cord.wim.layout.fit.horizontal(),
+    layout: cord.wim.layouts.fit.horizontal(),
     pattern_beginning: cord.math.vector(0, 0, "percentage"),
     pattern_ending: cord.math.vector(1, 1, "percentage")
   })
 )
 
-sheet\add_style(nil, "front"
+sheet\add_style(nil, "front",
   cord.wim.style({
     background_color: cord.util.color("#000000"),
     background_shape: cord.util.shape.rectangle(3),
     color: cord.util.color("#FFFFFF")
-    size: cord.math.vector(1, 0.1, "percentage"),
+    size: cord.math.vector(0.35, 0.6, "percentage"),
     padding: cord.util.margin(5),
     pos: cord.math.vector(0),
-    layout_appear_animation: position_animation,
-    layout_move_animation: position_animation
+    layout_appear_animation: cord.wim.animations.position.lerp_from_edge,
+    layout_move_animation: cord.wim.animations.position.lerp,
+    position_animation_speed: 0.2
   })
 )
 
-sheet\add_style(nil, "front2"
+sheet\add_style(nil, "front2",
   cord.wim.style({
     background_color: cord.util.color("#000000"),
     background_shape: cord.util.shape.rectangle(3),
-    color: cord.util.color("#FFFFFF")
-    size: cord.math.vector(1, 0.1, "percentage"),
+    color: cord.util.color("#FFFFFF"),
+    size: cord.math.vector(0.65, 0.4, "percentage"),
     padding: cord.util.margin(5),
-    layout_appear_animation: position_animation,
-    layout_move_animation: position_animation
+    layout_appear_animation: cord.wim.animations.position.lerp_from_edge,
+    layout_move_animation: cord.wim.animations.position.lerp,
+    position_animation_speed: 0.2
   })
 )
 
-sheet\add_style(nil, "front3"
+sheet\add_style(nil, "front3",
   cord.wim.style({
     background_color: cord.util.color("#000000"),
     background_shape: cord.util.shape.rectangle(3),
-    color: cord.util.color("#FFFFFF")
+    color: cord.util.color("#FFFFFF"),
     size: cord.math.vector(1, 0.1, "percentage"),
     padding: cord.util.margin(5),
-    layout_appear_animation: position_animation,
-    layout_move_animation: position_animation
+    layout_appear_animation: cord.wim.animations.position.lerp_from_edge,
+    layout_move_animation: cord.wim.animations.position.lerp,
+    position_animation_speed: 0.2
   })
 )
 
@@ -121,15 +77,15 @@ node_back\set_visible(true)
 gears.timer({
   autostart: true,
   single_shot: true,
-  timeout: 0.1,
+  timeout: 0.5,
   callback: () ->
-    node_front\set_visible(true)
+    node_front3\set_visible(true)
 })
 
 gears.timer({
   autostart: true,
   single_shot: true,
-  timeout: 0.2,
+  timeout: 1,
   callback: () ->
     node_front2\set_visible(true)
 })
@@ -137,9 +93,9 @@ gears.timer({
 gears.timer({
   autostart: true,
   single_shot: true,
-  timeout: 0.3,
+  timeout: 1.5,
   callback: () ->
-    node_front3\set_visible(true)
+    node_front\set_visible(true)
 })
 
 widget = wibox.widget({
