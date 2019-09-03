@@ -20,8 +20,12 @@ sheet\add_style("box", nil, cord.wim.style({
   layout: cord.wim.layouts.fit.horizontal(),
   size: cord.math.vector(0.5, 0,5, "percentage"),
   layout_show_animation: cord.wim.animations.position.lerp_from_edge,
+  layout_hide_animation: cord.wim.animations.position.lerp_to_edge,
   layout_move_animation: cord.wim.animations.position.lerp,
-  position_animation_speed: 0.2
+  opacity_show_animation: cord.wim.animations.opacity.lerp,
+  opacity_hide_animation: cord.wim.animations.opacity.lerp,
+  opacity_lerp_animation_speed: 0.3,
+  position_lerp_animation_speed: 0.3
 }))
 
 sheet\add_style(nil, "back", cord.wim.style({
@@ -51,13 +55,20 @@ for i = 1,4
   table.insert(front, cord.wim.node("front", "front_#{i}", sheet, frontest[i], {visible: false}))
 
 
-for i = 1, #front
+for i = #front, 1, -1
   gears.timer({
     autostart: true,
     single_shot: true,
-    timeout: i * 0.5,
+    timeout: ((#front + 1) - i) * 0.5,
     callback: () ->
       front[i]\set_visible(true)
+  })
+  gears.timer({
+    autostart: true,
+    single_shot: true,
+    timeout: ((#front + 1) - i) * 0.5 + 2,
+    callback: () ->
+      front[(#front + 1) - i]\set_visible(false)
   })
   children = front[i].children
   for e = 1, #children
