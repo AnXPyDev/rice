@@ -32,12 +32,15 @@ sheet\add_style(nil, "back", cord.wim.style({
   background_color: cord.util.pattern({{"#ff2313"}, {"#fe3213"}})
   size: cord.math.vector(400)
   padding: cord.util.margin(10)
+  margin: cord.util.margin(20)
 }), {{"box"}})
 
 sheet\add_style("front", nil, cord.wim.style({
   background_color: cord.util.color("#000000"),
   size: cord.math.vector(0.5, nil, "percentage")
+  margin: cord.util.margin(0)
 }), {{"box"}})
+  
 
 sheet\add_style("frontest", nil, cord.wim.style({
   background_color: cord.util.color("#FFFFFF")
@@ -52,14 +55,17 @@ sheet\add_style("text", nil, cord.wim.style({
   font: "Hack 20"
 }))
 
+sheet\add_style("image", nil, cord.wim.style({
+  size: cord.math.vector(1, 1, "percentage"),
+  color: cord.util.color("#ffffff")
+}))
 
-  
 frontest = {}
 front = {}
 
 for i = 1,4
   tbl = {
-    cord.wim.text("text", "text_#{i}", sheet, "hi r/unixporn")
+    cord.wim.image("image", "image_#{i}", sheet, cord.util.image("/home/bob/.icons/awesomewm.png"))
   }
   table.insert(frontest, tbl)
   table.insert(front, cord.wim.node("front", "front_#{i}", sheet, frontest[i], {visible: false}))
@@ -79,7 +85,7 @@ for i = 1, #front
   gears.timer({
     autostart: true,
     single_shot: true,
-    timeout: i * 0.5 + 5,
+    timeout: ((#front + 1) - i) * 0.5 + 5,
     callback: () ->
       front[i]\set_visible(false)
   })
