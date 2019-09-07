@@ -18,7 +18,7 @@ sheet\add_style("box", nil, cord.wim.style({
   padding: cord.util.margin(5),
   margin: cord.util.margin(5),
   layout: cord.wim.layouts.fit.horizontal(),
-  size: cord.math.vector(0.5, 0,5, "percentage"),
+  size: cord.math.vector(1, 0,5, "percentage"),
   layout_show_animation: cord.wim.animations.position.lerp_from_edge,
   layout_hide_animation: cord.wim.animations.position.lerp_to_edge,
   layout_move_animation: cord.wim.animations.position.lerp,
@@ -35,7 +35,7 @@ sheet\add_style(nil, "back", cord.wim.style({
 }), {{"box"}})
 
 sheet\add_style("front", nil, cord.wim.style({
-  background_color: cord.util.color("#000000")
+  background_color: cord.util.color("#000000"),
   size: cord.math.vector(0.5, nil, "percentage")
 }), {{"box"}})
 
@@ -44,42 +44,45 @@ sheet\add_style("frontest", nil, cord.wim.style({
   size: cord.math.vector(0.5, nil, "percentage")
 }), {{"box"}})
 
+sheet\add_style("text", nil, cord.wim.style({
+  color: "#ffffff",
+  size: cord.math.vector(1, 1, "percentage"),
+  align_horizontal: "center",
+  align_vertical: "center",
+  font: "Hack 20"
+}))
+
+
+  
 frontest = {}
 front = {}
 
 for i = 1,4
-  tbl = {}
-  -- for e = 1,4
-  --   table.insert(tbl, cord.wim.node("frontest", "frontest_#{i}_#{e}", sheet, {}, {visible: false}))
+  tbl = {
+    cord.wim.text("text", "text_#{i}", sheet, "hi r/unixporn")
+  }
   table.insert(frontest, tbl)
   table.insert(front, cord.wim.node("front", "front_#{i}", sheet, frontest[i], {visible: false}))
+  front[i]\connect_signal("mouse_enter", () ->
+    print("mouse enter #{i}"))
+  front[i]\connect_signal("mouse_leave", () ->
+    print("mouse leave #{i}"))
 
-
-for i = #front, 1, -1
+for i = 1, #front
   gears.timer({
     autostart: true,
     single_shot: true,
-    timeout: ((#front + 1) - i) * 0.5,
+    timeout: i * 0.5,
     callback: () ->
       front[i]\set_visible(true)
   })
   gears.timer({
     autostart: true,
     single_shot: true,
-    timeout: ((#front + 1) - i) * 0.5 + 2,
+    timeout: i * 0.5 + 5,
     callback: () ->
-      front[(#front + 1) - i]\set_visible(false)
+      front[i]\set_visible(false)
   })
-  children = front[i].children
-  for e = 1, #children
-    gears.timer({
-      autostart: true,
-      single_shot: true,
-      timeout: e * 0.2 + i * 0.5,
-      callback: () ->
-        children[e]\set_visible(true)
-    })
-
 back = cord.wim.node(nil, "back", sheet, front)  
   
 widget = wibox.widget({

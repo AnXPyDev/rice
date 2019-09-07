@@ -23,7 +23,7 @@ function startwm {
 function startxephyr {
     cd
     cp .xinitrcs/$1 .xinitrc
-    startx -- /usr/bin/Xephyr -screen 1280x720
+    startx -- /usr/bin/Xephyr -screen $2x$3
     cd -
 }
 
