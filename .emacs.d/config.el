@@ -26,11 +26,10 @@
   (interactive)
   (load-file (concat user-emacs-directory "config.el")))
 
-(tool-bar-mode 0)
-(menu-bar-mode 0)
+(ignore-errors (tool-bar-mode 0))
+(ignore-errors (menu-bar-mode 0))
 (add-hook 'after-init-hook
-					(lambda() (interactive) (scroll-bar-mode 0)))
-;;(toggle-scroll-bar -1)
+					(lambda() (interactive) (ignore-errors (scroll-bar-mode 0))))
 
 
 (defadvice text-scale-increase (after text-scale-after activate)
