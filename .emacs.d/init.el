@@ -9,7 +9,7 @@
     ("53760e1863395dedf3823564cbd2356e9345e6c74458dcc8ba171c039c7144ed" default)))
  '(package-selected-packages
    (quote
-    (multiple-cursors moonscript-mode moonscript which-key undo-tree swiper projectile minor-mode-hack kaolin-themes highlight-parentheses general exwm expand-region elmacro doom-modeline dashboard company-lua company-irony company-c-headers beacon avy all-the-icons-dired))))
+    (vlf multiple-cursors moonscript-mode moonscript which-key undo-tree swiper projectile minor-mode-hack kaolin-themes highlight-parentheses general exwm expand-region elmacro doom-modeline dashboard company-lua company-irony company-c-headers beacon avy all-the-icons-dired))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

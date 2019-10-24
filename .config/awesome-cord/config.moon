@@ -5,6 +5,8 @@ beautiful = require "beautiful"
 
 cord = require "cord"
 
+print(cord.util.margin(5).left)
+  
 screens = {}
   
 awful.screen.connect_for_each_screen((s) ->
@@ -24,12 +26,13 @@ sheet\add_style("box", nil, cord.wim.style({
   layout_move_animation: cord.wim.animations.position.lerp,
   opacity_show_animation: cord.wim.animations.opacity.lerp,
   opacity_hide_animation: cord.wim.animations.opacity.lerp,
+  color_lerp_animation_speed: 0.05,
   opacity_lerp_animation_speed: 0.3,
   position_lerp_animation_speed: 0.3
 }))
 
 sheet\add_style(nil, "back", cord.wim.style({
-  background_color: cord.util.pattern({{"#ff2313"}, {"#fe3213"}})
+  background_color: cord.util.pattern({{"#ff2313",}, {"#fe3213"}})
   size: cord.math.vector(400)
   padding: cord.util.margin(10)
   margin: cord.util.margin(20)
@@ -38,7 +41,7 @@ sheet\add_style(nil, "back", cord.wim.style({
 sheet\add_style("front", nil, cord.wim.style({
   background_color: cord.util.color("#000000"),
   size: cord.math.vector(0.5, nil, "percentage")
-  margin: cord.util.margin(0)
+  margin: cord.util.margin(10)
 }), {{"box"}})
   
 
@@ -89,8 +92,11 @@ for i = 1, #front
     callback: () ->
       front[i]\set_visible(false)
   })
-back = cord.wim.node(nil, "back", sheet, front)  
-  
+
+back = cord.wim.node(nil, "back", sheet, front)
+
+cord.wim.animations.color.lerp(back, "#000000", "#FFFFFF", "background")
+
 widget = wibox.widget({
   layout: wibox.layout.manual,
   back.widget

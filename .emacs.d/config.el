@@ -13,6 +13,7 @@
   (package-refresh-contents))
 
 (setq-default tab-width 2)
+(setq-default python-indent-offset 2)
 (setq-default indent-tabs-mode nil)
 
 (setq make-backup-files nil)
