@@ -28,23 +28,15 @@ sheet\add_style("box", nil, cord.wim.style({
 }))
 
 sheet\add_style(nil, "back", cord.wim.style({
-  background_color: cord.util.pattern({{"#cc5050", 0}, {"#cc8080", 1}}, cord.math.vector(0, nil, "percentage"), cord.math.vector(1, 0, "percentage"))
-  size: cord.math.vector(400)
-  padding: cord.util.margin(10)
-  margin: cord.util.margin(20)
-  
-}), {{"box"}})
-
-sheet\add_style(nil, "back1", cord.wim.style({
-  background_color: cord.util.pattern({{"#50cc50", 0}, {"#80cc80", 1}}, cord.math.vector(0, 0, "percentage"), cord.math.vector(0, 1, "percentage"))
-  size: cord.math.vector(200)
+  background_color: cord.util.color("#cc5050")
+  size: cord.math.vector(400, 400)
   padding: cord.util.margin(10)
   margin: cord.util.margin(20)
   
 }), {{"box"}})
 
 sheet\add_style("front", nil, cord.wim.style({
-  background_color: cord.util.pattern({{"#ffffff"}, {"#cccccc"}})
+  background_color: cord.util.color("#ffffff")
   size: cord.math.vector(1, 0.5, "percentage")
   margin: cord.util.margin(10)
 }), {{"box"}})
@@ -107,10 +99,9 @@ back = cord.wim.nodebox(nil, "back", sheet, front)
 back1 = cord.wim.nodebox(nil, "back1", sheet, {})
 
 awful.screen.connect_for_each_screen((s) ->
-  table.insert(screens, cord.wim.screen("screen", nil, sheet, s, {back, back1}))
+  table.insert(screens, cord.wim.screen("screen", nil, sheet, s, {back}))
 )
 
 back\set_visible(true, true)
-back1\set_visible(true, true)
 
 return {}
