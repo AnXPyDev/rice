@@ -9,14 +9,10 @@ print(cord.util.margin(5).left)
   
 screens = {}
   
-awful.screen.connect_for_each_screen((s) ->
-  table.insert(screens, s)
-)
-
 sheet = cord.wim.stylesheet()
 
 sheet\add_style("box", nil, cord.wim.style({
-  shape: cord.util.shape.rectangle(5),
+  shape: cord.util.shape.rectangle(10),
   padding: cord.util.margin(5),
   margin: cord.util.margin(5),
   layout: cord.wim.layouts.fit.horizontal(),
@@ -32,15 +28,24 @@ sheet\add_style("box", nil, cord.wim.style({
 }))
 
 sheet\add_style(nil, "back", cord.wim.style({
-  background_color: cord.util.pattern({{"#ff2313",}, {"#fe3213"}})
+  background_color: cord.util.pattern({{"#cc5050", 0}, {"#cc8080", 1}}, cord.math.vector(0, nil, "percentage"), cord.math.vector(1, 0, "percentage"))
   size: cord.math.vector(400)
   padding: cord.util.margin(10)
   margin: cord.util.margin(20)
+  
+}), {{"box"}})
+
+sheet\add_style(nil, "back1", cord.wim.style({
+  background_color: cord.util.pattern({{"#50cc50", 0}, {"#80cc80", 1}}, cord.math.vector(0, 0, "percentage"), cord.math.vector(0, 1, "percentage"))
+  size: cord.math.vector(200)
+  padding: cord.util.margin(10)
+  margin: cord.util.margin(20)
+  
 }), {{"box"}})
 
 sheet\add_style("front", nil, cord.wim.style({
-  background_color: cord.util.color("#000000"),
-  size: cord.math.vector(0.5, nil, "percentage")
+  background_color: cord.util.pattern({{"#ffffff"}, {"#cccccc"}})
+  size: cord.math.vector(1, 0.5, "percentage")
   margin: cord.util.margin(10)
 }), {{"box"}})
   
@@ -51,9 +56,10 @@ sheet\add_style("frontest", nil, cord.wim.style({
 }), {{"box"}})
 
 sheet\add_style("text", nil, cord.wim.style({
-  color: "#ffffff",
+  color: "#000000",
   size: cord.math.vector(1, 1, "percentage"),
   align_horizontal: "center",
+  adaptive_colors: {{{0, 0.5}, cord.util.color("#FFFFFF")}, {{0.5, 1}, cord.util.color("#000000")}},
   align_vertical: "center",
   font: "Hack 20"
 }))
@@ -63,12 +69,16 @@ sheet\add_style("image", nil, cord.wim.style({
   color: cord.util.color("#ffffff")
 }))
 
+sheet\add_style("screen", nil, cord.wim.style({
+  layout: cord.wim.layouts.fit.horizontal()
+}))
+
 frontest = {}
 front = {}
 
-for i = 1,4
+for i = 1,2
   tbl = {
-    cord.wim.image("image", "image_#{i}", sheet, cord.util.image("/home/bob/.icons/awesomewm.png"))
+    cord.wim.text("text", "text_#{i}", sheet, "r/unixporn")
   }
   table.insert(frontest, tbl)
   table.insert(front, cord.wim.node("front", "front_#{i}", sheet, frontest[i], {visible: false}))
@@ -93,24 +103,14 @@ for i = 1, #front
       front[i]\set_visible(false)
   })
 
-back = cord.wim.node(nil, "back", sheet, front)
+back = cord.wim.nodebox(nil, "back", sheet, front)
+back1 = cord.wim.nodebox(nil, "back1", sheet, {})
 
-cord.wim.animations.color.lerp(back, "#000000", "#FFFFFF", "background")
+awful.screen.connect_for_each_screen((s) ->
+  table.insert(screens, cord.wim.screen("screen", nil, sheet, s, {back, back1}))
+)
 
-widget = wibox.widget({
-  layout: wibox.layout.manual,
-  back.widget
-})
-
-box = wibox({
-  x: screens[1].geometry.x,
-  y: screens[1].geometry.y,
-  width: screens[1].geometry.width,
-  height: screens[1].geometry.height,
-  ontop: true,
-  visible: true,
-  widget: widget,
-  bg: "#212121"
-})
+back\set_visible(true, true)
+back1\set_visible(true, true)
 
 return {}
