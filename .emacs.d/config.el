@@ -8,7 +8,6 @@
 
 (setq package-archives '(("melpa" . "http://melpa.org/packages/")
                          ("elpa" . "http://elpa.gnu.org/packages/")))
-
 (unless (file-directory-p (concat user-emacs-directory "elpa"))
   (package-refresh-contents))
 
