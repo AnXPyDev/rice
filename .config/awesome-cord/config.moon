@@ -10,7 +10,7 @@ sheet = cord.wim.stylesheet()
 sheet\add_style("box", nil, cord.wim.style({
   padding: cord.util.margin(10)
   shape: cord.util.shape.rectangle(10)
-  layout: cord.wim.layouts.fit.horizontal!
+  layout: cord.wim.layouts.fit.horizontal
   layout_show_animation: cord.wim.animations.position.lerp_from_edge
   layout_move_animation: cord.wim.animations.position.lerp
   layout_hide_animation: cord.wim.animations.position.lerp_to_edge
@@ -22,12 +22,12 @@ sheet\add_style("box", nil, cord.wim.style({
 
 sheet\add_style(nil, "back", cord.wim.style({
   background: "#404040"
-  size: cord.math.vector(400, 200)
+  size: cord.math.vector(400, 400)
 }), {{"box"}})
 
 sheet\add_style(nil, "front", cord.wim.style({
   background: "#cc9393"
-  size: cord.math.vector(0.5, 1, "percentage")
+  size: cord.math.vector(1, 0.5, "percentage")
 }), {{"box"}})
 
 sheet\add_style("text", nil, cord.wim.style({
@@ -35,12 +35,19 @@ sheet\add_style("text", nil, cord.wim.style({
   color: "#FFFFFF"
   halign: "center"
   valign: "center"
-  size: cord.math.vector(1, 1, "percentage")
-}))
+  size: cord.math.vector(1, 0.5, "percentage")
+  bruh: false
+}), {{"box"}})
+
+sheet\add_style("image", nil, cord.wim.style({
+  size: cord.math.vector(1, 0.5, "percentage")
+}), {{"box"}})
 
 text = cord.wim.text("text", nil, sheet, "r/unixporn")
+image = cord.wim.image("image", nil, sheet, cord.util.image("/home/bob/.icons/emacs.png"))
 front = cord.wim.node("box", "front", sheet)
-back = cord.wim.node("box", "back", sheet, {text})
+front2 = cord.wim.node("box", "front", sheet)
+back = cord.wim.node("box", "back", sheet, {image, front})
 
 widget = wibox.widget({
   layout: wibox.layout.manual
@@ -49,8 +56,9 @@ widget = wibox.widget({
 
 back\set_visible(true, true)
 back\set_opacity(1)
+
+image\set_visible(true)
 text\set_visible(true)
-front\set_visible(true)
 
 box = wibox({
   bg: "#212121"
