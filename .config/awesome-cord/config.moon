@@ -35,19 +35,21 @@ sheet\add_style("text", nil, cord.wim.style({
   color: "#FFFFFF"
   halign: "center"
   valign: "center"
-  size: cord.math.vector(1, 0.5, "percentage")
-  bruh: false
+  size: cord.math.vector(1, 1, "percentage")
+  layout_show_animation: cord.wim.animations.position.jump
 }), {{"box"}})
 
 sheet\add_style("image", nil, cord.wim.style({
-  size: cord.math.vector(1, 0.5, "percentage")
+  halign: "center"
+  valign: "center"
+  size: cord.math.vector(1, 1, "percentage")
 }), {{"box"}})
 
 text = cord.wim.text("text", nil, sheet, "r/unixporn")
 image = cord.wim.image("image", nil, sheet, cord.util.image("/home/bob/.icons/emacs.png"))
-front = cord.wim.node("box", "front", sheet)
-front2 = cord.wim.node("box", "front", sheet)
-back = cord.wim.node("box", "back", sheet, {image, front})
+front = cord.wim.node("box", "front", sheet, {image})
+front2 = cord.wim.node("box", "front", sheet, {text})
+back = cord.wim.node("box", "back", sheet, {front, front2})
 
 widget = wibox.widget({
   layout: wibox.layout.manual
@@ -57,8 +59,11 @@ widget = wibox.widget({
 back\set_visible(true, true)
 back\set_opacity(1)
 
-image\set_visible(true)
+front\set_visible(true)
+front2\set_visible(true)
 text\set_visible(true)
+
+cord.log(text\get_size!)
 
 box = wibox({
   bg: "#212121"
