@@ -49,7 +49,7 @@ text = cord.wim.text("text", nil, sheet, "r/unixporn")
 image = cord.wim.image("image", nil, sheet, cord.util.image("/home/bob/.icons/emacs.png"))
 front = cord.wim.node("box", "front", sheet, {image})
 front2 = cord.wim.node("box", "front", sheet, {text})
-back = cord.wim.node("box", "back", sheet, {front, front2})
+back = cord.wim.nodebox("box", "back", sheet, {front, front2})
 
 widget = wibox.widget({
   layout: wibox.layout.manual
@@ -62,13 +62,3 @@ back\set_opacity(1)
 front\set_visible(true)
 front2\set_visible(true)
 text\set_visible(true)
-
-cord.log(text\get_size!)
-
-box = wibox({
-  bg: "#212121"
-  visible: true
-  widget: widget
-  width: 400
-  height: 400
-})
