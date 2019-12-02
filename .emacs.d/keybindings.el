@@ -95,6 +95,7 @@
   "RET" 'eshell-toggle
   "<return>" 'eshell-toggle
   "e b" 'eval-buffer
+  "e b" 'eval-region
   "e e" 'eval-expression)
 
 (add-hook 'eshell-mode-hook (lambda()

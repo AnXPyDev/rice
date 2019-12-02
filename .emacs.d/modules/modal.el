@@ -22,13 +22,11 @@
   (modal/insert-mode 0)
   (modal/region-mode 0)
   (modal/rectangle-mode 0))
-
 (defun modal/enable-normal()
   (interactive)
   (modal/clear)
   (setq cursor-type 'box)
   (modal/normal-mode 1))
-
 (defun modal/enable-insert()
   (interactive)
   (modal/clear)

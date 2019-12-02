@@ -15,6 +15,10 @@
 (setq-default python-indent-offset 2)
 (setq-default indent-tabs-mode nil)
 
+(setq-default scroll-step 1)
+
+(setq ring-bell-function 'ignore)
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (electric-pair-mode)
