@@ -18,6 +18,7 @@ sheet\add_style("box", nil, cord.wim.style({
   opacity_hide_animation: cord.wim.animations.opacity.lerp
   position_animation_speed: 0.3
   opacity_animation_speed: 0.3
+  color_animation_speed: 0.1
 }))
 
 sheet\add_style(nil, "back", cord.wim.style({
