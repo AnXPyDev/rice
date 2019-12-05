@@ -69,12 +69,14 @@
  "s" nil
  "m" (lambda() (interactive) (modal/multiple-cursors-mode 1))
  "s (" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))
+ "s s" (lambda() (interactive) (surround-region (read-from-minibuffer "left: ") (read-from-minibuffer "right: ")) (modal/enable-normal))
  "s )" (lambda() (interactive) (surround-region "(" ")") (modal/enable-normal))
  "s {" (lambda() (interactive) (surround-region "{" "}") (modal/enable-normal))
  "s }" (lambda() (interactive) (surround-region "{" "}") (modal/enable-normal))
  "s [" (lambda() (interactive) (surround-region "[" "]") (modal/enable-normal))
  "s ]" (lambda() (interactive) (surround-region "[" "]") (modal/enable-normal))
  "s \"" (lambda() (interactive) (surround-region "\"" "\"") (modal/enable-normal))
+ "s <" (lambda() (interactive) (surround-region "<" ">") (modal/enable-normal))
  "s '" (lambda() (interactive) (surround-region "'" "'") (modal/enable-normal)))
 
 (setq modal/insert-map (copy-keymap modal/emacs-map))
@@ -95,7 +97,7 @@
   "RET" 'eshell-toggle
   "<return>" 'eshell-toggle
   "e b" 'eval-buffer
-  "e b" 'eval-region
+  "e r" 'eval-region
   "e e" 'eval-expression)
 
 (add-hook 'eshell-mode-hook (lambda()
@@ -116,6 +118,10 @@
  "q" (lambda() (interactive) (modal/multiple-cursors-mode 0))
  "M-q" (lambda() (interactive) (modal/multiple-cursors-mode 0))
  "C-g" (lambda() (interactive) (modal/multiple-cursors-mode 0)))
+
+(general-define-key
+ :keymaps 'dired-mode-map
+ "f" 'swiper)
 
 (define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map
   (if modal/multiple-cursors-mode

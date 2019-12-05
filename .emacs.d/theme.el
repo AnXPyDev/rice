@@ -4,11 +4,12 @@
 
 (defun theme/gui()
   (interactive)
+  (package-use 'nord-theme)
   (package-use 'kaolin-themes)
   (setq x-theme-name (x-get-resource "themeName" "emacs"))
   (if x-theme-name
       (load-theme (intern x-theme-name) t)
-    (load-theme 'kaolin-galaxy t))
+    (load-theme 'nord t))
   (global-hl-line-mode)
   (when nil
     (set-face-attribute 'default nil
@@ -27,9 +28,21 @@
 			:foreground "#151515")
     )
 
-	(setq font-name (x-get-resource "fontName" "emacs"))
-	(unless font-name (setq font-name "Hack"))
-	
+
+  (setq font-name "Undefined")
+	(setq x-font-name (x-get-resource "fontName" "emacs"))
+  (setq backup-fonts '("Cascadia Code" "Consolas"))
+
+	(if x-font-name
+      (setq font-name x-font-name)
+    (progn
+      (catch 'loop
+        (dolist (font backup-fonts)
+          (when (find-font (font-spec :name font))
+            (setq font-name font)
+            (throw 'loop nil))))))
+
+  
 	(set-face-attribute 'default nil
 											:family font-name
 											:height 112))

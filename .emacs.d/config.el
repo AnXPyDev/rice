@@ -32,9 +32,9 @@
 
 (ignore-errors (tool-bar-mode 0))
 (ignore-errors (menu-bar-mode 0))
+
 (add-hook 'after-init-hook
 					(lambda() (interactive) (ignore-errors (scroll-bar-mode 0))))
-
 
 (defadvice text-scale-increase (after text-scale-after activate)
   (set-window-margins (selected-window) 1 1))
@@ -61,9 +61,10 @@
 (package-use 'company-irony :require t)
 (package-use 'company-c-headers :require t)
 
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
+(when (not (string-equal system-type "windows-nt"))
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode))
 
 (package-use 'company :require t)
 
@@ -93,9 +94,9 @@
 (add-hook 'dired-mode-hook (lambda() (auto-revert-mode)))
 
 (package-use 'doom-modeline :require t)
-;;(setq doom-modeline-icon nil)
 (setq doom-modeline-height 32)
 (doom-modeline-mode 1)
+
 
 (package-use 'dashboard :require t)
 (dashboard-setup-startup-hook)
