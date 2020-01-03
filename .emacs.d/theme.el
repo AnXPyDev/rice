@@ -9,7 +9,7 @@
   (setq x-theme-name (x-get-resource "themeName" "emacs"))
   (if x-theme-name
       (load-theme (intern x-theme-name) t)
-    (load-theme 'nord t))
+    (load-theme 'doom-one t))
   (global-hl-line-mode)
   (when nil
     (set-face-attribute 'default nil
@@ -45,6 +45,8 @@
   
 	(set-face-attribute 'default nil
 											:family font-name
+											:height 112)
+  (set-face-attribute 'linum nil
 											:height 112))
 
 (defun theme/general())

@@ -42,6 +42,9 @@
   (set-window-margins (selected-window) 1 1))
 (defadvice text-scale-set (after text-scale-after activate)
   (set-window-margins (selected-window) 1 1))
+(defadvice load-theme (before disable-themes-first activate)
+  (dolist (theme custom-enabled-themes)
+    (disable-theme theme)))
 
 (package-use 'general :require t)
 
@@ -116,6 +119,7 @@
 (package-use 'avy :require t)
 
 (package-use 'elmacro :require t)
+(elmacro-mode 1)
 
 (package-use 'exwm :require t)
 

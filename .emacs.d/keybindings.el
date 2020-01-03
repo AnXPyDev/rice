@@ -47,7 +47,8 @@
  "g l" 'avy-goto-line
  "m" 'edit/insert-mark
  "M" 'edit/goto-mark
- "TAB" nil)
+ "<tab>" 'org-cycle
+ "TAB" 'org-cycle)
 
 (setq modal/region-map (make-composed-keymap (list (copy-keymap modal/emacs-map) (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
 
