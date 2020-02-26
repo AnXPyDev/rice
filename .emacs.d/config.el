@@ -94,7 +94,9 @@
 (package-use 'all-the-icons :require t)
 (package-use 'all-the-icons-dired :require t)
 
-(add-hook 'dired-mode-hook (lambda() (auto-revert-mode)))
+
+(setq auto-revert-verbose nil)
+(global-auto-revert-mode)
 
 (package-use 'doom-modeline :require t)
 (setq doom-modeline-height 32)
@@ -123,9 +125,9 @@
 
 (package-use 'exwm :require t)
 
-(package-use 'multiple-cursors
-             :require t)
+(package-use 'multiple-cursors :require t)
 
+(load-file (concat user-emacs-directory "flycheck.el"))
 (load-file (concat user-emacs-directory "macro.el"))
 
 (load-file (concat user-emacs-directory "eshell.el"))

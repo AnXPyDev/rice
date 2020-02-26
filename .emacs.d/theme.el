@@ -10,7 +10,7 @@
   (setq x-theme-name (x-get-resource "themeName" "emacs"))
   (if x-theme-name
       (load-theme (intern x-theme-name) t)
-    (load-theme 'kaolin-galaxy t))
+    (load-theme 'kaolin-ocean t))
   (global-hl-line-mode)
   (when nil
     (set-face-attribute 'default nil
@@ -32,7 +32,7 @@
 
   (setq font-name "Undefined")
 	(setq x-font-name (x-get-resource "fontName" "emacs"))
-  (setq backup-fonts '("Cascadia Code" "Consolas"))
+  (setq backup-fonts '("Cascadia Mono" "Consolas"))
 
 	(if x-font-name
       (setq font-name x-font-name)

@@ -97,6 +97,8 @@
 (general-leader-define-key
   "RET" 'eshell-toggle
   "<return>" 'eshell-toggle
+  "C-RET" 'eshell-new
+  "C-<return>" 'eshell-new
   "e b" 'eval-buffer
   "e r" 'eval-region
   "e e" 'eval-expression)
