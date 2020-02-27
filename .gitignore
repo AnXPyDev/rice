@@ -1,5 +1,6 @@
 .emacs.d/*
 
+!.emacs.d/config.org
 !.emacs.d/modules
 !.emacs.d/*.el
 !.emacs.d/banner.png
