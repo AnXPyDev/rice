@@ -215,6 +215,11 @@ Disable minibuffer messages about errors
 #+BEGIN_SRC emacs-lisp
   (setq flycheck-display-errors-function nil)
 #+END_SRC
+** origami
+#+BEGIN_SRC emacs-lisp
+  (package-use 'origami :require t)
+  (global-origami-mode t)
+#+END_SRC
 * Programming Languages
 ** Lua
 Lua mode
@@ -322,6 +327,15 @@ Initialize irony if current system isn't windows
   (when (not (string-equal system-type "windows-nt"))
     (lang-c/add-c-hook 'irony-mode))
 #+END_SRC
+Use gcc flycheck checker instead of clang
+#+BEGIN_SRC emacs-lisp
+  (defun lang-c/change-checker()
+    (add-to-list 'flycheck-disabled-checkers 'c/c++-clang)
+    (add-to-list 'flycheck-enabled-checkers 'c/c++-gcc)
+    (delete 'c/c++-clang flycheck-enabled-checkers))
+
+  (lang-c/add-hook 'lang-c/change-checker)
+#+END_SRC
 * Modal
 This is a custom implementation of modal editing, similiar to vim's, including normal, insert, and region mode
 ** make-normal-sparse-keymap
@@ -338,7 +352,7 @@ Returns a keymap, where all the self-inserting characters are ignored
 ** modal editing implementation
 Some variables
 #+BEGIN_SRC emacs-lisp
-  (setq modal/ignored-major-modes (list "dired-mode" ""))
+  (setq modal/ignored-major-modes (list "dired-mode" "eshell-mode" "ibuffer-mode"))
 #+END_SRC
 
 Maps for each mode
@@ -352,14 +366,15 @@ Maps for each mode
 #+END_SRC
 Create minor modes for every editing mode
 #+BEGIN_SRC emacs-lisp
-  (define-minor-mode modal/normal-mode "Normal mode" nil "<Normal>" modal/normal-map)
-  (define-minor-mode modal/emacs-mode "Emacs mode" nil "<Emacs>" modal/emacs-map)
-  (define-minor-mode modal/insert-mode "Insert mode" nil "<Insert>" modal/insert-map)
-  (define-minor-mode modal/region-mode "Region mode" nil "<Region>" modal/region-map)
-  (define-minor-mode modal/rectangle-mode "Rectangle mode" nil "<Rectangle>" modal/rectangle-map)
-  (define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map
-    (if modal/multiple-cursors-mode
-        (raise-minor-mode-map-alist 'modal/multiple-cursors-mode)))
+  (defun modal/initialize()
+    (define-minor-mode modal/normal-mode "Normal mode" nil "<Normal>" modal/normal-map)
+    (define-minor-mode modal/emacs-mode "Emacs mode" nil "<Emacs>" modal/emacs-map)
+    (define-minor-mode modal/insert-mode "Insert mode" nil "<Insert>" modal/insert-map)
+    (define-minor-mode modal/region-mode "Region mode" nil "<Region>" modal/region-map)
+    (define-minor-mode modal/rectangle-mode "Rectangle mode" nil "<Rectangle>" modal/rectangle-map)
+    (define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map
+      (if modal/multiple-cursors-mode
+          (raise-minor-mode-map-alist 'modal/multiple-cursors-mode))))
 #+END_SRC
 Functions to manage editing modes
 #+BEGIN_SRC emacs-lisp
@@ -402,7 +417,7 @@ Create global modal-mode
   (define-minor-mode modal-mode "Mode that enbles modes on buffer" t "<Modal>" nil
     (when modal-mode
       (if (not (or (minibufferp)
-                   (member major-mode modal/ignored-major-modes)))
+                   (member (symbol-name major-mode) modal/ignored-major-modes)))
           (modal/enable-normal)
         (modal/enable-emacs))))
 
@@ -422,7 +437,7 @@ Functions that surround a region with an opening and closing string
 
   (defun edit/surround-region(open close)
     (when (region-active-p)
-      (surround (region-beginning) (region-end) open close)))
+      (edit/surround (region-beginning) (region-end) open close)))
 #+END_SRC
 ** other misc. editing functions
 #+BEGIN_SRC emacs-lisp
@@ -500,6 +515,14 @@ Functions that surround a region with an opening and closing string
     (delete-char  4)
     (modal/enable-insert))
 #+END_SRC
+Use default org folding if in org mode
+#+BEGIN_SRC emacs-lisp
+  (defun edit/fold-toggle()
+    (interactive)
+    (if (string-equal major-mode "org-mode")
+        (org-cycle)
+      (origami-toggle-node (current-buffer) (point))))
+#+END_SRC
 * Misc. functions
 ** macro-make-functions
 Evaluates a elmacro generated defun
@@ -519,7 +542,7 @@ Evaluates a elmacro generated defun
     (kill-buffer "*temporaryMacroBuffer*"))
 #+END_SRC
 * Eshell
-** get-last-eshell-buffer
+** eshell/get-last-eshell-buffer
 Returns the most recently used eshell buffer
 #+BEGIN_SRC emacs-lisp
   (defun eshell/get-last-eshell-buffer()
@@ -528,31 +551,32 @@ Returns the most recently used eshell buffer
         (when (cl-search "*eshell*" (buffer-name buffer))
           (throw 'buffer buffer)))))
 #+END_SRC
-** switch-to-last-eshell-buffer
+** eshell/switch-to-last-eshell-buffer
 Switches to most recent eshell buffer or creates a new one
 #+BEGIN_SRC emacs-lisp
-  (defun switch-to-last-eshell-buffer()
-    (let ((buffer (get-last-eshell-buffer)))
+  (defun eshell/switch-to-last-eshell-buffer()
+    (let ((buffer (eshell/get-last-eshell-buffer)))
       (if buffer
           (switch-to-buffer buffer)
         (eshell))))
 #+END_SRC
-** eshell-toggle
-Switches to eshel if the current buffer isn't an eshell buffer, else returns to previous buffer
+** eshell/toggle
+Switches to eshell if the current buffer isn't an eshell buffer, else returns to previous buffer
 #+BEGIN_SRC emacs-lisp
-  (defun eshell-toggle()
+  (defun eshell/toggle()
     (interactive)
     (if (cl-search "*eshell" (buffer-name))
         (switch-to-prev-buffer)
-      (switch-to-last-eshell-buffer)))
+      (eshell/switch-to-last-eshell-buffer)))
 #+END_SRC
 ** eshell-new
 Creates a new numbered eshell buffer
 #+BEGIN_SRC emacs-lisp
-  (defun eshell-new()
+  (setq eshell/new-count 1)
+  (defun eshell/new()
     (interactive)
-    (eshell eshell-count)
-    (setq eshell-count (+ 1 eshell-count)))
+    (eshell eshell/new-count)
+    (setq eshell/new-count (+ 1 eshell/new-count)))
 #+END_SRC
 ** misc.
 Disable linum mode in eshell
@@ -572,10 +596,10 @@ Disable linum mode in eshell
     :prefix "C-c")
 
   (general-leader-define-key
-    "RET" 'eshell-toggle
-    "<return>" 'eshell-toggle
-    "C-RET" 'eshell-new
-    "C-<return>" 'eshell-new
+    "RET" 'eshell/toggle
+    "<return>" 'eshell/toggle
+    "C-RET" 'eshell/new
+    "C-<return>" 'eshell/new
     "e b" 'eval-buffer
     "e r" 'eval-region
     "e e" 'eval-expression)
@@ -636,8 +660,8 @@ Used as a base for other maps
    "g l" 'avy-goto-line
    "m" 'edit/insert-mark
    "M" 'edit/goto-mark
-   "<tab>" 'org-cycle
-   "TAB" 'org-cycle)
+   "<tab>" 'edit/fold-toggle
+   "TAB" 'edit/fold-toggle)
 #+END_SRC
 ** region-mode map
 #+BEGIN_SRC emacs-lisp
@@ -689,8 +713,8 @@ This is the same as emacs-map
               (interactive)
               (general-leader-define-key
           :keymaps 'eshell-mode-map
-          "RET" 'eshell-toggle
-          "<return>" 'eshell-toggle)))
+          "RET" 'eshell/toggle
+          "<return>" 'eshell/toggle)))
 #+END_SRC
 ** multiple-cursors map
 #+BEGIN_SRC emacs-lisp
@@ -714,6 +738,7 @@ This is the same as emacs-map
 #+END_SRC
 ** initialize modal mode
 #+BEGIN_SRC emacs-lisp
+  (modal/initialize)
   (global-modal-mode t)
 #+END_SRC
 * Theme
