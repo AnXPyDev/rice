@@ -1,4 +1,5 @@
-* Emacs Config
+#+TITLE Emacs Config
+* Base Config
 This is my personal emacs config
 ** config/path
 Returns full path to file relative to config directory
@@ -80,6 +81,10 @@ Automatically revert buffers and disable revert messages
 #+BEGIN_SRC emacs-lisp
   (setq auto-revert-verbose nil)
   (global-auto-revert-mode)
+#+END_SRC
+Use y-n instead of yes-no
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 * Packages
 ** general
@@ -335,6 +340,10 @@ Use gcc flycheck checker instead of clang
     (delete 'c/c++-clang flycheck-enabled-checkers))
 
   (lang-c/add-hook 'lang-c/change-checker)
+#+END_SRC
+** Shell Script
+#+BEGIN_SRC emacs-lisp
+  (setq-default sh-basic-offset tab-width)
 #+END_SRC
 * Modal
 This is a custom implementation of modal editing, similiar to vim's, including normal, insert, and region mode
@@ -709,12 +718,13 @@ This is the same as emacs-map
 #+END_SRC
 ** eshell map
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'eshell-mode-hook (lambda()
-              (interactive)
-              (general-leader-define-key
-          :keymaps 'eshell-mode-map
-          "RET" 'eshell/toggle
-          "<return>" 'eshell/toggle)))
+  (defun set-eshell-custom-map()
+    (general-leader-define-key
+      :keymaps 'eshell-mode-map
+      "RET" 'eshell/toggle
+      "<return>" 'eshell/toggle))
+
+  (add-hook 'eshell-mode-hook 'set-eshell-custom-map)
 #+END_SRC
 ** multiple-cursors map
 #+BEGIN_SRC emacs-lisp
