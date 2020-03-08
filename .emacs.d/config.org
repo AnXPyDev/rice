@@ -70,8 +70,9 @@ Enable text wrapping (visual lines)
 #+END_SRC
 Setup indent width (and use spaces instead of tabs)
 #+BEGIN_SRC emacs-lisp
+  (setq config/indent-size 2)
   (setq-default indent-tabs-mode nil)
-  (setq-default tab-width 2)
+  (setq-default tab-width config/indent-size)
 #+END_SRC
 Set scroll step to 1 for smoother scrolling
 #+BEGIN_SRC emacs-lisp
@@ -344,6 +345,24 @@ Use gcc flycheck checker instead of clang
 ** Shell Script
 #+BEGIN_SRC emacs-lisp
   (setq-default sh-basic-offset tab-width)
+#+END_SRC
+** Rust
+rust-mode
+#+BEGIN_SRC emacs-lisp
+  (package-use 'rust-mode :require t)
+#+END_SRC
+install flycheck-rust
+#+BEGIN_SRC emacs-lisp
+  (package-use 'flycheck-rust :require t)
+#+END_SRC
+setup flycheck-rust when rust-mode is loaded
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'rust-mode
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+#+END_SRC
+indentation width
+#+BEGIN_SRC emacs-lisp
+  (setq rust-indent-offset config/indent-size)
 #+END_SRC
 * Modal
 This is a custom implementation of modal editing, similiar to vim's, including normal, insert, and region mode
