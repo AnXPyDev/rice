@@ -19,6 +19,12 @@ Reloads config when called
 #+BEGIN_SRC emacs-lisp
   (require 'package)
 #+END_SRC
+** install use-package
+#+BEGIN_SRC emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+#+END_SRC
 ** package-use
 A simple function that installs and requires packages
 #+BEGIN_SRC emacs-lisp
@@ -331,7 +337,7 @@ Adds hooks to both c and c++ mode
 Initialize irony if current system isn't windows
 #+BEGIN_SRC emacs-lisp
   (when (not (string-equal system-type "windows-nt"))
-    (lang-c/add-c-hook 'irony-mode))
+    (lang-c/add-hook 'irony-mode))
 #+END_SRC
 Use gcc flycheck checker instead of clang
 #+BEGIN_SRC emacs-lisp
@@ -346,23 +352,10 @@ Use gcc flycheck checker instead of clang
 #+BEGIN_SRC emacs-lisp
   (setq-default sh-basic-offset tab-width)
 #+END_SRC
-** Rust
-rust-mode
+** D
+Install d mode package
 #+BEGIN_SRC emacs-lisp
-  (package-use 'rust-mode :require t)
-#+END_SRC
-install flycheck-rust
-#+BEGIN_SRC emacs-lisp
-  (package-use 'flycheck-rust :require t)
-#+END_SRC
-setup flycheck-rust when rust-mode is loaded
-#+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'rust-mode
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
-#+END_SRC
-indentation width
-#+BEGIN_SRC emacs-lisp
-  (setq rust-indent-offset config/indent-size)
+  (package-use 'd-mode :require t)
 #+END_SRC
 * Modal
 This is a custom implementation of modal editing, similiar to vim's, including normal, insert, and region mode
@@ -636,6 +629,7 @@ Disable linum mode in eshell
 #+BEGIN_SRC emacs-lisp
   (general-define-key
    :keymaps 'modal/emacs-map
+   "<escape>" (kbd "C-g")  
    "M-q" 'modal/enable-normal
    "M-e" 'modal/enable-emacs)
 #+END_SRC
@@ -646,16 +640,24 @@ Used as a base for other maps
 
   (general-define-key
    :keymaps 'modal/normal-bare-map
-   "p" 'previous-line
-   "P" 'scroll-down-command
-   "n" 'next-line
-   "N" 'scroll-up-command
-   "b" 'backward-char
-   "B" 'backward-word
-   "o" 'forward-char
-   "O" 'forward-word
+   "k" 'previous-line
+   "K" 'scroll-down-command
+   "j" 'next-line
+   "J" 'scroll-up-command
+   "h" 'backward-char
+   "H" 'backward-word
+   "l" 'forward-char
+   "L" 'forward-word
    "a" 'beginning-of-line
-   "e" 'end-of-line)
+   "f" 'end-of-line
+   "SPC SPC" 'execute-extended-command
+   "SPC s" 'save-some-buffers
+   "SPC b" 'ivy-switch-buffer
+   "SPC f" 'find-file
+   "SPC d" 'dired
+   "SPC k" 'kill-buffer
+   "SPC RET" 'eshell/toggle
+   "SPC S-RET" 'eshell/new)
 #+END_SRC
 ** normal-mode map
 #+BEGIN_SRC emacs-lisp
@@ -665,22 +667,22 @@ Used as a base for other maps
    :keymaps 'modal/normal-map
    "q" 'modal/enable-insert
    "Q" 'edit/insert-beginning-of-line
-   "d" 'edit/insert-after
-   "D" 'edit/insert-end-of-line
-   "r" 'edit/set-region
-   "R" 'edit/set-region-line
-   "J" 'edit/copy-whole-line
-   "k" 'delete-char
-   "K" 'kill-whole-line
-   "l" 'yank
-   "L" 'edit/yank-line
-   "f" 'swiper
-   "/" 'undo-tree-undo
-   "\\" 'undo-tree-redo
-   "s" 'edit/open-line
-   "S" (lambda() (interactive) (edit/open-line) (modal/enable-insert))
-   "w" 'edit/open-line-above
-   "W" (lambda() (interactive) (edit/open-line-above) (modal/enable-insert))
+   "r" 'edit/insert-after
+   "R" 'edit/insert-end-of-line
+   "e" 'edit/set-region
+   "E" 'edit/set-region-line
+   "s" 'edit/copy-whole-line
+   "d" (kbd "C-d")
+   "D" 'kill-whole-line
+   "w" 'yank
+   "W" 'edit/yank-line
+   "/" 'swiper
+   "u" 'undo-tree-undo
+   "U" 'undo-tree-redo
+   "n" 'edit/open-line
+   "N" (lambda() (interactive) (edit/open-line) (modal/enable-insert))
+   "p" 'edit/open-line-above
+   "P" (lambda() (interactive) (edit/open-line-above) (modal/enable-insert))
    "g" nil
    "g o" 'isearch-forward
    "g b" 'isearch-backward
@@ -688,8 +690,8 @@ Used as a base for other maps
    "g l" 'avy-goto-line
    "m" 'edit/insert-mark
    "M" 'edit/goto-mark
-   "<tab>" 'edit/fold-toggle
-   "TAB" 'edit/fold-toggle)
+   "TAB" 'edit/fold-toggle
+   "<tab>" 'edit/fold-toggle)
 #+END_SRC
 ** region-mode map
 #+BEGIN_SRC emacs-lisp
@@ -697,36 +699,42 @@ Used as a base for other maps
 
   (general-define-key
    :keymaps 'modal/region-map
-   "h" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-insert))
-   "j" (lambda() (interactive) (copy-region-as-kill (region-beginning) (region-end)) (modal/enable-normal))
-   "k" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-normal))
-   "l" 'edit/yank-region
+   "t" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-insert))
+   "s" (lambda() (interactive) (copy-region-as-kill (region-beginning) (region-end)) (modal/enable-normal))
+   "d" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-normal))
+   "w" 'edit/yank-region
    "C-g" (lambda() (interactive) (pop-mark) (modal/enable-normal))
    "M-q" (lambda() (interactive) (pop-mark) (modal/enable-normal))
-   "r" 'er/expand-region
+   "<escape>" (lambda() (interactive) (pop-mark) (modal/enable-normal))
+   "e" 'er/expand-region
    "TAB" (lambda() (interactive) (indent-region (region-beginning) (region-end)) (modal/enable-normal))
    "<tab>" (lambda() (interactive) (indent-region (region-beginning) (region-end)) (modal/enable-normal))
    "g" nil
-   "g o" 'isearch-forward
-   "g b" 'isearch-backward
+   "g l" 'isearch-forward
+   "g h" 'isearch-backward
    ";" 'comment-or-uncomment-region
-   "s" nil
+   "o" nil
    "m" (lambda() (interactive) (modal/multiple-cursors-mode 1))
-   "s (" (lambda() (interactive) (edit/surround-region "(" ")") (modal/enable-normal))
-   "s s" (lambda() (interactive) (edit/surround-region (read-from-minibuffer "left: ") (read-from-minibuffer "right: ")) (modal/enable-normal))
-   "s )" (lambda() (interactive) (edit/surround-region "(" ")") (modal/enable-normal))
-   "s {" (lambda() (interactive) (edit/surround-region "{" "}") (modal/enable-normal))
-   "s }" (lambda() (interactive) (edit/surround-region "{" "}") (modal/enable-normal))
-   "s [" (lambda() (interactive) (edit/surround-region "[" "]") (modal/enable-normal))
-   "s ]" (lambda() (interactive) (edit/surround-region "[" "]") (modal/enable-normal))
-   "s \"" (lambda() (interactive) (edit/surround-region "\"" "\"") (modal/enable-normal))
-   "s <" (lambda() (interactive) (edit/surround-region "<" ">") (modal/enable-normal))
-   "s '" (lambda() (interactive) (edit/surround-region "'" "'") (modal/enable-normal)))
+   "o (" (lambda() (interactive) (edit/surround-region "(" ")") (modal/enable-normal))
+   "o o" (lambda() (interactive) (edit/surround-region (read-from-minibuffer "left: ") (read-from-minibuffer "right: ")) (modal/enable-normal))
+   "o )" (lambda() (interactive) (edit/surround-region "(" ")") (modal/enable-normal))
+   "o {" (lambda() (interactive) (edit/surround-region "{" "}") (modal/enable-normal))
+   "o }" (lambda() (interactive) (edit/surround-region "{" "}") (modal/enable-normal))
+   "o [" (lambda() (interactive) (edit/surround-region "[" "]") (modal/enable-normal))
+   "o ]" (lambda() (interactive) (edit/surround-region "[" "]") (modal/enable-normal))
+   "o \"" (lambda() (interactive) (edit/surround-region "\"" "\"") (modal/enable-normal))
+   "o <" (lambda() (interactive) (edit/surround-region "<" ">") (modal/enable-normal))
+   "o '" (lambda() (interactive) (edit/surround-region "'" "'") (modal/enable-normal)))
+
 #+END_SRC
 ** insert-mode map
 This is the same as emacs-map
 #+BEGIN_SRC emacs-lisp
   (setq modal/insert-map (copy-keymap modal/emacs-map))
+
+  (general-define-key
+   :keymaps 'modal/insert-map
+   "<escape>" 'modal/enable-normal)
 #+END_SRC
 ** company-active-map
 #+BEGIN_SRC emacs-lisp
@@ -765,6 +773,15 @@ This is the same as emacs-map
    :keymaps 'dired-mode-map
    "f" 'swiper)
 #+END_SRC
+** ivy minibuffer map
+#+BEGIN_SRC emacs-lisp
+  (general-define-key
+   :keymaps 'ivy-minibuffer-map
+   "M-j" 'ivy-next-line
+   "M-k" 'ivy-previous-line
+   "RET" 'ivy-immediate-done
+   "TAB" 'ivy-partial-or-done)
+#+END_SRC
 ** initialize modal mode
 #+BEGIN_SRC emacs-lisp
   (modal/initialize)
@@ -792,9 +809,7 @@ This is the same as emacs-map
 #+BEGIN_SRC emacs-lisp
   (defun theme/gui()
     (interactive)
-    (package-use 'nord-theme)
     (package-use 'kaolin-themes)
-    (package-use 'doom-themes)
     (setq x-theme-name (x-get-resource "themeName" "emacs"))
     (if x-theme-name
         (load-theme (intern x-theme-name) t)
@@ -818,7 +833,7 @@ This is the same as emacs-map
       )
 
 
-    (setq font-name "Undefined")
+    (setq font-name "monospace")
     (setq x-font-name (x-get-resource "fontName" "emacs"))
     (setq backup-fonts '("Cascadia Mono" "Consolas"))
 
