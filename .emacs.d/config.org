@@ -19,6 +19,12 @@ Reloads config when called
 #+BEGIN_SRC emacs-lisp
   (require 'package)
 #+END_SRC
+** initialize package and add package archives
+#+BEGIN_SRC emacs-lisp
+  (package-initialize)
+  (setq package-archives '(("melpa" . "http://melpa.org/packages/")
+                           ("elpa" . "http://elpa.gnu.org/packages/")))
+#+END_SRC
 ** install use-package
 #+BEGIN_SRC emacs-lisp
   (unless (package-installed-p 'use-package)
@@ -37,12 +43,6 @@ A simple function that installs and requires packages
         (require name)
       (when arg-require-name
         (require arg-require-name))))
-#+END_SRC
-** initialize package and add package archives
-#+BEGIN_SRC emacs-lisp
-  (package-initialize)
-  (setq package-archives '(("melpa" . "http://melpa.org/packages/")
-                           ("elpa" . "http://elpa.gnu.org/packages/")))
 #+END_SRC
 * General customiztions
 Don't play annoying sounds
@@ -320,6 +320,11 @@ Fix for broken lua-mode indentation
                     (current-indentation)
                   (current-indentation))))))))
 
+#+END_SRC
+** MoonScript
+Install moonscript mode
+#+BEGIN_SRC emacs-lisp
+  (package-use 'moonscript :require t)
 #+END_SRC
 ** C/C++
 Install irony, a c/c++ completion package
@@ -629,7 +634,8 @@ Disable linum mode in eshell
 #+BEGIN_SRC emacs-lisp
   (general-define-key
    :keymaps 'modal/emacs-map
-   "<escape>" (kbd "C-g")  
+   "<escape>" (kbd "C-g")
+   "M-g" (kbd "C-g")
    "M-q" 'modal/enable-normal
    "M-e" 'modal/enable-emacs)
 #+END_SRC
@@ -684,8 +690,8 @@ Used as a base for other maps
    "p" 'edit/open-line-above
    "P" (lambda() (interactive) (edit/open-line-above) (modal/enable-insert))
    "g" nil
-   "g o" 'isearch-forward
-   "g b" 'isearch-backward
+   "g l" 'isearch-forward
+   "g h" 'isearch-backward
    "g c" 'avy-goto-char
    "g l" 'avy-goto-line
    "m" 'edit/insert-mark
@@ -734,7 +740,7 @@ This is the same as emacs-map
 
   (general-define-key
    :keymaps 'modal/insert-map
-   "<escape>" 'modal/enable-normal)
+   "C-g" 'modal/enable-normal)
 #+END_SRC
 ** company-active-map
 #+BEGIN_SRC emacs-lisp
@@ -769,9 +775,10 @@ This is the same as emacs-map
 #+END_SRC
 ** dired-mode map
 #+BEGIN_SRC emacs-lisp
+  (setq dired-mode-map (make-composed-keymap (list (copy-keymap modal/normal-bare-map)) dired-mode-map))
+
   (general-define-key
-   :keymaps 'dired-mode-map
-   "f" 'swiper)
+   :keymaps 'dired-mode-map)
 #+END_SRC
 ** ivy minibuffer map
 #+BEGIN_SRC emacs-lisp

@@ -20,25 +20,25 @@ keys.global = gears.table.join(
   awful.key({keys.mod}, "u", function() loadScreensAnimate() end),
   awful.key({keys.mod, "Shift"}, "r", awesome.restart),
   awful.key({keys.mod}, "Return", function() awful.spawn("xst") end),
-  awful.key({keys.mod}, "n", function() awful.client.focus.global_bydirection("down") end),
-  awful.key({keys.mod}, "p", function() awful.client.focus.global_bydirection("up") end),
-  awful.key({keys.mod}, "b", function() awful.client.focus.global_bydirection("left") end),
-  awful.key({keys.mod}, "o", function() awful.client.focus.global_bydirection("right") end),
+  awful.key({keys.mod}, "j", function() awful.client.focus.global_bydirection("down") end),
+  awful.key({keys.mod}, "k", function() awful.client.focus.global_bydirection("up") end),
+  awful.key({keys.mod}, "h", function() awful.client.focus.global_bydirection("left") end),
+  awful.key({keys.mod}, "l", function() awful.client.focus.global_bydirection("right") end),
   awful.key({keys.mod}, "Tab", function() awful.client.focus.byidx(1) end),
-  awful.key({keys.mod, "Shift"}, "n", function() awful.client.swap.global_bydirection("down") end),
-  awful.key({keys.mod, "Shift"}, "p", function() awful.client.swap.global_bydirection("up") end),
-  awful.key({keys.mod, "Shift"}, "b", function() awful.client.swap.global_bydirection("left") end),
-  awful.key({keys.mod, "Shift"}, "o", function() awful.client.swap.global_bydirection("right") end),
+  awful.key({keys.mod, "Shift"}, "j", function() awful.client.swap.global_bydirection("down") end),
+  awful.key({keys.mod, "Shift"}, "k", function() awful.client.swap.global_bydirection("up") end),
+  awful.key({keys.mod, "Shift"}, "h", function() awful.client.swap.global_bydirection("left") end),
+  awful.key({keys.mod, "Shift"}, "l", function() awful.client.swap.global_bydirection("right") end),
   awful.key({keys.mod}, "v", function() volumecontrol:change(-1) end),
   awful.key({keys.mod, "Shift"}, "v", function() volumecontrol:change(1) end),
   awful.key({keys.mod}, "m", function() volumecontrol:toggleMute() end),
   awful.key({keys.mod}, "g", toggleGaps),
   awful.key({keys.mod}, "i", setWallpaper),
 	-- Resize client when tiled
-  awful.key({keys.mod, "Control"}, "b", function() awful.tag.incmwfact(-0.02, nil) end),
-  awful.key({keys.mod, "Control"}, "o", function() awful.tag.incmwfact(0.02, nil) end),
-  awful.key({keys.mod, "Control"}, "p", function() awful.client.incwfact(-0.02) end),
-  awful.key({keys.mod, "Control"}, "n", function() awful.client.incwfact(0.02) end)
+  awful.key({keys.mod, "Control"}, "h", function() awful.tag.incmwfact(-0.02, nil) end),
+  awful.key({keys.mod, "Control"}, "l", function() awful.tag.incmwfact(0.02, nil) end),
+  awful.key({keys.mod, "Control"}, "k", function() awful.client.incwfact(-0.02) end),
+  awful.key({keys.mod, "Control"}, "j", function() awful.client.incwfact(0.02) end)
 
 )
 
