@@ -618,10 +618,16 @@ Disable linum mode in eshell
 #+END_SRC
 ** Leader
 #+BEGIN_SRC emacs-lisp
-  (general-create-definer general-leader-define-key
-    :prefix "C-c")
+  (setq leader-map (make-sparse-keymap))
 
-  (general-leader-define-key
+  (general-define-key
+   :keymaps 'leader-map
+    "SPC" 'execute-extended-command
+    "s" 'save-some-buffers
+    "b" 'ivy-switch-buffer
+    "f" 'find-file
+    "d" 'dired
+    "k" 'kill-buffer
     "RET" 'eshell/toggle
     "<return>" 'eshell/toggle
     "C-RET" 'eshell/new
@@ -634,8 +640,8 @@ Disable linum mode in eshell
 #+BEGIN_SRC emacs-lisp
   (general-define-key
    :keymaps 'modal/emacs-map
+   "C-SPC" leader-map
    "<escape>" (kbd "C-g")
-   "M-g" (kbd "C-g")
    "M-q" 'modal/enable-normal
    "M-e" 'modal/enable-emacs)
 #+END_SRC
@@ -656,14 +662,7 @@ Used as a base for other maps
    "L" 'forward-word
    "a" 'beginning-of-line
    "f" 'end-of-line
-   "SPC SPC" 'execute-extended-command
-   "SPC s" 'save-some-buffers
-   "SPC b" 'ivy-switch-buffer
-   "SPC f" 'find-file
-   "SPC d" 'dired
-   "SPC k" 'kill-buffer
-   "SPC RET" 'eshell/toggle
-   "SPC S-RET" 'eshell/new)
+   "SPC" leader-map)
 #+END_SRC
 ** normal-mode map
 #+BEGIN_SRC emacs-lisp
@@ -775,6 +774,7 @@ This is the same as emacs-map
 #+END_SRC
 ** dired-mode map
 #+BEGIN_SRC emacs-lisp
+  (require 'dired)
   (setq dired-mode-map (make-composed-keymap (list (copy-keymap modal/normal-bare-map)) dired-mode-map))
 
   (general-define-key
