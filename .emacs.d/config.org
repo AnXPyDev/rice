@@ -1,4 +1,3 @@
-#+TITLE Emacs Config
 * Base Config
 This is my personal emacs config
 ** config/path
@@ -68,7 +67,7 @@ Enable electric-pair mode
 Enable line numbers
 #+BEGIN_SRC emacs-lisp
   (global-linum-mode 1)
-  (setq linum-format " %d ")
+  (setq linum-format " %3d ")
 #+END_SRC
 Enable text wrapping (visual lines)
 #+BEGIN_SRC emacs-lisp
@@ -92,6 +91,13 @@ Automatically revert buffers and disable revert messages
 Use y-n instead of yes-no
 #+BEGIN_SRC emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+Cursor settings
+#+BEGIN_SRC emacs-lisp
+  (setq config/default-cursor '(hbar . 2))
+  (setq config/insert-cursor 'bar)
+  (setq-default cursor-type config/default-cursor)
+  (blink-cursor-mode 0)
 #+END_SRC
 * Packages
 ** general
@@ -232,12 +238,17 @@ Disable minibuffer messages about errors
   (package-use 'origami :require t)
   (global-origami-mode t)
 #+END_SRC
+** hlinum
+#+BEGIN_SRC emacs-lisp
+  (package-use 'hlinum :require t)
+#+END_SRC
 ** emodal
 #+BEGIN_SRC emacs-lisp
   (setq emodal-default-mode nil)
   (setq emodal-modes '())
   (setq emodal-major-mode-pairs '())
   (setq emodal-ignored-major-modes '())
+  (setq-default emodal-history '())
 
   (defun emodal-extern-mode-name(name)
     (intern (concat "emodal/" (symbol-name name))))
@@ -526,8 +537,8 @@ Used as a base for other maps
    "g l" 'avy-goto-line
    "m" 'edit/insert-mark
    "M" 'edit/goto-mark
-   "TAB" 'edit/fold-toggle
-   "<tab>" 'edit/fold-toggle)
+   "TAB" 'origami-toggle-node
+   "<tab>" 'origami-toggle-node)
 #+END_SRC
 ** region-mode map
 #+BEGIN_SRC emacs-lisp
@@ -594,7 +605,24 @@ This is the same as emacs-map
 
   (general-define-key
    :keymaps 'dired-mode-map
-   )
+   "q" (lambda() (interactive) (wdired-change-to-wdired-mode) (emodal-raise-default-mode)))
+#+END_SRC
+** wdired-normal-mode map
+#+BEGIN_SRC emacs-lisp
+  (setq modal/wdired-normal-map (copy-keymap modal/normal-map))
+
+  (general-define-key
+   :keymaps 'modal/wdired-normal-map
+   "SPC s" (lambda() (interactive) (wdired-finish-edit) (emodal-raise-default-mode)))
+#+END_SRC
+** org-normal-mode map
+#+BEGIN_SRC emacs-lisp
+  (setq modal/org-normal-map (copy-keymap modal/normal-map))
+
+  (general-define-key
+   :keymaps 'modal/org-normal-map
+   "TAB" 'org-cycle
+   "<tab>" 'org-cycle)
 #+END_SRC
 ** ivy minibuffer map
 #+BEGIN_SRC emacs-lisp
@@ -615,15 +643,20 @@ This is a custom implementation of modal editing, similiar to vim's, including n
   (emodal-ignore-major-mode ibuffer-mode)
 
   (emodal-define-mode normal :keymap modal/normal-map :lighter " [N]" :doc "Normal mode"
-                      :on-enable (setq cursor-type 'box))
-
+                      :on-enable (setq cursor-type config/default-cursor))
   (emodal-define-mode insert :keymap modal/insert-map :lighter " [I]" :doc "Insert mode"
-                      :on-enable (setq cursor-type 'bar))
-
+                      :on-enable (setq cursor-type config/insert-cursor))
   (emodal-define-mode region :keymap modal/region-map :lighter " [R]" :doc "Region mode"
-                      :on-enable (setq cursor-type 'box))
+                      :on-enable (setq cursor-type config/default-cursor))
+  (emodal-define-mode wdired-normal :keymap modal/wdired-normal-map :lighter " [N]" :doc "Normal mode for wdired"
+                      :on-enable (setq cursor-type config/default-cursor))
+  (emodal-define-mode org-normal :keymap modal/org-normal-map :lighter " [N]" :doc "Normal mode for org"
+                      :on-enable (setq cursor-type config/default-cursor))
 
   (emodal-set-default-mode normal)
+  (emodal-pair-major-mode wdired-mode wdired-normal)
+  (emodal-pair-major-mode org-mode org-normal)
+
   (emodal-global-mode t)
 #+END_SRC
 * Editing functions
@@ -717,14 +750,6 @@ Functions that surround a region with an opening and closing string
     (delete-char  4)
     (emodal-raise-mode insert))
 #+END_SRC
-Use default org folding if in org mode
-#+BEGIN_SRC emacs-lisp
-  (defun edit/fold-toggle()
-    (interactive)
-    (if (string-equal major-mode "org-mode")
-        (org-cycle)
-      (origami-toggle-node (current-buffer) (point))))
-#+END_SRC
 * Misc. functions
 ** macro-make-functions
 Evaluates a elmacro generated defun
@@ -791,11 +816,13 @@ Disable linum mode in eshell
   (package-use 'all-the-icons :require t)
   (package-use 'all-the-icons-dired :require t)
 #+END_SRC
-** doom-modeline
+** modeline
 #+BEGIN_SRC emacs-lisp
   (package-use 'doom-modeline :require t)
-  (setq doom-modeline-height 32)
-  (doom-modeline-mode 1)
+  ;; (setq doom-modeline-height 32)
+  ;; (doom-modeline-mode 1)
+  (package-use 'smart-mode-line)
+  (smart-mode-line-enable)
 #+END_SRC
 ** theme for tty, where gui is unavailable
 #+BEGIN_SRC emacs-lisp
@@ -808,29 +835,12 @@ Disable linum mode in eshell
   (defun theme/gui()
     (interactive)
     (package-use 'kaolin-themes)
+    (package-use 'arc-dark-theme)
     (setq x-theme-name (x-get-resource "themeName" "emacs"))
     (if x-theme-name
         (load-theme (intern x-theme-name) t)
-      (load-theme 'kaolin-ocean t))
-    (global-hl-line-mode)
-    (when nil
-      (set-face-attribute 'default nil
-        :background "#121212"
-        :foreground "#FFFFFF")
-      (set-face-attribute 'mode-line nil
-        :background "#202020")
-      (set-face-attribute 'linum nil
-        :foreground "#AAAAAA")
-      (set-face-attribute 'region nil
-        :background "#202040")
-      (set-face-attribute 'hl-line nil
-        :background "#202020")
-      (set-face-attribute 'cursor nil
-        :background "#CCCCCC"
-        :foreground "#151515")
-      )
-
-
+      (load-theme 'arc-dark t))
+    (hlinum-activate)
     (setq font-name "monospace")
     (setq x-font-name (x-get-resource "fontName" "emacs"))
     (setq backup-fonts '("Cascadia Mono" "Consolas"))
