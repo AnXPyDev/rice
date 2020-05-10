@@ -232,6 +232,77 @@ Disable minibuffer messages about errors
   (package-use 'origami :require t)
   (global-origami-mode t)
 #+END_SRC
+** emodal
+#+BEGIN_SRC emacs-lisp
+  (setq emodal-default-mode nil)
+  (setq emodal-modes '())
+  (setq emodal-major-mode-pairs '())
+  (setq emodal-ignored-major-modes '())
+
+  (defun emodal-extern-mode-name(name)
+    (intern (concat "emodal/" (symbol-name name))))
+
+  (defun emodal-extern-hook-name(name)
+    (intern (concat (symbol-name (emodal-extern-mode-name name)) "-hook")))
+
+  (defmacro emodal-define-mode(name &rest args)
+    `(progn
+       (push ',name emodal-modes)
+       (define-minor-mode ,(emodal-extern-mode-name name)
+         ,(plist-get args :doc)
+         ,nil
+         ,(plist-get args :lighter)
+         ,(plist-get args :keymap)
+         (if ,(emodal-extern-mode-name name)
+       ,(plist-get args :on-enable)
+     ,(plist-get args :on-disable)))))
+
+  (defmacro emodal-add-hook(name function)
+    `(add-hook ',(emodal-extern-hook-name name) ,function))
+
+  (defmacro emodal-remove-hook(name function)
+    `(remove-hook ',(emodal-extern-hook-name name) ,function))
+  (defmacro emodal-pair-major-mode(major-mode-name name)
+    `(push (cons ',major-mode-name ',name) emodal-major-mode-pairs))
+
+  (defmacro emodal-ignore-major-mode(major-mode-name)
+    `(push ',major-mode-name emodal-ignored-major-modes))
+
+  (defmacro emodal-set-default-mode(name)
+    `(setq emodal-default-mode ',name))
+
+  (defmacro emodal-disable-mode(name)
+    `(,(emodal-extern-mode-name name) 0))
+
+  (defmacro emodal-enable-mode(name)
+    `(,(emodal-extern-mode-name name) 1))
+
+  (defun emodal-disable-all-modes()
+    (dolist (mode emodal-modes)
+      (eval `(emodal-disable-mode ,mode))))
+
+  (defmacro emodal-raise-mode(name)
+    `(progn
+       (dolist (mode emodal-modes)
+         (eval `(emodal-disable-mode ,mode)))
+       (emodal-enable-mode ,name)))
+
+  (defun emodal-raise-default-mode()
+    (let ((default-mode (catch 'default-mode
+      (if (not (or (member major-mode emodal-ignored-major-modes) (minibufferp)))
+          (throw 'default-mode (or (cdr (assoc major-mode emodal-major-mode-pairs)) emodal-default-mode))
+        (throw 'default-mode nil)))))
+      (if default-mode
+          (eval `(emodal-raise-mode ,default-mode))
+        (emodal-disable-all-modes))))
+
+
+  (define-minor-mode emodal-mode "Minor mode that manages emodal modes" nil " Emodal" nil
+    (when emodal-mode
+      (emodal-raise-default-mode)))
+
+  (define-globalized-minor-mode emodal-global-mode emodal-mode (lambda() (emodal-mode 1)))
+#+END_SRC
 * Programming Languages
 ** Lua
 Lua mode
@@ -362,8 +433,7 @@ Install d mode package
 #+BEGIN_SRC emacs-lisp
   (package-use 'd-mode :require t)
 #+END_SRC
-* Modal
-This is a custom implementation of modal editing, similiar to vim's, including normal, insert, and region mode
+* Keybindings
 ** make-normal-sparse-keymap
 Returns a keymap, where all the self-inserting characters are ignored
 #+BEGIN_SRC emacs-lisp
@@ -375,81 +445,186 @@ Returns a keymap, where all the self-inserting characters are ignored
       (define-key result (kbd char) 'ignore))
     result)
 #+END_SRC
-** modal editing implementation
-Some variables
+** Leader
 #+BEGIN_SRC emacs-lisp
-  (setq modal/ignored-major-modes (list "dired-mode" "eshell-mode" "ibuffer-mode"))
-#+END_SRC
+  (setq leader-map (make-sparse-keymap))
 
-Maps for each mode
+  (general-define-key
+   :keymaps 'leader-map
+    "SPC" 'execute-extended-command
+    "s" 'save-some-buffers
+    "b" 'ivy-switch-buffer
+    "f" 'find-file
+    "d" 'dired
+    "k" 'kill-buffer
+    "RET" 'eshell/toggle
+    "<return>" 'eshell/toggle
+    "C-RET" 'eshell/new
+    "C-<return>" 'eshell/new
+    "e b" 'eval-buffer
+    "e r" 'eval-region
+    "e e" 'eval-expression)
+#+END_SRC
+** Globals
 #+BEGIN_SRC emacs-lisp
-  (setq modal/emacs-map (make-sparse-keymap))
-  (setq modal/normal-map (make-sparse-keymap))
+  (general-define-key
+   "C-z" nil
+   "C-SPC" leader-map
+   "C-@" leader-map
+   "<escape>" (kbd "C-g")
+   "M-q" 'emodal-raise-default-mode
+   "M-e" 'emodal-disable-all-modes)
+#+END_SRC
+** normal bare map
+Used as a base for other maps
+#+BEGIN_SRC emacs-lisp
+  (setq modal/normal-bare-map (make-sparse-keymap))
+
+  (general-define-key
+   :keymaps 'modal/normal-bare-map
+   "k" 'previous-line
+   "K" 'scroll-down-command
+   "j" 'next-line
+   "J" 'scroll-up-command
+   "h" 'backward-char
+   "H" 'backward-word
+   "l" 'forward-char
+   "L" 'forward-word
+   "a" 'beginning-of-line
+   "f" 'end-of-line
+   "SPC" leader-map)
+#+END_SRC
+** normal-mode map
+#+BEGIN_SRC emacs-lisp
+  (setq modal/normal-map (make-composed-keymap (list (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
+
+  (general-define-key
+   :keymaps 'modal/normal-map
+   "q" (lambda() (interactive) (emodal-raise-mode insert))
+   "Q" 'edit/insert-beginning-of-line
+   "r" 'edit/insert-after
+   "R" 'edit/insert-end-of-line
+   "e" 'edit/set-region
+   "E" 'edit/set-region-line
+   "s" 'edit/copy-whole-line
+   "S" 'edit/copy-whole-line
+   "d" (kbd "C-d")
+   "D" 'kill-whole-line
+   "w" 'yank
+   "W" 'edit/yank-line
+   "/" 'swiper
+   "u" 'undo-tree-undo
+   "U" 'undo-tree-redo
+   "n" 'edit/open-line
+   "N" (lambda() (interactive) (edit/open-line) (emodal-raise-mode insert))
+   "p" 'edit/open-line-above
+   "P" (lambda() (interactive) (edit/open-line-above) (emodal-raise-mode insert))
+   "g" nil
+   "g l" 'isearch-forward
+   "g h" 'isearch-backward
+   "g c" 'avy-goto-char
+   "g l" 'avy-goto-line
+   "m" 'edit/insert-mark
+   "M" 'edit/goto-mark
+   "TAB" 'edit/fold-toggle
+   "<tab>" 'edit/fold-toggle)
+#+END_SRC
+** region-mode map
+#+BEGIN_SRC emacs-lisp
+  (setq modal/region-map (make-composed-keymap (list (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
+
+  (general-define-key
+   :keymaps 'modal/region-map
+   "t" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (emodal-raise-mode insert))
+   "s" (lambda() (interactive) (copy-region-as-kill (region-beginning) (region-end)) (emodal-raise-default-mode))
+   "d" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (emodal-raise-default-mode))
+   "w" 'edit/yank-region
+   "C-g" (lambda() (interactive) (pop-mark) (modal/emodal-raise-default-mode))
+   "M-q" (lambda() (interactive) (pop-mark) (modal/emodal-raise-default-mode))
+   "<escape>" (lambda() (interactive) (pop-mark) (modal/emodal-raise-default-mode))
+   "e" 'er/expand-region
+   "TAB" (lambda() (interactive) (indent-region (region-beginning) (region-end)) (emodal-raise-default-mode))
+   "<tab>" (lambda() (interactive) (indent-region (region-beginning) (region-end)) (emodal-raise-deafult-mode))
+   "g" nil
+   "g l" 'isearch-forward
+   "g h" 'isearch-backward
+   ";" 'comment-or-uncomment-region
+   "o" nil
+   "o (" (lambda() (interactive) (edit/surround-region "(" ")") (emodal-raise-default-mode))
+   "o o" (lambda() (interactive) (edit/surround-region (read-from-minibuffer "left: ") (read-from-minibuffer "right: ")) (emodal-raise-default-mode))
+   "o )" (lambda() (interactive) (edit/surround-region "(" ")") (emodal-raise-default-mode))
+   "o {" (lambda() (interactive) (edit/surround-region "{" "}") (emodal-raise-default-mode))
+   "o }" (lambda() (interactive) (edit/surround-region "{" "}") (emodal-raise-default-mode))
+   "o [" (lambda() (interactive) (edit/surround-region "[" "]") (emodal-raise-default-mode))
+   "o ]" (lambda() (interactive) (edit/surround-region "[" "]") (emodal-raise-default-mode))
+   "o \"" (lambda() (interactive) (edit/surround-region "\"" "\"") (emodal-raise-default-mode))
+   "o <" (lambda() (interactive) (edit/surround-region "<" ">") (emodal-raise-default-mode))
+   "o '" (lambda() (interactive) (edit/surround-region "'" "'") (emodal-raise-default-mode)))
+#+END_SRC
+** insert-mode map
+This is the same as emacs-map
+#+BEGIN_SRC emacs-lisp
   (setq modal/insert-map (make-sparse-keymap))
-  (setq modal/region-map (make-sparse-keymap))
-  (setq modal/rectangle-map (make-sparse-keymap))
-  (setq modal/multiple-cursors-map (make-sparse-keymap))
-#+END_SRC
-Create minor modes for every editing mode
-#+BEGIN_SRC emacs-lisp
-  (defun modal/initialize()
-    (define-minor-mode modal/normal-mode "Normal mode" nil "<Normal>" modal/normal-map)
-    (define-minor-mode modal/emacs-mode "Emacs mode" nil "<Emacs>" modal/emacs-map)
-    (define-minor-mode modal/insert-mode "Insert mode" nil "<Insert>" modal/insert-map)
-    (define-minor-mode modal/region-mode "Region mode" nil "<Region>" modal/region-map)
-    (define-minor-mode modal/rectangle-mode "Rectangle mode" nil "<Rectangle>" modal/rectangle-map)
-    (define-minor-mode modal/multiple-cursors-mode nil nil nil modal/multiple-cursors-map
-      (if modal/multiple-cursors-mode
-          (raise-minor-mode-map-alist 'modal/multiple-cursors-mode))))
-#+END_SRC
-Functions to manage editing modes
-#+BEGIN_SRC emacs-lisp
-  (defun modal/clear()
-    (interactive)
-    (modal/normal-mode 0)
-    (modal/emacs-mode 0)
-    (modal/insert-mode 0)
-    (modal/region-mode 0)
-    (modal/rectangle-mode 0))
-  (defun modal/enable-normal()
-    (interactive)
-    (modal/clear)
-    (setq cursor-type 'box)
-    (modal/normal-mode 1))
-  (defun modal/enable-insert()
-    (interactive)
-    (modal/clear)
-    (setq cursor-type 'bar)
-    (modal/insert-mode 1))
-  (defun modal/enable-emacs()
-    (interactive)
-    (modal/clear)
-    (setq cursor-type 'box)
-    (modal/emacs-mode 1))
-  (defun modal/enable-region()
-    (interactive)
-    (modal/clear)
-    (setq cursor-type 'box)
-    (modal/region-mode 1))
-  (defun modal/enable-rectangle()
-    (interactive)
-    (modal/clear)
-    (setq cursor-type 'box)
-    (modal/rectangle-mode 1))
-#+END_SRC
 
-Create global modal-mode
-#+BEGIN_SRC emacs-lisp
-  (define-minor-mode modal-mode "Mode that enbles modes on buffer" t "<Modal>" nil
-    (when modal-mode
-      (if (not (or (minibufferp)
-                   (member (symbol-name major-mode) modal/ignored-major-modes)))
-          (modal/enable-normal)
-        (modal/enable-emacs))))
-
-  (define-global-minor-mode global-modal-mode modal-mode (lambda() (modal-mode 1)))
+  (general-define-key
+   :keymaps 'modal/insert-map
+   "C-g" (lambda() (interactive) (emodal-raise-default-mode)))
 #+END_SRC
+** company-active-map
+#+BEGIN_SRC emacs-lisp
+  (general-define-key
+   :keymaps 'company-active-map
+   "<tab>" 'company-complete
+   "TAB" 'company-complete)
+#+END_SRC
+** eshell map
+#+BEGIN_SRC emacs-lisp
+  (defun set-eshell-custom-map()
+    (general-define-key
+      :keymaps 'eshell-mode-map
+      "C-SPC" leader-map
+      "C-@" leader-map))
 
+  (add-hook 'eshell-mode-hook 'set-eshell-custom-map)
+#+END_SRC
+** dired-mode map
+#+BEGIN_SRC emacs-lisp
+  (require 'dired)
+  (setq dired-mode-map (make-composed-keymap (list (copy-keymap modal/normal-bare-map)) dired-mode-map))
+
+  (general-define-key
+   :keymaps 'dired-mode-map
+   )
+#+END_SRC
+** ivy minibuffer map
+#+BEGIN_SRC emacs-lisp
+  (general-define-key
+   :keymaps 'ivy-minibuffer-map
+   "M-j" 'ivy-next-line
+   "M-k" 'ivy-previous-line
+   "RET" 'ivy-immediate-done
+   "TAB" 'ivy-partial-or-done)
+#+END_SRC
+* Modal
+This is a custom implementation of modal editing, similiar to vim's, including normal, insert, and region mode
+** modal editing implementation using emodal
+#+BEGIN_SRC emacs-lisp
+  (emodal-ignore-major-mode eshell-mode)
+  (emodal-ignore-major-mode dired-mode)
+  (emodal-ignore-major-mode ibuffer-mode)
+
+  (emodal-define-mode normal :keymap modal/normal-map :lighter " [N]" :doc "Normal mode"
+                      :on-enable (setq cursor-type 'box))
+
+  (emodal-define-mode insert :keymap modal/insert-map :lighter " [I]" :doc "Insert mode"
+                      :on-enable (setq cursor-type 'bar))
+
+  (emodal-define-mode region :keymap modal/region-map :lighter " [R]" :doc "Region mode"
+                      :on-enable (setq cursor-type 'box))
+
+  (emodal-set-default-mode normal)
+  (emodal-global-mode t)
+#+END_SRC
 * Editing functions
 ** surround
 Functions that surround a region with an opening and closing string
@@ -470,29 +645,29 @@ Functions that surround a region with an opening and closing string
   (defun edit/insert-after()
     (interactive)
     (forward-char)
-    (modal/enable-insert))
+    (emodal-raise-mode insert))
 
   (defun edit/insert-end-of-line()
     (interactive)
     (end-of-line)
-    (modal/enable-insert))
+    (emodal-raise-mode insert))
 
   (defun edit/insert-beginning-of-line()
     (interactive)
     (beginning-of-line)
-    (modal/enable-insert))
+    (emodal-raise-mode insert))
 
   (defun edit/set-region()
     (interactive)
     (set-mark (point))
-    (modal/enable-region))
+    (emodal-raise-mode region))
 
   (defun edit/set-region-line()
     (interactive)
     (beginning-of-line)
     (set-mark (point))
     (end-of-line)
-    (modal/enable-region))
+    (emodal-raise-mode region))
 
   (defun edit/open-line()
     (interactive)
@@ -528,7 +703,7 @@ Functions that surround a region with an opening and closing string
     (interactive)
     (kill-region (region-beginning) (region-end))
     (yank 2)
-    (modal/enable-normal))
+    (emodal-raise-default-mode))
 
   (defun edit/insert-mark()
     (interactive)
@@ -539,7 +714,7 @@ Functions that surround a region with an opening and closing string
     (search-forward "<++>")
     (search-backward "<")
     (delete-char  4)
-    (modal/enable-insert))
+    (emodal-raise-mode insert))
 #+END_SRC
 Use default org folding if in org mode
 #+BEGIN_SRC emacs-lisp
@@ -608,191 +783,6 @@ Creates a new numbered eshell buffer
 Disable linum mode in eshell
 #+BEGIN_SRC emacs-lisp
   (add-hook 'eshell-mode-hook (lambda() (interactive) (linum-mode 0)))
-#+END_SRC
-* Keybindings
-** Globals
-#+BEGIN_SRC emacs-lisp
-  (general-define-key
-   "C-x =" 'macro-make-function
-   "C-x C-b" 'ibuffer)
-#+END_SRC
-** Leader
-#+BEGIN_SRC emacs-lisp
-  (setq leader-map (make-sparse-keymap))
-
-  (general-define-key
-   :keymaps 'leader-map
-    "SPC" 'execute-extended-command
-    "s" 'save-some-buffers
-    "b" 'ivy-switch-buffer
-    "f" 'find-file
-    "d" 'dired
-    "k" 'kill-buffer
-    "RET" 'eshell/toggle
-    "<return>" 'eshell/toggle
-    "C-RET" 'eshell/new
-    "C-<return>" 'eshell/new
-    "e b" 'eval-buffer
-    "e r" 'eval-region
-    "e e" 'eval-expression)
-#+END_SRC
-** emacs-mode map
-#+BEGIN_SRC emacs-lisp
-  (general-define-key
-   :keymaps 'modal/emacs-map
-   "C-SPC" leader-map
-   "<escape>" (kbd "C-g")
-   "M-q" 'modal/enable-normal
-   "M-e" 'modal/enable-emacs)
-#+END_SRC
-** normal bare map
-Used as a base for other maps
-#+BEGIN_SRC emacs-lisp
-  (setq modal/normal-bare-map (make-sparse-keymap))
-
-  (general-define-key
-   :keymaps 'modal/normal-bare-map
-   "k" 'previous-line
-   "K" 'scroll-down-command
-   "j" 'next-line
-   "J" 'scroll-up-command
-   "h" 'backward-char
-   "H" 'backward-word
-   "l" 'forward-char
-   "L" 'forward-word
-   "a" 'beginning-of-line
-   "f" 'end-of-line
-   "SPC" leader-map)
-#+END_SRC
-** normal-mode map
-#+BEGIN_SRC emacs-lisp
-  (setq modal/normal-map (make-composed-keymap (list (copy-keymap modal/emacs-map) (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
-
-  (general-define-key
-   :keymaps 'modal/normal-map
-   "q" 'modal/enable-insert
-   "Q" 'edit/insert-beginning-of-line
-   "r" 'edit/insert-after
-   "R" 'edit/insert-end-of-line
-   "e" 'edit/set-region
-   "E" 'edit/set-region-line
-   "s" 'edit/copy-whole-line
-   "d" (kbd "C-d")
-   "D" 'kill-whole-line
-   "w" 'yank
-   "W" 'edit/yank-line
-   "/" 'swiper
-   "u" 'undo-tree-undo
-   "U" 'undo-tree-redo
-   "n" 'edit/open-line
-   "N" (lambda() (interactive) (edit/open-line) (modal/enable-insert))
-   "p" 'edit/open-line-above
-   "P" (lambda() (interactive) (edit/open-line-above) (modal/enable-insert))
-   "g" nil
-   "g l" 'isearch-forward
-   "g h" 'isearch-backward
-   "g c" 'avy-goto-char
-   "g l" 'avy-goto-line
-   "m" 'edit/insert-mark
-   "M" 'edit/goto-mark
-   "TAB" 'edit/fold-toggle
-   "<tab>" 'edit/fold-toggle)
-#+END_SRC
-** region-mode map
-#+BEGIN_SRC emacs-lisp
-  (setq modal/region-map (make-composed-keymap (list (copy-keymap modal/emacs-map) (copy-keymap modal/normal-bare-map)) (make-normal-sparse-keymap)))
-
-  (general-define-key
-   :keymaps 'modal/region-map
-   "t" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-insert))
-   "s" (lambda() (interactive) (copy-region-as-kill (region-beginning) (region-end)) (modal/enable-normal))
-   "d" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (modal/enable-normal))
-   "w" 'edit/yank-region
-   "C-g" (lambda() (interactive) (pop-mark) (modal/enable-normal))
-   "M-q" (lambda() (interactive) (pop-mark) (modal/enable-normal))
-   "<escape>" (lambda() (interactive) (pop-mark) (modal/enable-normal))
-   "e" 'er/expand-region
-   "TAB" (lambda() (interactive) (indent-region (region-beginning) (region-end)) (modal/enable-normal))
-   "<tab>" (lambda() (interactive) (indent-region (region-beginning) (region-end)) (modal/enable-normal))
-   "g" nil
-   "g l" 'isearch-forward
-   "g h" 'isearch-backward
-   ";" 'comment-or-uncomment-region
-   "o" nil
-   "m" (lambda() (interactive) (modal/multiple-cursors-mode 1))
-   "o (" (lambda() (interactive) (edit/surround-region "(" ")") (modal/enable-normal))
-   "o o" (lambda() (interactive) (edit/surround-region (read-from-minibuffer "left: ") (read-from-minibuffer "right: ")) (modal/enable-normal))
-   "o )" (lambda() (interactive) (edit/surround-region "(" ")") (modal/enable-normal))
-   "o {" (lambda() (interactive) (edit/surround-region "{" "}") (modal/enable-normal))
-   "o }" (lambda() (interactive) (edit/surround-region "{" "}") (modal/enable-normal))
-   "o [" (lambda() (interactive) (edit/surround-region "[" "]") (modal/enable-normal))
-   "o ]" (lambda() (interactive) (edit/surround-region "[" "]") (modal/enable-normal))
-   "o \"" (lambda() (interactive) (edit/surround-region "\"" "\"") (modal/enable-normal))
-   "o <" (lambda() (interactive) (edit/surround-region "<" ">") (modal/enable-normal))
-   "o '" (lambda() (interactive) (edit/surround-region "'" "'") (modal/enable-normal)))
-
-#+END_SRC
-** insert-mode map
-This is the same as emacs-map
-#+BEGIN_SRC emacs-lisp
-  (setq modal/insert-map (copy-keymap modal/emacs-map))
-
-  (general-define-key
-   :keymaps 'modal/insert-map
-   "C-g" 'modal/enable-normal)
-#+END_SRC
-** company-active-map
-#+BEGIN_SRC emacs-lisp
-  (general-define-key
-   :keymaps 'company-active-map
-   "<tab>" 'company-complete
-   "TAB" 'company-complete)
-#+END_SRC
-** eshell map
-#+BEGIN_SRC emacs-lisp
-  (defun set-eshell-custom-map()
-    (general-leader-define-key
-      :keymaps 'eshell-mode-map
-      "RET" 'eshell/toggle
-      "<return>" 'eshell/toggle))
-
-  (add-hook 'eshell-mode-hook 'set-eshell-custom-map)
-#+END_SRC
-** multiple-cursors map
-#+BEGIN_SRC emacs-lisp
-  (setq modal/multiple-cursors-map (make-normal-sparse-keymap))
-
-  (general-define-key
-   :keymaps 'modal/multiple-cursors-map
-   "n" 'mc/mark-next-like-this
-   "p" 'mc/mark-pop
-   "a" 'mc/mark-all-like-this
-   "r" 'mc/mark-in-region
-   "q" (lambda() (interactive) (modal/multiple-cursors-mode 0))
-   "M-q" (lambda() (interactive) (modal/multiple-cursors-mode 0))
-   "C-g" (lambda() (interactive) (modal/multiple-cursors-mode 0)))
-#+END_SRC
-** dired-mode map
-#+BEGIN_SRC emacs-lisp
-  (require 'dired)
-  (setq dired-mode-map (make-composed-keymap (list (copy-keymap modal/normal-bare-map)) dired-mode-map))
-
-  (general-define-key
-   :keymaps 'dired-mode-map)
-#+END_SRC
-** ivy minibuffer map
-#+BEGIN_SRC emacs-lisp
-  (general-define-key
-   :keymaps 'ivy-minibuffer-map
-   "M-j" 'ivy-next-line
-   "M-k" 'ivy-previous-line
-   "RET" 'ivy-immediate-done
-   "TAB" 'ivy-partial-or-done)
-#+END_SRC
-** initialize modal mode
-#+BEGIN_SRC emacs-lisp
-  (modal/initialize)
-  (global-modal-mode t)
 #+END_SRC
 * Theme
 ** all-the-icons
