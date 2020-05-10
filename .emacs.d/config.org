@@ -472,8 +472,8 @@ Returns a keymap, where all the self-inserting characters are ignored
    "C-SPC" leader-map
    "C-@" leader-map
    "<escape>" (kbd "C-g")
-   "M-q" 'emodal-raise-default-mode
-   "M-e" 'emodal-disable-all-modes)
+   "M-q" (lambda() (interactive) (emodal-raise-default-mode))
+   "M-e" (lambda() (interactive) (emodal-disable-all-modes)))
 #+END_SRC
 ** normal bare map
 Used as a base for other maps
@@ -539,9 +539,9 @@ Used as a base for other maps
    "s" (lambda() (interactive) (copy-region-as-kill (region-beginning) (region-end)) (emodal-raise-default-mode))
    "d" (lambda() (interactive) (kill-region (region-beginning) (region-end)) (emodal-raise-default-mode))
    "w" 'edit/yank-region
-   "C-g" (lambda() (interactive) (pop-mark) (modal/emodal-raise-default-mode))
-   "M-q" (lambda() (interactive) (pop-mark) (modal/emodal-raise-default-mode))
-   "<escape>" (lambda() (interactive) (pop-mark) (modal/emodal-raise-default-mode))
+   "C-g" (lambda() (interactive) (pop-mark) (emodal-raise-default-mode))
+   "M-q" (lambda() (interactive) (pop-mark) (emodal-raise-default-mode))
+   "<escape>" (lambda() (interactive) (pop-mark) (emodal-raise-default-mode))
    "e" 'er/expand-region
    "TAB" (lambda() (interactive) (indent-region (region-beginning) (region-end)) (emodal-raise-default-mode))
    "<tab>" (lambda() (interactive) (indent-region (region-beginning) (region-end)) (emodal-raise-deafult-mode))
@@ -602,8 +602,9 @@ This is the same as emacs-map
    :keymaps 'ivy-minibuffer-map
    "M-j" 'ivy-next-line
    "M-k" 'ivy-previous-line
-   "RET" 'ivy-immediate-done
-   "TAB" 'ivy-partial-or-done)
+   "M-RET" 'ivy-immediate-done
+   "TAB" 'ivy-partial-or-done
+   "RET" 'ivy-done)
 #+END_SRC
 * Modal
 This is a custom implementation of modal editing, similiar to vim's, including normal, insert, and region mode
