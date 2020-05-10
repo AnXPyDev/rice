@@ -99,6 +99,10 @@ Cursor settings
   (setq-default cursor-type config/default-cursor)
   (blink-cursor-mode 0)
 #+END_SRC
+Treat all themes as safe
+#+BEGIN_SRC emacs-lisp
+  (setq custom-safe-themes t)
+#+END_SRC
 * Packages
 ** general
 #+BEGIN_SRC emacs-lisp
@@ -313,6 +317,11 @@ Disable minibuffer messages about errors
       (emodal-raise-default-mode)))
 
   (define-globalized-minor-mode emodal-global-mode emodal-mode (lambda() (emodal-mode 1)))
+#+END_SRC
+** themes
+#+BEGIN_SRC emacs-lisp
+  (package-use 'kaolin-themes)
+  (package-use 'arc-dark-theme)
 #+END_SRC
 * Programming Languages
 ** Lua
@@ -816,13 +825,13 @@ Disable linum mode in eshell
   (package-use 'all-the-icons :require t)
   (package-use 'all-the-icons-dired :require t)
 #+END_SRC
+** headerline
+#+BEGIN_SRC emacs-lisp
+  (setq-default header-line-format '( " " (:eval (buffer-name))))
+#+END_SRC
 ** modeline
 #+BEGIN_SRC emacs-lisp
-  (package-use 'doom-modeline :require t)
-  ;; (setq doom-modeline-height 32)
-  ;; (doom-modeline-mode 1)
-  (package-use 'smart-mode-line)
-  (smart-mode-line-enable)
+  (setq-default mode-line-format '(" test"))
 #+END_SRC
 ** theme for tty, where gui is unavailable
 #+BEGIN_SRC emacs-lisp
@@ -833,37 +842,48 @@ Disable linum mode in eshell
 ** theme for gui
 #+BEGIN_SRC emacs-lisp
   (defun theme/gui()
-    (interactive)
-    (package-use 'kaolin-themes)
-    (package-use 'arc-dark-theme)
-    (setq x-theme-name (x-get-resource "themeName" "emacs"))
-    (if x-theme-name
-        (load-theme (intern x-theme-name) t)
-      (load-theme 'arc-dark t))
-    (hlinum-activate)
-    (setq font-name "monospace")
-    (setq x-font-name (x-get-resource "fontName" "emacs"))
-    (setq backup-fonts '("Cascadia Mono" "Consolas"))
+    (setq font-name (or
+          (catch 'font-name
+            (dolist (font '("Cascadia Mono" "Consolas"))
+              (when (find-font (font-spec :name font))
+                (throw 'font-name font)))) "monospace"))
 
-    (if x-font-name
-        (setq font-name x-font-name)
-      (progn
-        (catch 'loop
-          (dolist (font backup-fonts)
-            (when (find-font (font-spec :name font))
-              (setq font-name font)
-              (throw 'loop nil))))))
-
-  
     (set-face-attribute 'default nil
                         :family font-name
                         :height 112)
     (set-face-attribute 'linum nil
-                        :height 112))
+                        :height 'unspecified
+                        :inherit 'default))
+#+END_SRC
+** general theme customizations
+#+BEGIN_SRC emacs-lisp
+  (defun theme/general()
+    (set-face-attribute 'header-line nil
+                        :foreground (face-attribute 'linum :foreground)
+                        :background (face-attribute 'default :background)
+                        :height (- (face-attribute 'default :height) 5)
+                        :inherit nil)
+
+    (set-face-attribute 'header-line-highlight nil
+                        :foreground (face-attribute 'header-line :foreground)
+                        :background (face-attribute 'header-line :background)
+                        :height (face-attribute 'header-line :height)
+                        :inherit nil)
+
+    )
+#+END_SRC
+** reload theme
+#+BEGIN_SRC emacs-lisp
+  (defun theme/reload()
+    (interactive)
+    (if (and (display-graphic-p) (not (daemonp)))
+        (theme/gui)
+      (theme/tty))
+    (theme/general))
+
+  (advice-add 'load-theme :after (lambda(&rest args) (theme/reload)))
 #+END_SRC
 ** initialize theme
 #+BEGIN_SRC emacs-lisp
-  (if (and (display-graphic-p) (not (daemonp)))
-      (theme/gui)
-    (theme/tty))
+  (load-theme 'arc-dark)
 #+END_SRC
