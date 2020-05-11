@@ -827,11 +827,11 @@ Disable linum mode in eshell
 #+END_SRC
 ** headerline
 #+BEGIN_SRC emacs-lisp
-  (setq-default header-line-format '( " " (:eval (buffer-name))))
+  (setq-default header-line-format '(" %b"))
 #+END_SRC
 ** modeline
 #+BEGIN_SRC emacs-lisp
-  (setq-default mode-line-format '(" test"))
+  (setq-default mode-line-format '(" %l : %c : %i"))
 #+END_SRC
 ** theme for tty, where gui is unavailable
 #+BEGIN_SRC emacs-lisp
