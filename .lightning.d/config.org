@@ -1,0 +1,156 @@
+* User variables
+#+BEGIN_SRC emacs-lisp
+  (setq lightning-user-name "AnXPyDev")
+  (setq lightning-user-indent-offset 2)
+  (setq lightning-user-indent-use-spaces t)
+  (setq lightning-user-default-cursor 'hbar)
+
+  (lightning-apply-user-variables)
+#+END_SRC
+* Load lightning modules
+#+BEGIN_SRC emacs-lisp
+  (lightning-load-module "sensible-defaults")
+  (lightning-load-module "package-manager")
+  (lightning-load-module "lookup-fonts")
+  (lightning-load-module "lmodal")
+  (lightning-load-module "make-no-insert-keymap")
+#+END_SRC
+* Basic config
+Line numbers
+#+BEGIN_SRC emacs-lisp
+  (global-display-line-numbers-mode 1)
+#+END_SRC
+* Packages
+** ivy
+#+BEGIN_SRC emacs-lisp
+  (pkg ivy
+    :require t
+    :config-after (ivy-mode 1))
+#+END_SRC
+** general
+#+BEGIN_SRC emacs-lisp
+  (pkg general
+    :require t)
+#+END_SRC
+** Themes
+#+BEGIN_SRC emacs-lisp
+  (pkg arc-dark-theme)
+#+END_SRC
+* Keybindings
+** Leader
+#+BEGIN_SRC emacs-lisp
+  (setq leader-map (make-sparse-keymap))
+
+  (general-define-key
+    :keymaps 'leader-map)
+#+END_SRC
+** Bare normal map
+#+BEGIN_SRC emacs-lisp
+  (setq modal-normal-bare-map (make-sparse-keymap))
+
+  (general-define-key
+    :keymaps 'modal-normal-bare-map
+    "M-e" 'lmodal-raise-emacs-mode
+    "h" 'backward-char
+    "j" 'next-line
+    "k" 'previous-line
+    "l" 'forward-char
+    "," 'beginning-of-line
+    "." 'end-of-line
+    "z" leader-map)
+#+END_SRC
+** Normal map
+#+BEGIN_SRC emacs-lisp
+  (setq modal-normal-map
+    (make-composed-keymap
+      (list
+        (copy-keymap modal-normal-bare-map)
+        (make-no-insert-keymap))))
+
+  (general-define-key
+    :keymaps 'modal-normal-map
+    "q" 'lmodal-raise-insert-mode)
+#+END_SRC
+** Normal org map
+#+BEGIN_SRC emacs-lisp
+  (setq modal-normal-org-map (copy-keymap modal-normal-map))
+
+  (general-define-key
+    :keymaps 'modal-normal-org-map
+    "<tab>" 'org-cycle)
+#+END_SRC
+** Insert map
+#+BEGIN_SRC emacs-lisp
+  (setq modal-insert-map (make-sparse-keymap))
+
+  (general-define-key
+    :keymaps 'modal-insert-map
+    "<escape>" 'lmodal-raise-default-mode
+    "M-q" 'lmodal-raise-default-mode)
+#+END_SRC
+* Modal
+Define modes
+#+BEGIN_SRC emacs-lisp
+  (setq modal-emacs-cursor 'box)
+  (setq modal-normal-cursor 'hbar)
+  (setq modal-insert-cursor 'bar)
+
+  (lmodal-define-mode emacs
+    :keymap modal-emacs-map
+    :lighter " [E]"
+    :cursor modal-emacs-cursor)
+
+  (lmodal-define-mode normal
+    :keymap modal-normal-map
+    :lighter " [N]"
+    :cursor modal-normal-cursor)
+
+  (lmodal-define-mode normal-org
+    :keymap modal-normal-org-map
+    :lighter " [N-org]"
+    :cursor modal-normal-cursor)
+
+  (lmodal-define-mode insert
+    :keymap modal-insert-map
+    :lighter " [I]"
+    :cursor modal-insert-cursor)
+
+  (lmodal-set-default-mode normal)
+  (lmodal-pair-major-mode org-mode normal-org)
+#+END_SRC
+Initialize lmodal
+#+BEGIN_SRC emacs-lisp
+  (lmodal-global-mode 1)
+#+END_SRC
+* Theme
+** For gui
+#+BEGIN_SRC emacs-lisp
+  (defun theme-gui()
+    (set-face-attribute 'default nil
+      :family (lookup-fonts "Cascadia Code" "Consolas")
+      :height 110))
+#+END_SRC
+** For tui
+#+BEGIN_SRC emacs-lisp
+  (defun theme-tui())
+#+END_SRC
+** General
+#+BEGIN_SRC emacs-lisp
+  (defun theme-general())
+#+END_SRC
+** Initialize theme
+#+BEGIN_SRC emacs-lisp
+  (defun reload-theme()
+    (interactive)
+    (if (display-graphic-p)
+      (theme-gui)
+      (theme-tui))
+    (theme-general))
+
+  (defadvice load-theme (after load-theme-after activate)
+    (reload-theme))
+
+  (if (display-graphic-p)
+    (load-theme 'kaolin-galaxy)
+    (reload-theme))
+#+END_SRC
