@@ -32,17 +32,47 @@ Line numbers
   (pkg general
     :require t)
 #+END_SRC
-** Themes
+** expand-region
 #+BEGIN_SRC emacs-lisp
-  (pkg arc-dark-theme)
+  (pkg expand-region
+    :require t)
+#+END_SRC
+** swiper
+#+BEGIN_SRC emacs-lisp
+  (pkg swiper
+    :require t)
+#+END_SRC
+** undo-tree
+#+BEGIN_SRC emacs-lisp
+  (pkg undo-tree
+    :require t
+    :config-after (global-undo-tree-mode 1))
 #+END_SRC
 * Keybindings
-** Leader
+** Leader map
 #+BEGIN_SRC emacs-lisp
   (setq leader-map (make-sparse-keymap))
 
   (general-define-key
     :keymaps 'leader-map)
+#+END_SRC
+** Command map
+#+BEGIN_SRC emacs-lisp
+  (setq command-map (make-sparse-keymap))
+
+  (general-define-key
+    :keymaps 'command-map
+    "e" 'execute-extended-command
+    "f" 'find-file
+    "d" 'dired)
+#+END_SRC
+** Globals
+#+BEGIN_SRC emacs-lisp
+  (general-define-key
+    "C-z" leader-map
+    "C-e" command-map
+    "M-q" 'lmodal-raise-default-mode
+    "<escape>" 'keyboard-quit)
 #+END_SRC
 ** Bare normal map
 #+BEGIN_SRC emacs-lisp
@@ -51,13 +81,24 @@ Line numbers
   (general-define-key
     :keymaps 'modal-normal-bare-map
     "M-e" 'lmodal-raise-emacs-mode
+    "z" leader-map
+    "e" command-map
     "h" 'backward-char
     "j" 'next-line
     "k" 'previous-line
     "l" 'forward-char
+    "H" 'backward-word
+    "J" 'scroll-up-command
+    "K" 'scroll-down-command
+    "L" 'forward-word
     "," 'beginning-of-line
+    "<" 'beginning-of-line-text
     "." 'end-of-line
-    "z" leader-map)
+    ">" 'end-of-line
+    "@" 'universal-argument
+    "u" 'undo-tree-undo
+    "U" 'undo-tree-redo
+    "s" 'swiper)
 #+END_SRC
 ** Normal map
 #+BEGIN_SRC emacs-lisp
@@ -69,7 +110,13 @@ Line numbers
 
   (general-define-key
     :keymaps 'modal-normal-map
-    "q" 'lmodal-raise-insert-mode)
+    "i" 'lmodal-raise-insert-mode
+    "I" (lambda() (interactive) (beginning-of-line) (lmodal-raise-insert-mode))
+    "C-i" (lambda() (interactive) (end-of-line) (lmodal-raise-insert-mode))
+    "r" 'lmodal-raise-region-mode
+    "R" (lambda() (interactive) (beginning-of-line) (lmodal-raise-region-mode) (end-of-line))
+    "d" 'delete-char
+    "D" 'kill-whole-line)
 #+END_SRC
 ** Normal org map
 #+BEGIN_SRC emacs-lisp
@@ -78,6 +125,17 @@ Line numbers
   (general-define-key
     :keymaps 'modal-normal-org-map
     "<tab>" 'org-cycle)
+#+END_SRC
+** Region map
+#+BEGIN_SRC emacs-lisp
+  (setq modal-region-map (copy-keymap modal-normal-bare-map))
+
+  (general-define-key
+    :keymaps 'modal-region-map
+    "<escape>" 'lmodal-raise-default-mode
+    "C-g" 'lmodal-raise-default-mode
+    "M-q" 'lmodal-raise-default-mode
+    "r" 'er/expand-region)
 #+END_SRC
 ** Insert map
 #+BEGIN_SRC emacs-lisp
@@ -89,14 +147,15 @@ Line numbers
     "M-q" 'lmodal-raise-default-mode)
 #+END_SRC
 * Modal
-Define modes
+Cursors for modes
 #+BEGIN_SRC emacs-lisp
   (setq modal-emacs-cursor 'box)
   (setq modal-normal-cursor 'hbar)
   (setq modal-insert-cursor 'bar)
-
+#+END_SRC
+Define modes
+#+BEGIN_SRC emacs-lisp
   (lmodal-define-mode emacs
-    :keymap modal-emacs-map
     :lighter " [E]"
     :cursor modal-emacs-cursor)
 
@@ -110,31 +169,57 @@ Define modes
     :lighter " [N-org]"
     :cursor modal-normal-cursor)
 
+  (lmodal-define-mode region
+    :keymap modal-region-map
+    :lighter " [R]"
+    :cursor modal-normal-cursor
+    :on-enable (set-mark (point))
+    :on-disable (pop-mark))
+
   (lmodal-define-mode insert
     :keymap modal-insert-map
     :lighter " [I]"
     :cursor modal-insert-cursor)
-
-  (lmodal-set-default-mode normal)
-  (lmodal-pair-major-mode org-mode normal-org)
 #+END_SRC
 Initialize lmodal
 #+BEGIN_SRC emacs-lisp
+  (lmodal-set-default-mode normal)
+  (lmodal-pair-major-mode org-mode normal-org)
+
   (lmodal-global-mode 1)
 #+END_SRC
-* Theme
-** For gui
+* Appearance
+** Prettify symbols
+#+BEGIN_SRC emacs-lisp
+  (setq-default prettify-symbols-alist
+    '(("lambda" . "λ")))
+
+  (global-prettify-symbols-mode t)
+#+END_SRC
+** Modeline
+Install telephone line
+#+BEGIN_SRC emacs-lisp
+  (pkg telephone-line
+    :require t
+    :config-after (telephone-line-mode 1))
+#+END_SRC
+** Themes
+#+BEGIN_SRC emacs-lisp
+  (pkg arc-dark-theme)
+  (pkg kaolin-themes)
+#+END_SRC
+** Theme for gui
 #+BEGIN_SRC emacs-lisp
   (defun theme-gui()
     (set-face-attribute 'default nil
       :family (lookup-fonts "Cascadia Code" "Consolas")
       :height 110))
 #+END_SRC
-** For tui
+** Theme for tui
 #+BEGIN_SRC emacs-lisp
   (defun theme-tui())
 #+END_SRC
-** General
+** General theme
 #+BEGIN_SRC emacs-lisp
   (defun theme-general())
 #+END_SRC
@@ -151,6 +236,6 @@ Initialize lmodal
     (reload-theme))
 
   (if (display-graphic-p)
-    (load-theme 'kaolin-galaxy)
+    (load-theme 'kaolin-aurora)
     (reload-theme))
 #+END_SRC
