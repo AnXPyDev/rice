@@ -1,53 +1,94 @@
-* User variables
+* Load modules
 #+BEGIN_SRC emacs-lisp
-  (setq lightning-user-name "AnXPyDev")
-  (setq lightning-user-indent-offset 2)
-  (setq lightning-user-indent-use-spaces t)
-  (setq lightning-user-default-cursor 'hbar)
-
-  (lightning-apply-user-variables)
-#+END_SRC
-* Load lightning modules
-#+BEGIN_SRC emacs-lisp
-  (lightning-load-module "sensible-defaults")
-  (lightning-load-module "package-manager")
+  (lightning-load-module "use-package")
   (lightning-load-module "lookup-fonts")
   (lightning-load-module "lmodal")
   (lightning-load-module "make-no-insert-keymap")
 #+END_SRC
-* Basic config
-Line numbers
+* User variables
 #+BEGIN_SRC emacs-lisp
-  (global-display-line-numbers-mode 1)
+  (setq user-name "AnXPyDev")
 #+END_SRC
+* Basic config
+Disable bell
+#+BEGIN_SRC emacs-lisp
+  (setq ring-bell-function 'ignore)
+#+END_SRC
+Clean up ui
+#+BEGIN_SRC emacs-lisp
+  (defun clean-up-ui()
+    "Disables tool-bar, menu-bar and scroll-bar"
+    (interactive)
+    (ignore-errors (tool-bar-mode 0))
+    (ignore-errors (menu-bar-mode 0))
+    (ignore-errors (scroll-bar-mode 0)))
+  (add-hook 'after-init-hook 'clean-up-ui)
+  (clean-up-ui)
+#+END_SRC
+Disable auto save and backup
+#+BEGIN_SRC emacs-lisp
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+#+END_SRC
+Use y-n instead of yes-no
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+Treat all themes as safe
+#+BEGIN_SRC emacs-lisp
+  (setq custom-safe-themes t)
+#+END_SRC
+Indentation
+#+BEGIN_SRC emacs-lisp
+  (setq-default tab-width 2)
+  (setq-default indent-tabs-mode nil)
+#+END_SRC
+Default cursor
+#+begin_src emacs-lisp
+  (setq-default cursor-type 'hbar)
+#+end_src
+Default cursor blink
+#+begin_src emacs-lisp
+  (blink-cursor-mode 0)
+#+end_src
 * Packages
 ** ivy
 #+BEGIN_SRC emacs-lisp
-  (pkg ivy
-    :require t
-    :config-after (ivy-mode 1))
+  (use-package ivy
+    :ensure t
+    :config (ivy-mode 1))
 #+END_SRC
 ** general
 #+BEGIN_SRC emacs-lisp
-  (pkg general
-    :require t)
+  (use-package general
+    :ensure t)
 #+END_SRC
 ** expand-region
 #+BEGIN_SRC emacs-lisp
-  (pkg expand-region
-    :require t)
+  (use-package expand-region
+    :ensure t)
 #+END_SRC
 ** swiper
 #+BEGIN_SRC emacs-lisp
-  (pkg swiper
-    :require t)
+  (use-package swiper
+    :ensure t)
 #+END_SRC
 ** undo-tree
 #+BEGIN_SRC emacs-lisp
-  (pkg undo-tree
-    :require t
-    :config-after (global-undo-tree-mode 1))
+  (use-package undo-tree
+    :ensure t
+    :config (global-undo-tree-mode 1))
 #+END_SRC
+* Languages
+** Lisp
+Fix lisp indenting
+#+BEGIN_SRC emacs-lisp
+  (setq lisp-indent-offset tab-width)
+#+END_SRC
+* Editing functions
+#+begin_src emacs-lisp
+
+#+end_src
 * Keybindings
 ** Leader map
 #+BEGIN_SRC emacs-lisp
@@ -64,7 +105,9 @@ Line numbers
     :keymaps 'command-map
     "e" 'execute-extended-command
     "f" 'find-file
-    "d" 'dired)
+    "d" 'dired
+    "C-f" 'find-file
+    "C-d" 'dired)
 #+END_SRC
 ** Globals
 #+BEGIN_SRC emacs-lisp
@@ -116,7 +159,12 @@ Line numbers
     "r" 'lmodal-raise-region-mode
     "R" (lambda() (interactive) (beginning-of-line) (lmodal-raise-region-mode) (end-of-line))
     "d" 'delete-char
-    "D" 'kill-whole-line)
+    "D" 'kill-whole-line
+    "c" (lambda() (interactive) (kill-region (point-at-bol) (point-at-eol)) (yank))
+    "C" (kbd "c")
+    "v" 'yank
+    "V" (lambda() (interactive) (end-of-line) (open-line) (next-line) (yank))
+    )
 #+END_SRC
 ** Normal org map
 #+BEGIN_SRC emacs-lisp
@@ -135,7 +183,19 @@ Line numbers
     "<escape>" 'lmodal-raise-default-mode
     "C-g" 'lmodal-raise-default-mode
     "M-q" 'lmodal-raise-default-mode
-    "r" 'er/expand-region)
+    "r" 'er/expand-region
+    "c" (lambda() (interactive)
+          (kill-region (region-beginning) (region-end))
+          (yank)
+          (lmodal-raise-default-mode))
+    "v" (lambda() (interactive)
+          (delete-region (region-beginning) (region-end))
+          (yank)
+          (lmodal-raise-default-mode))
+    "d" (lambda() (interactive)
+          (kill-region (region-beginning) (region-end))
+          (lmodal-raise-default-mode))
+    )
 #+END_SRC
 ** Insert map
 #+BEGIN_SRC emacs-lisp
@@ -145,6 +205,19 @@ Line numbers
     :keymaps 'modal-insert-map
     "<escape>" 'lmodal-raise-default-mode
     "M-q" 'lmodal-raise-default-mode)
+#+END_SRC
+** Ivy map
+#+BEGIN_SRC emacs-lisp
+  (general-define-key
+    :keymaps 'ivy-minibuffer-map
+    "<escape>" 'minibuffer-keyboard-quit
+    "C-j" 'ivy-next-line
+    "C-k" 'ivy-previous-line
+    "M-j" 'ivy-next-line
+    "M-k" 'ivy-previous-line
+    "TAB" 'ivy-partial-or-done
+    "RET" 'ivy-done
+    "C-RET" 'ivy-immediate-done)
 #+END_SRC
 * Modal
 Cursors for modes
@@ -185,10 +258,24 @@ Initialize lmodal
 #+BEGIN_SRC emacs-lisp
   (lmodal-set-default-mode normal)
   (lmodal-pair-major-mode org-mode normal-org)
+  (lmodal-pair-major-mode dired-mode emacs)
+  (lmodal-pair-major-mode eshell-mode emacs)
 
   (lmodal-global-mode 1)
 #+END_SRC
 * Appearance
+** Dashboard
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :ensure t
+    :config
+    (setq initial-buffer-choice (lambda() (get-buffer "*dashboard*")))
+    (setq dashboard-banner-logo-title "Welcome to Lightning Emacs")
+    (setq dashboard-center-content t)
+    (setq dashboard-startup-banner (concat lightning-config-directory "banner.png"))
+    (dashboard-setup-startup-hook))
+
+#+END_SRC
 ** Prettify symbols
 #+BEGIN_SRC emacs-lisp
   (setq-default prettify-symbols-alist
@@ -199,14 +286,14 @@ Initialize lmodal
 ** Modeline
 Install telephone line
 #+BEGIN_SRC emacs-lisp
-  (pkg telephone-line
-    :require t
-    :config-after (telephone-line-mode 1))
+  (use-package telephone-line
+    :ensure t
+    :config (telephone-line-mode 1))
 #+END_SRC
 ** Themes
 #+BEGIN_SRC emacs-lisp
-  (pkg arc-dark-theme)
-  (pkg kaolin-themes)
+  (use-package arc-dark-theme)
+  (use-package kaolin-themes)
 #+END_SRC
 ** Theme for gui
 #+BEGIN_SRC emacs-lisp
@@ -220,6 +307,11 @@ Install telephone line
   (defun theme-tui())
 #+END_SRC
 ** General theme
+Line numbers
+#+BEGIN_SRC emacs-lisp
+  (global-display-line-numbers-mode 1)
+#+END_SRC
+General theme loader
 #+BEGIN_SRC emacs-lisp
   (defun theme-general())
 #+END_SRC
@@ -236,6 +328,6 @@ Install telephone line
     (reload-theme))
 
   (if (display-graphic-p)
-    (load-theme 'kaolin-aurora)
+    (load-theme 'kaolin-galaxy)
     (reload-theme))
 #+END_SRC
